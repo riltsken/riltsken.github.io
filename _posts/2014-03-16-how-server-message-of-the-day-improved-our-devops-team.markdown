@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Why you should have server MOTD (Message of the Day) on all your nodes and improving the team DevOps experience"
+title:  "How a server MOTD improved our DevOps team"
 date:   2014-03-16 15:54:14
 categories: DevOps Infrastructure
 ---
