@@ -11,6 +11,7 @@
 .post-content img {
   display: block;
   padding: 10px;
+  width: 100%; /* fixes zoom issues of image going past panel width */
 }
 
 /* content padding/margin was too large between each other */
