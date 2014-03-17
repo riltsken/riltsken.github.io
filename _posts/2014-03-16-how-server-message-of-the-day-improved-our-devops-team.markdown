@@ -5,19 +5,28 @@ date:   2014-03-16 15:54:14
 categories: DevOps Infrastructure
 ---
 
+[littlechef]: https://github.com/tobami/littlechef
+[littlechef-rackspace]: https://github.com/tildedave/littlechef-rackspace
+[alexmeng]: https://github.com/AMeng
+
+&#8291;
 <div class="rs-panel rs-content">
+  <div class="rs-detail-header">
+    <div class="rs-detail-header-title">The problem</div>
+  </div>
   <div class="rs-inner">
     <p>
-    Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data. All of these nodes are managed and provisioned using [littlechef][littlechef] (chef-solo) combined with [littlechef-rackspace][littlechef-rackspace].
+      Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data. All of these nodes are managed and provisioned using [littlechef][littlechef] (chef-solo) combined with [littlechef-rackspace][littlechef-rackspace].
     </p>
     <p>
-    When I first started working on this team we had almost no documentation about how the different types of servers in our environment were setup. When you would SSH onto a node to debug an issue or alert it would take a little extra digging to get started. While we do use chef for configuration of our servers it would take awhile to trace all of the different recipes, where they install services, what scripts you can run, and other useful information about that node. One of our developers ([Alex Meng][alexmeng]) for a hackday took it upon himself to help our process a bit more by generating useful MOTD's for our servers via chef. This is a Cassandra node in our environment. The MOTD is great for immediately being able to start diagnosing issues without having to look at chef for where everything on this node is located. A couple of things I want to highlight about this picture.
+      When I first started working on this team we had almost no documentation about how the different types of servers in our environment were setup. When you would SSH onto a node to debug an issue or alert it would take a little extra digging to get started. While we do use chef for configuration of our servers it would take awhile to trace all of the different recipes, where they install services, what scripts you can run, and other useful information about that node. Another issue is making sure that developers at all levels have access to the same information. We want to make sure all, from junior to senior, developers are able to tackle issues that arise.
     </p>
-    <img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd.png" alt="Example of a Cassandra node MOTD in our test environment. Full picture.">
+    <p>
+      To that end [Alex Meng][alexmeng] one of the developers on the team took it upon himself during a hackday to improve the process. He did this by generating MOTD's for our servers via chef. This is a Cassandra node in our environment. The MOTD is great for immediately being able to start diagnosing issues without having to look at chef for where everything on this node is located.
+    </p>
+    <img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd.png" alt="Example of a Cassandra node MOTD in our test environment. Full picture." />
   </div>
 </div>
-
-
 <div class="rs-panel rs-content">
   <div class="rs-detail-header">
     <div class="rs-detail-header-title">Load and network information</div>
@@ -29,7 +38,6 @@ categories: DevOps Infrastructure
     </p>
   </div>
 </div>
-
 <div class="rs-panel rs-content">
   <div class="rs-detail-header">
     <div class="rs-detail-header-title">Node description</div>
@@ -41,13 +49,12 @@ categories: DevOps Infrastructure
     </p>
   </div>
 </div>
-
 <div class="rs-panel rs-content">
   <div class="rs-detail-header">
     <div class="rs-detail-header-title">Services and location of important information</div>
   </div>
   <div class="rs-inner">
-    <img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd_3.png" alt="Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.">
+    <img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd_3.png" alt="Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped." />
     <p>
     The next section describes the **services running** on the box. This one only happens to be running Cassandra, but some nodes might be running multiple services (in general, our nodes are assigned a single function, but some applications require multiple services on a box). It will also describe where **logs** and **important configuration** files are located on the node. Other things we include sometimes on here are location of **script files** or **cron jobs** that are running on the system. At the end of our MOTD is a link to the **documentation** which describes in detail the role of this node in our architecture.
     </p>
@@ -67,6 +74,3 @@ categories: DevOps Infrastructure
   </div>
 </div>
 
-[littlechef]: https://github.com/tobami/littlechef
-[littlechef-rackspace]: https://github.com/tildedave/littlechef-rackspace
-[alexmeng]: https://github.com/AMeng
