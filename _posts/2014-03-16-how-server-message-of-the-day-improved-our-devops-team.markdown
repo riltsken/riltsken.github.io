@@ -1,25 +1,71 @@
 ---
 layout: post
-title:  "How server Message of the Day (MOTD) improved our DevOps team."
+title:  "Why you should have server MOTD (Message of the Day) on all your nodes and improving the team DevOps experience"
 date:   2014-03-16 15:54:14
 categories: DevOps Infrastructure
 ---
 
-Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes load balancers running apache, web nodes which serve the base content with django, javascript served from cdn (content delivery network), twisted servers which proxy requests for making calls to Rackspace apis from the frontend, and a cluster of Cassandra nodes for managing sessions, preferences, and api cache data. We manage provisioning and mangement of our servers with [littlechef][littlechef] (chef-solo) combined with [littlechef-rackspace][littlechef-rackspace].
+<div class="rs-panel rs-content">
+  <div class="rs-inner">
+    <p>
+    Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data. All of these nodes are managed and provisioned using [littlechef][littlechef] (chef-solo) combined with [littlechef-rackspace][littlechef-rackspace].
+    </p>
+    <p>
+    When I first started working on this team we had almost no documentation about how the different types of servers in our environment were setup. When you would SSH onto a node to debug an issue or alert it would take a little extra digging to get started. While we do use chef for configuration of our servers it would take awhile to trace all of the different recipes, where they install services, what scripts you can run, and other useful information about that node. One of our developers ([Alex Meng][alexmeng]) for a hackday took it upon himself to help our process a bit more by generating useful MOTD's for our servers via chef. This is a Cassandra node in our environment. The MOTD is great for immediately being able to start diagnosing issues without having to look at chef for where everything on this node is located. A couple of things I want to highlight about this picture.
+    </p>
+    <img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd.png" alt="Example of a Cassandra node MOTD in our test environment. Full picture.">
+  </div>
+</div>
 
-When I first started working on this team we had almost no documentation about how the different types of servers in our environment were setup. When you would SSH onto a node to debug an issue or alert it would take a little extra digging to get started. While we do use chef for configuration of our servers it would take awhile to trace all of the different recipes, where they install services, what scripts you can run, and other useful information about that node. One of our developers ([Alex Meng][alexmeng]) for a hackday took it upon himself to help our process a bit more by generating useful MOTD's for our servers via chef. Here is an example:
 
-<img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd.png" alt="Example of a Cassandra node MOTD in our test environment">
+<div class="rs-panel rs-content">
+  <div class="rs-detail-header">
+    <div class="rs-detail-header-title">Load and network information</div>
+  </div>
+  <div class="rs-inner">
+    <img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd_1.png" alt="Top of MOTD describing load and network interfaces. Cropped.">
+    <p>
+    When you first ssh into a node the very top shows some basic **load information** about the node and what **network interfaces** it has available. The network interfaces has proven useful if you have services running on different interfaces and need quick access to that information. For example, on this cassandra node we would access the cassandra cli (cqlsh) from the private network interface.
+    </p>
+  </div>
+</div>
 
-This is an example of a Cassandra node in our environment. The MOTD is great for immediately being able to start diagnosing issues without having to look at chef for where everything on this node is located. A couple of things I want to highlight about this picture.
+<div class="rs-panel rs-content">
+  <div class="rs-detail-header">
+    <div class="rs-detail-header-title">Node description</div>
+  </div>
+  <div class="rs-inner">
+    <img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd_2.png" alt="Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped." />
+    <p>
+      The next piece of information we add is our **project name** along with the **node name** (cassandra, load balancer, proxy, web), **region** (dfw, ord, syd), **environment** (test, staging, preprod, production) and **hostname** which is blurred out. This helps a person ensure they know they are on the right node. The environment text is large so people are more careful if they are jumping on several boxes, some of which could be production.
+    </p>
+  </div>
+</div>
 
-When you first ssh into a node the very top shows some basic **load information** about the node and what **network interfaces** it has available. The next piece of information we add is our **project name** along with the **node name** (cassandra, load balancer, proxy, web), **region** (dfw, ord, syd), **environment** (test, staging, preprod, production) and **hostname** which is blurred out. This helps a person ensure they know they are on the right node and the environment is large so people are more careful if they need to debug a production box.
-
-The next section describes the **services running** on the box. This one only happens to be running Cassandra, but some nodes might be running multiple services (in general, our nodes are assigned a single function, but some applications require multiple services on a box). It will also describe where **logs** and **important configuration** files are located on the node. Other things we include sometimes on here are location of **script files** or **cron jobs** that are running on the system.
-
-The final piece of information we leave in the MOTD is a link to the **documentation** which describes in detail the role of this node in our architecture.
-
-In the past year that we have had MOTD's on all of our nodes I realize how important and helpful it is to disperse information about our architecture and make it easier to enable other developers to operate on it. The MOTD provides one key piece for organizing this information immediately when acting on a single node.
+<div class="rs-panel rs-content">
+  <div class="rs-detail-header">
+    <div class="rs-detail-header-title">Services and location of important information</div>
+  </div>
+  <div class="rs-inner">
+    <img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd_3.png" alt="Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.">
+    <p>
+    The next section describes the **services running** on the box. This one only happens to be running Cassandra, but some nodes might be running multiple services (in general, our nodes are assigned a single function, but some applications require multiple services on a box). It will also describe where **logs** and **important configuration** files are located on the node. Other things we include sometimes on here are location of **script files** or **cron jobs** that are running on the system. At the end of our MOTD is a link to the **documentation** which describes in detail the role of this node in our architecture.
+    </p>
+  </div>
+</div>
+<div class="rs-panel rs-content">
+  <div class="rs-detail-header">
+    <div class="rs-detail-header-title">Conclusion</div>
+  </div>
+  <div class="rs-inner">
+    <p>
+    Our implementation of MOTD's is done via a chef recipe. All of our nodes have a "short_name" attribute which we use to identify which MOTD to use. We store these MOTD's as cookbook files and every node has a MOTD recipe which dumps the correct MOTD onto that node.
+    </p>
+    <p>
+    In the past year that we have had MOTD's on all of our nodes I realize how important and helpful it is to disperse information about our architecture and make it easier to enable other developers to operate on it. The MOTD provides one key piece for organizing this information immediately when acting on a single node.
+    </p>
+  </div>
+</div>
 
 [littlechef]: https://github.com/tobami/littlechef
 [littlechef-rackspace]: https://github.com/tildedave/littlechef-rackspace

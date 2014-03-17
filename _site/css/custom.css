@@ -6,3 +6,17 @@
 .rs-nav-utility {
   font-size: 16px;
 }
+
+/* give spaces to images from paragraphs */
+.post-content img {
+  display: block;
+  padding: 10px;
+}
+
+/* content padding/margin was too large between each other */
+.post-content .rs-inner {
+  margin-top: 10px;
+}
+.post-content .rs-detail-header {
+  padding-bottom: 10px;
+}
