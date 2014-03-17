@@ -1,4 +1,8 @@
 /* Fix submenu nav to have padding from left window */
-.rs-nav-secondary .rs-nav .rs-nav-item:first-child {
-  margin-left: 20px;
+.rs-nav-utility .rs-nav .rs-nav-item:first-child {
+  margin-left: 30px;
+}
+
+.rs-nav-utility {
+  font-size: 16px;
 }
