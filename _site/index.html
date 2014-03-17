@@ -1,52 +1,84 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Software Development and Dev Ops - Thoughts by Samuel Toriel</title>
-        <meta name="viewport" content="width=device-width">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Software Development and Dev Ops</title>
+    <meta name="viewport" content="width=device-width">
 
-        <!-- syntax highlighting CSS -->
-        <link rel="stylesheet" href="/css/syntax.css">
+    <script type="application/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script type="application/javascript" src="https://eafdbc63c97ce6bec9ef-b0a668e5876bef6fe25684caf71db405.ssl.cf1.rackcdn.com/v1-latest/canon.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://eafdbc63c97ce6bec9ef-b0a668e5876bef6fe25684caf71db405.ssl.cf1.rackcdn.com/v1-latest/canon.min.css">
 
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="/css/main.css">
+    <!-- syntax highlighting CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/custom.css">
 
-    </head>
-    <body>
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        <div class="site">
-          <div class="header">
-            <h1 class="title"><a href="/">Software Development and Dev Ops - Thoughts by Samuel Toriel</a></h1>
-            <a class="extra" href="/">home</a>
-          </div>
+      ga('create', 'UA-49052230-1', 'riltsken.github.io');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body class="rs-responsive">
+    <div class="rs-wrapper">
 
-          <div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
+      <!-- Top nav / header -->
+      <div class="rs-nav-primary">
+        <ul class="rs-nav">
+          <li class="rs-nav-item">
+            <h2 class="rs-page-title">Software Development and Dev Ops</h2>
+          </li>
+        </ul>
+      </div>
+      <div class="rs-nav-secondary">
+        <ul class="rs-nav">
+          <li class="rs-nav-item">
+            <a class="rs-nav-link" href="/">Home</a>
+          </li>
+          <li class="rs-nav-item">
+            <a class="rs-nav-link" href="/about.html">About me</a>
+          </li>
+        </ul>
+      </div>
 
-      <li><span>16 Mar 2014</span> &raquo; <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">How server Message of the Day (MOTD) improved our DevOps team.</a></li>
+      <!-- Main page / blog content -->
+      <div class="rs-main">
+          <div class="rs-content">
+            <div class="rs-inner">
+              <h3>Collection of thoughts</h1>
+<ul class="posts">
+  
+    <li class="rs-nav-item">
+      <span>16 Mar 2014</span> &raquo; <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">How server Message of the Day (MOTD) improved our DevOps team.</a>
+      <div>
+        Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes load balancers running apache, web nodes which serve the base content with django, javascript served from cdn (content delivery network), twisted servers which proxy requests for making calls to Rackspace apis from the frontend, and a cluster of Cassandra nodes for managing sessions, preferences, and api cache data. We manage provisioning and mangement of our servers with littlechef (chef-solo) combined with littlechef-rackspace. When...
+      </div>
+    </li>
+  
+</ul>
 
-  </ul>
-</div>
-
-          <div class="footer">
-            <div class="contact">
-              <p>
-                Samuel Toriel<br />
-                Software Developer<br />
-                Cloud Control Panel @ Rackspace<br />
-                samuel.toriel@rackspace.com
-              </p>
             </div>
-            <div class="contact">
-              <p>
-                <a href="https://github.com/riltsken">github.com/riltsken</a><br />
-                <a href="https://twitter.com/rilt">twitter.com/rilt</a><br />
-              </p>
-            </div>
           </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="rs-nav-footer">
+        <div class="rs-container">
+          <ul class="rs-nav">
+            <li class="rs-nav-item">Samuel Toriel</li>
+            <li class="rs-nav-item"><a class="rs-nav-link" href="https://github.com/riltsken">Github</a></li>
+            <li class="rs-nav-item"><a class="rs-nav-link" href="https://twitter.com/rilt">Twitter</a></li>
+            <li class="rs-nav-item"><a class="rs-nav-link" href="https://mycloud.rackspace.com">Rackspace Cloud Control Panel</li></a>
+          </ul>
         </div>
+      </div>
 
-    </body>
+    </div>
+  </body>
 </html>

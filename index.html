@@ -1,13 +1,16 @@
 ---
 layout: default
-title: Software Development and Dev Ops - Thoughts by Samuel Toriel
+title: Software Development and Dev Ops
 ---
 
-<div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
-</div>
+<h3>Collection of thoughts</h1>
+<ul class="posts">
+  {% for post in site.posts %}
+    <li class="rs-nav-item">
+      <span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a>
+      <div>
+        {{ post.content | strip_html | truncatewords:100 }}
+      </div>
+    </li>
+  {% endfor %}
+</ul>
