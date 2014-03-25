@@ -1,3 +1,4 @@
 name: Bridging the gap - A blog about DevOps and Software Development
 markdown: redcarpet
 pygments: true
+extensions: [fenced_code_blocks]

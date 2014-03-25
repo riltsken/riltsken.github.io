@@ -1,3 +1,4 @@
+
 /* Fix submenu nav to have padding from left window */
 .rs-nav-utility .rs-nav .rs-nav-item:first-child {
   margin-left: 30px;
@@ -22,7 +23,9 @@
   padding-bottom: 10px;
 }
 
-/* default font size is too small */
+/* default font size is too small and spacing needs to be larger between lines*/
 .post-content p {
   font-size: 15px;
+  line-height: 25px;
+  text-indent: 25px;
 }
