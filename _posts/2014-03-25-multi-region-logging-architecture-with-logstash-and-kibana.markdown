@@ -91,7 +91,7 @@ The next step is to forward our logs to the collector. To do this we create a di
 
 input {
   redis {
-    'host' => '<%= node['logstash']['broker_ip'] %>'
+    'host' => '<%= node["logstash"]["broker_ip"] %>'
     'data_type' => 'list'
     'key' => 'logstash'
   }
@@ -99,9 +99,9 @@ input {
 
 output {
   lumberjack {
-    'hosts' => ['<%= node['logstash']['collector_ip'] %>']
-    'port' => <%= node['logstash']['forwarder']['port'] %>
-    'ssl_certificate' => '<%= node['selfsigned_ssl']['directory'] %><%= node['selfsigned_ssl']['ssl_cert'] %>'
+    'hosts' => ['<%= node["logstash"]["collector_ip"] %>']
+    'port' => <%= node["logstash"]["forwarder"]["port"] %>
+    'ssl_certificate' => '<%= node["selfsigned_ssl"]["directory"] %><%= node["selfsigned_ssl"]["ssl_cert"] %>'
   }
 }
 ```
@@ -110,16 +110,16 @@ output {
 
 input {
   lumberjack {
-    'host' => '<%= node['logstash']['collector_ip'] %>'
-    'port' => <%= node['logstash']['forwarder']['port'] %>
-    'ssl_certificate' => '<%= node['selfsigned_ssl']['directory'] %><%= node['selfsigned_ssl']['ssl_cert'] %>'
-    'ssl_key' => '<%= node['selfsigned_ssl']['directory'] %><%= node['selfsigned_ssl']['ssl_key'] %>'
+    'host' => '127.0.0.1'
+    'port' => <%= node["logstash"]["forwarder"]["port"] %>
+    'ssl_certificate' => '<%= node["selfsigned_ssl"]["directory"] %><%= node["selfsigned_ssl"]["ssl_cert"] %>'
+    'ssl_key' => '<%= node["selfsigned_ssl"]["directory"] %><%= node["selfsigned_ssl"]["ssl_key"] %>'
   }
 }
 
 output {
   redis {
-    'host' => '<%= node["logstash"]["collector_ip"] %>'
+    'host' => '127.0.0.1'
     'data_type' => 'list'
     'key' => 'logstash'
   }
