@@ -1,4 +1,9 @@
-name: Bridging the gap - A blog about DevOps and Software Development
+name: Samuel Toriel
+description: A blog about Software and Operations
+
 markdown: redcarpet
 pygments: true
+
 extensions: [fenced_code_blocks]
+
+paginate: 5

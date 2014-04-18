@@ -1,79 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{{ page.title }}</title>
-    <meta name="viewport" content="width=device-width">
 
-    <script type="application/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-    <script type="application/javascript" src="https://eafdbc63c97ce6bec9ef-b0a668e5876bef6fe25684caf71db405.ssl.cf1.rackcdn.com/v1-latest/canon.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://eafdbc63c97ce6bec9ef-b0a668e5876bef6fe25684caf71db405.ssl.cf1.rackcdn.com/v1-latest/canon.min.css">
+  {% include head.html %}
 
-    <!-- syntax highlighting CSS -->
-    <link rel="stylesheet" href="/css/syntax.css">
-    <link rel="stylesheet" href="/css/custom.css">
+  <body>
+    <div class="container content">
+      {% include sidebar.html %}
 
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-49052230-1']);
-      _gaq.push(['_trackPageview']);
+      <!-- Main Content -->
+      {{ content }}
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
-  </head>
-  <body class="rs-responsive">
-    <div class="rs-wrapper">
-
-      <!-- Top nav / header -->
-      <div class="rs-nav-utility rs-fixed-top">
-        <ul class="rs-nav">
-          <li class="rs-nav-item">
-            <a class="rs-nav-link" href="/">Home</a>
-          </li>
-          <li class="rs-nav-item">
-            <a class="rs-nav-link" href="/about.html">About me</a>
-          </li>
-          <li class="rs-nav-item"><a class="rs-nav-link" href="https://github.com/riltsken">Github</a></li>
-          <li class="rs-nav-item"><a class="rs-nav-link" href="https://twitter.com/rilt">Twitter</a></li>
-        </ul>
-      </div>
-      <div class="rs-push"></div>
-      <div class="rs-nav-primary">
-        <ul class="rs-nav">
-          <li class="rs-nav-item">
-            <h2 class="rs-page-title">{{ site.name }}</h2>
-          </li>
-        </ul>
+      <!-- Footer -->
+      <div class="footer">
       </div>
 
-
-      <!-- Main page / blog content -->
-      <div class="rs-body">
-        <div class="rs-main">
-            <div class="rs-content">
-              <div class="rs-inner">
-                {{ content }}
-              </div>
-            </div>
-        </div>
-      </div>
-
-      <div class="rs-push"></div>
     </div>
-
-    <!-- Footer -->
-    <div class="rs-nav-footer">
-      <div class="rs-container">
-        <ul class="rs-nav">
-          <li class="rs-nav-item">Samuel Toriel</li>
-        </ul>
-      </div>
-    </div>
-
   </body>
 </html>

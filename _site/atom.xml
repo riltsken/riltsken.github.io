@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title></title>
+ <link href="/atom.xml" rel="self"/>
+ <link href="/"/>
+ <updated>2014-04-18T08:29:29-04:00</updated>
+ <id></id>
+ <author>
+   <name></name>
+   <email></email>
+ </author>
+
+ 
+ <entry>
+   <title>Multi-region logging architecture with Logstash, Kibana, and ElasticSearch</title>
+   <link href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html"/>
+   <updated>2014-03-25T10:24:15Z</updated>
+   <id>/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana</id>
+   <content type="html">&lt;h2&gt;Background&lt;/h2&gt;
+
+&lt;p&gt;On my team right now we are using rsyslog with &lt;a href=&quot;http://graylog2.org/&quot;&gt;Graylog2&lt;/a&gt; and &lt;a href=&quot;http://www.elasticsearch.org/&quot;&gt;ElasticSearch&lt;/a&gt; to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it&amp;#39;s own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region&amp;#39;s Graylog2 instance. The original reason for this setup was that we had our logging infrastructure setup before multi-region was in place and we had to make a decision about how much time we wanted to spend setting it up. We chose for the quickest option as we had other product work that needed to get done before improving our logging infrastructure. This has proved to be a costly choice for us. Our current system has degraded to the point where we barely use our Graylog2 interface anymore. There are several reasons for this. One is that it is frustrating to switch between the multiple region interfaces and setup the same filters for each one. Another is that the version of Graylog2 + ElasticSearch we are working with are struggling to keep up with the amount of logs we have. It has gotten to the point where even simple queries executed on Graylog2 cause alerts to fire on our ElasticSearch cluster requiring action from us to help restore it.&lt;/p&gt;
+
+&lt;p&gt;Our backlog has some stories in place to remedy this situation, but are not on our radar for another few months. We recently had a hackweek and decided to experiment with some ideas and technology on what we want to use. Most of these ideas come from another team at Rackspace working on &lt;a href=&quot;http://www.rackspace.com/cloud/auto-scale/&quot;&gt;Autoscale&lt;/a&gt;. Our idea is slightly modified, but the same general concept. None of this is currently implemented in a production like environment and most of it was setup in a test environment to play around with during our hackweek. The technologies in play here are &lt;a href=&quot;http://logstash.net/&quot;&gt;Logstash&lt;/a&gt;, &lt;a href=&quot;http://www.elasticsearch.org/overview/kibana/&quot;&gt;Kibana&lt;/a&gt;, and ElasticSearch.&lt;/p&gt;
+
+&lt;p&gt;I have to explain our current architecture a little bit first to setup why we would use the solution proposed first. The Cloud Control Panel at Rackspace is hosted in three different datacenters, ORD (US and Europe), DFW (backup), and SYD (Oceanic). All of our US and European traffic goes to ORD, while our Oceanic traffic goes to SYD. DFW is left as a warm backup that is ready in case any issue happens in the other two DC&amp;#39;s. What we didn&amp;#39;t want to do was make the same mistake as before with our logging and have multiple regional interfaces to access our logs. This meant collecting all of our logs and putting it into one datacenter for searching and querying. What that required was having each datacenter ship their logs to the collector which then puts these logs into ElasticSearch. There exists a node in each datacenter, called the broker, which then ships to the collector the logs for that datacenter. So let&amp;#39;s go over this one more time. There is one collector node, one broker node per region shipping to the collector, and all nodes in the same datacenter ship nodes to their specified broker. We can then browse logs through our collector which will be running Kibana.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/multi-region%20logging%20architecture.png&quot; alt=&quot;Full picture of proposed multi-region logging infrastructure&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;Hackweek&lt;/h2&gt;
+
+&lt;p&gt;For the hackweek we broke up different portions of the infrastructure to different team members. I tackled setting up the broker node for a region and the collector. Having all nodes in the specified datacenter ship logs to the broker over a private network, which then in turn sent its logs to the collector on a public network over an encrypted channel. Our team already uses logstash for all of our nodes to send metrics to statsd, so most of the initial boostrapping of getting the logstash agent installed and running was already handled. We use Chef and Berkshelf to manage our infrastructure, which means we are using the &lt;a href=&quot;https://github.com/lusis/chef-logstash&quot;&gt;logstash cookbook&lt;/a&gt; at version 0.7.6 at the time of this writing. Earlier versions of the cookbook had all the configuration rules for logstash written as node attributes which we put at the role level. As this method of creating rules was deprecated I moved them into configuration files that sit in the logstash conf.d directory. Logstash reads these config files in order, I found &lt;a href=&quot;https://groups.google.com/forum/#!topic/logstash-users/eNYmpFueHtM&quot;&gt;a convention I liked here&lt;/a&gt; about numbering each config file which I decided to follow.&lt;/p&gt;
+
+&lt;p&gt;To get all nodes in a specific datacenter to send their logs to the broker I decided to use tags to handle forwarding the logs I wanted. An example of what this would look like via config files would be the following&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erb language-erb&quot; data-lang=&quot;erb&quot;&gt;&lt;span class=&quot;x&quot;&gt;00_input_base.conf&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;input {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  file {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;path&amp;#39; =&amp;gt; &amp;#39;/var/log/rackspace-monitoring-agent.log&amp;#39;,&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;type&amp;#39; =&amp;gt; &amp;#39;rackspace-monitoring-agent&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erb language-erb&quot; data-lang=&quot;erb&quot;&gt;&lt;span class=&quot;x&quot;&gt;01_input_apache.conf&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;input {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  file {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;path&amp;#39; =&amp;gt; &amp;#39;/var/log/apache2/error.log&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;type&amp;#39; =&amp;gt; &amp;#39;apache-error&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;tags&amp;#39; =&amp;gt; [&amp;#39;broker&amp;#39;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  file {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;path&amp;#39; =&amp;gt; &amp;#39;/var/log/apache2/access.log&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;type&amp;#39; =&amp;gt; &amp;#39;apache-access&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;tags&amp;#39; =&amp;gt; [&amp;#39;broker&amp;#39;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erb language-erb&quot; data-lang=&quot;erb&quot;&gt;&lt;span class=&quot;x&quot;&gt;90_forward_to_broker.conf&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;output {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  if &amp;#39;broker&amp;#39; in [tags] {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    redis {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &amp;#39;host&amp;#39; =&amp;gt; &amp;#39;192.168.9.1&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &amp;#39;data_type&amp;#39; =&amp;gt; &amp;#39;list&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;      &amp;#39;key&amp;#39; =&amp;gt; &amp;#39;logstash&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/multi-region%20logging%20-%20web%20to%20broker.png&quot; alt=&quot;Specific datacenter logging from application nodes to broker&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Basically what logstash would do is take all new events from the apache error and access logs, tag them with &amp;#39;broker&amp;#39;, and when logstash checks its outputs any events tagged with &amp;#39;broker&amp;#39; would get sent to our broker node. This is useful for us since we use logstash for processing and forwarding metrics to statsd from our logs as well. At this point we now have nodes in our environment forwarding to their local broker node in their datacenter.&lt;/p&gt;
+
+&lt;p&gt;The next step is to forward our logs to the collector. To do this we create a different set of conf.d files for our logstash agent to run on the broker node. For this portion we were originally going to use stunnel to create an encrypted channel for the logs to be sent over to the collector, however, as I was reading about the different inputs and outputs supported by logstash I stumbled on &lt;a href=&quot;https://github.com/elasticsearch/logstash-forwarder&quot;&gt;lumberjack&lt;/a&gt;. Now, I actually had quite a few issues with understanding how lumberjack should be used in the context of logstash. What I see now is that it can either &lt;strong&gt;REPLACE&lt;/strong&gt; the logstash agent as a log handler and forwarder or logstash can &lt;strong&gt;CREATE&lt;/strong&gt; a lumberjack instance on the fly to send events as output or read events forwarded by lumberjack. In the first case, you would actually have to compile and build the lumberjack project and run the agent as a service. In the second case the logstash agent handles all of that and one should just use the inputs and outputs as normal.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erb language-erb&quot; data-lang=&quot;erb&quot;&gt;&lt;span class=&quot;x&quot;&gt;91_forward_to_collector.conf&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;input {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  redis {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;host&amp;#39; =&amp;gt; &amp;#39;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;logstash&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;broker_ip&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;data_type&amp;#39; =&amp;gt; &amp;#39;list&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;key&amp;#39; =&amp;gt; &amp;#39;logstash&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;output {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  lumberjack {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;hosts&amp;#39; =&amp;gt; [&amp;#39;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;logstash&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;collector_ip&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&amp;#39;]&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;port&amp;#39; =&amp;gt; &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;logstash&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;forwarder&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;port&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;ssl_certificate&amp;#39; =&amp;gt; &amp;#39;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;selfsigned_ssl&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;directory&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;selfsigned_ssl&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;ssl_cert&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;erb language-erb&quot; data-lang=&quot;erb&quot;&gt;&lt;span class=&quot;x&quot;&gt;92_lumberjack_collector.conf&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;input {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  lumberjack {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;host&amp;#39; =&amp;gt; &amp;#39;127.0.0.1&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;port&amp;#39; =&amp;gt; &lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;logstash&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;forwarder&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;port&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;ssl_certificate&amp;#39; =&amp;gt; &amp;#39;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;selfsigned_ssl&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;directory&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;selfsigned_ssl&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;ssl_cert&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;ssl_key&amp;#39; =&amp;gt; &amp;#39;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;selfsigned_ssl&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;directory&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;selfsigned_ssl&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;ssl_key&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;x&quot;&gt;&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;x&quot;&gt;output {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  redis {&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;host&amp;#39; =&amp;gt; &amp;#39;127.0.0.1&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;data_type&amp;#39; =&amp;gt; &amp;#39;list&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;    &amp;#39;key&amp;#39; =&amp;gt; &amp;#39;logstash&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
+&lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Unfortunately I ran out of time during our hackweek due to other issues I had to look at outside of this project to get the implementation down 100% but this is the rough idea for how it would look. I hope to make a follow up post when we have fully implemented the desired architecture. For now, this documents some of the learnings I gained while working on this project for a few days.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>How a server MOTD improved our DevOps team</title>
+   <link href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html"/>
+   <updated>2014-03-16T15:54:14Z</updated>
+   <id>/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team</id>
+   <content type="html">&lt;h2&gt;The problem&lt;/h2&gt;
+
+&lt;p&gt;Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with Django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data. All of these nodes are managed and provisioned using &lt;a href=&quot;https://github.com/tobami/littlechef&quot;&gt;littlechef&lt;/a&gt; (chef-solo) combined with &lt;a href=&quot;https://github.com/tildedave/littlechef-rackspace&quot;&gt;littlechef-rackspace&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;When I first started working on this team we had almost no documentation about how the different types of servers in our environment were setup. When you would SSH onto a node to debug an issue or alert it would take a little extra digging to get started. While we do use chef for configuration of our servers it would take awhile to trace all of the different recipes, where they install services, what scripts you can run, and other useful information about that node. Another issue is making sure that developers at all levels have access to the same information. We want to make sure all, from junior to senior, developers are able to tackle issues that arise.&lt;/p&gt;
+
+&lt;p&gt;To that end &lt;a href=&quot;https://github.com/AMeng&quot;&gt;Alex Meng&lt;/a&gt; one of the developers on the team took it upon himself during a hackday to improve the process. He did this by generating MOTD&amp;#39;s for our servers via chef. Below is a Cassandra node in our test environment. The MOTD is great for immediately being able to start diagnosing issues without having to look at chef for where everything on this node is located.
+&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd.png&quot; alt=&quot;Example of a Cassandra node MOTD in our test environment. Full picture.&quot; /&gt;&lt;/p&gt;
+
+&lt;h2&gt;Load and network information&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd_1.png&quot; alt=&quot;Top of MOTD describing load and network interfaces. Cropped.&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;When you first ssh into a node the very top shows some basic &lt;strong&gt;load information&lt;/strong&gt; about the node and what &lt;strong&gt;network interfaces&lt;/strong&gt; it has available. The network interfaces has proven useful if you have services running on different interfaces and need quick access to that information. For example, on this cassandra node we would access the cassandra cli (cqlsh) from the private network interface.&lt;/p&gt;
+
+&lt;h2&gt;Node description&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd_2.png&quot; alt=&quot;Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The next piece of information we add is our &lt;strong&gt;project name&lt;/strong&gt; along with the &lt;strong&gt;node name&lt;/strong&gt; (cassandra, load balancer, proxy, web), &lt;strong&gt;region&lt;/strong&gt; (dfw, ord, syd), &lt;strong&gt;environment&lt;/strong&gt; (test, staging, preprod, production) and &lt;strong&gt;hostname&lt;/strong&gt; which is blurred out. This helps a person ensure they know they are on the right node. The environment text is large so people are more careful if they are jumping on several boxes, some of which could be production.&lt;/p&gt;
+
+&lt;h2&gt;Services and location of important information&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/reach_cass_motd_3.png&quot; alt=&quot;Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The next section describes the &lt;strong&gt;services running&lt;/strong&gt; on the box. This one only happens to be running Cassandra, but some nodes might be running multiple services (in general, our nodes are assigned a single function, but some applications require multiple services on a box). It will also describe where &lt;strong&gt;logs&lt;/strong&gt; and &lt;strong&gt;important configuration&lt;/strong&gt; files are located on the node. Other things we include sometimes on here are location of &lt;strong&gt;script files&lt;/strong&gt; or &lt;strong&gt;cron jobs&lt;/strong&gt; that are running on the system. At the end of our MOTD is a link to the &lt;strong&gt;documentation&lt;/strong&gt; which describes in detail the role of this node in our architecture.&lt;/p&gt;
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Our implementation of MOTD&amp;#39;s is done via a chef recipe. All of our nodes have a &amp;quot;short_name&amp;quot; attribute which we use to identify which MOTD to use. We store these MOTD&amp;#39;s as cookbook files and every node has a MOTD recipe which dumps the correct MOTD onto that node.&lt;/p&gt;
+
+&lt;p&gt;In the past year that we have had MOTD&amp;#39;s on all of our nodes I realize how important and helpful it is to disperse information about our architecture and make it easier to enable other developers to operate on it. The MOTD provides one key piece for organizing this information immediately when acting on a single node.&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>
