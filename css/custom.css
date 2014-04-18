@@ -1,30 +1,7 @@
-/* Fix submenu nav to have padding from left window */
-.rs-nav-utility .rs-nav .rs-nav-item:first-child {
-  margin-left: 30px;
+.sidebar-myname {
+  font-family: "Lucida Console" !important;
 }
 
-.rs-nav-utility {
-  font-size: 16px;
-}
-
-/* give spaces to images from paragraphs */
-.post-content img {
-  display: block;
-  padding: 10px;
-  width: 100%; /* fixes zoom issues of image going past panel width */
-}
-
-/* content padding/margin was too large between each other */
-.post-content .rs-inner {
-  margin-top: 10px;
-}
-.post-content .rs-detail-header {
-  padding-bottom: 10px;
-}
-
-/* default font size is too small and spacing needs to be larger between lines*/
-.post-content p {
-  font-size: 15px;
-  line-height: 25px;
-  text-indent: 25px;
+.theme-base-09 li.sidebar-nav-item a {
+  color: white;
 }
