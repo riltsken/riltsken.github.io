@@ -51,22 +51,11 @@
     </div>
 
     <ul class="sidebar-nav">
-      
-      
-        <li class="sidebar-nav-item">
-          <a href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html">Multi-region logging architecture with Logstash, Kibana, and ElasticSearch</a>
-        </li>
-        <br />
-      
-        <li class="sidebar-nav-item">
-          <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">How a server MOTD improved our DevOps team</a>
-        </li>
-        <br />
-      
       <br />
       <li class="sidebar-nav-item">
         <a href="/">Home</a>
       </li>
+      <li class="sidebar-nav-item"><a href="/all_posts.html">All posts</a></li>
       <li class="sidebar-nav-item"><a href="/about.html">About</a></li>
       <li class="sidebar-nav-item"><a class="rs-nav-link" href="https://twitter.com/rilt" target="_new">@rilt</a></li>
       <li class="sidebar-nav-item" target="_new"><a href="https://github.com/riltsken">riltsken on github</a></li>
@@ -80,12 +69,32 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html">
+        Making runbooks more useful by exposing them through monitoring
+      </a>
+    </h1>
+    <span class="post-date">19 Apr 2014</span>
+    As mentioned in a previous post about our server message of the day (motd) we manage enough infrastructure that our team needs ways for being able to share tribal knowledge on how to fix issues. In Particular when we have monitoring alarms that kick off any of our team members should be able to take action on the alarm regardless of level, however, our team operates with so many different technologies it is difficult for any one person to be an expert in all of them.
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/devops/software/testing/2014/04/19/tip-for-debugging-with-chefspec.html">
+        Tip for debugging with Chefspec
+      </a>
+    </h1>
+    <span class="post-date">19 Apr 2014</span>
+    My coworker Matt Green and I were recently running into an issue with our Chefspec testing where we were looking for a specific chef resource to be called, but we made an error in our test code and had trouble debugging it.
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html">
         Multi-region logging architecture with Logstash, Kibana, and ElasticSearch
       </a>
     </h1>
     <span class="post-date">25 Mar 2014</span>
-    Background On my team right now we are using rsyslog with Graylog2 and ElasticSearch to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it&#39;s own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region&#39;s Graylog2 instance. The original reason for...
+    On my team right now we are using rsyslog with Graylog2 and ElasticSearch to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it's own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region's Graylog2 instance. The original reason for this setup was that we had our logging infrastructure setup before multi-region was in place and we had to make a decision about how much time we wanted to spend setting it up.
   </div>
   
   <div class="post">
@@ -95,7 +104,7 @@
       </a>
     </h1>
     <span class="post-date">16 Mar 2014</span>
-    The problem Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with Django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls...
+    Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with Django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data.
   </div>
   
 </div>

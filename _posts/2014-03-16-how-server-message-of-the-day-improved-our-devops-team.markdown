@@ -3,6 +3,7 @@ layout: post
 title:  "How a server MOTD improved our DevOps team"
 date:   2014-03-16 15:54:14
 categories: DevOps Infrastructure
+blurb: "Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with Django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data."
 ---
 
 [littlechef]: https://github.com/tobami/littlechef

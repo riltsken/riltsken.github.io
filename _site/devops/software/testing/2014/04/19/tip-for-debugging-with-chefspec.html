@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Tip for debugging with Chefspec &middot; 
+    
+  </title>
+
+  <script type="application/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+
+  <!-- syntax highlighting CSS -->
+  <link rel="stylesheet" href="/css/syntax.css">
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/hyde.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-49052230-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+  <body class="theme-base-09">
+    <div class="container content">
+      <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1 class="sidebar-myname">Samuel Toriel</h1>
+      <p class="lead">A blog about Software and Operations</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <br />
+      <li class="sidebar-nav-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="sidebar-nav-item"><a href="/all_posts.html">All posts</a></li>
+      <li class="sidebar-nav-item"><a href="/about.html">About</a></li>
+      <li class="sidebar-nav-item"><a class="rs-nav-link" href="https://twitter.com/rilt" target="_new">@rilt</a></li>
+      <li class="sidebar-nav-item" target="_new"><a href="https://github.com/riltsken">riltsken on github</a></li>
+      <li class="sidebar-nav-item"><a href="/atom.xml">Atom Feed</a></li>
+    </ul>
+  </div>
+</div>
+
+      <!-- Main Content -->
+      <div class="post">
+  <h1 class="post-title">Tip for debugging with Chefspec</h1>
+  <span class="post-date">19 Apr 2014</span>
+  <h2>Using <code>find_resources</code> in Chefspec</h2>
+
+<p>My coworker <a href="https://github.com/tobami/littlechef">Matt Green</a> and I were recently running into an issue with our Chefspec testing where we were looking for a specific chef resource to be called, but we made an error in our test code and had trouble debugging it. With a little bit of digging we found an easy way to see what calls were made for a resource using the function <a href="https://github.com/sethvargo/chefspec/blob/v3.4.0/lib/chefspec/runner.rb#L195">find_resources</a>. While the function here is documented it is not in any of the official chef_spec <a href="http://code.sethvargo.com/chefspec/">documentation</a> and so I would caution actually using it in tests. We found it useful to either print out the run or using <code>pry</code> to drop into an interactive debugger for explore further.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">describe &#39;reach::proxy&#39; do
+  let(:chef_run) { ChefSpec::Runner.new.converge(&#39;reach::proxy&#39;) }
+
+  it &#39;installs the apache logging conf&#39; do
+    puts chef_run.find_resources(&#39;template&#39;)
+    expect(chef_run).to render_file(&quot;/etc/apache2/conf.d/logging.con&quot;)
+  end
+end
+
+------------
+
+Failures:
+
+reach::proxy
+  includes apache recipes (FAILED - 1)
+template[/etc/sysconfig/httpd]
+template[apache2.conf]
+template[apache2-conf-security]
+template[apache2-conf-charset]
+template[/etc/apache2/ports.conf]
+template[/etc/apache2/sites-available/default]
+template[/etc/apache2/mods-available/status.conf]
+template[/etc/apache2/mods-available/alias.conf]
+template[/etc/apache2/mods-available/autoindex.conf]
+template[/etc/apache2/mods-available/dir.conf]
+template[/etc/apache2/mods-available/mime.conf]
+template[/etc/apache2/mods-available/negotiation.conf]
+template[/etc/apache2/mods-available/setenvif.conf]
+template[/etc/apache2/ports.conf]
+template[/etc/apache2/mods-available/ssl.conf]
+template[/etc/apache2/mods-available/deflate.conf]
+template[/etc/apache2/mods-available/proxy.conf]
+template[/etc/apache2/conf.d/logging.conf]
+template[/etc/apache2/sites-available/reach-intproxy.conf]
+template[/etc/network/if-pre-up.d/iptables_load]
+template[/etc/iptables.d/all_established]
+template[/etc/iptables.d/all_icmp]
+template[/etc/iptables.d/ports_reach]
+</code></pre></div>
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html">
+            Making runbooks more useful by exposing them through monitoring
+            <small>19 Apr 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html">
+            Multi-region logging architecture with Logstash, Kibana, and ElasticSearch
+            <small>25 Mar 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">
+            How a server MOTD improved our DevOps team
+            <small>16 Mar 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      <!-- Footer -->
+      <div class="footer">
+      </div>
+
+    </div>
+  </body>
+</html>
