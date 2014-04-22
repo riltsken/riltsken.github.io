@@ -2,6 +2,7 @@
 layout: post
 title:  "Making runbooks more useful by exposing them through monitoring"
 categories: DevOps Infrastructure Monitoring
+date:   2014-04-19
 blurb: "As mentioned in a previous post about our server message of the day (motd) we manage enough infrastructure that our team needs ways for being able to share tribal knowledge on how to fix issues. In Particular when we have monitoring alarms that kick off any of our team members should be able to take action on the alarm regardless of level, however, our team operates with so many different technologies it is difficult for any one person to be an expert in all of them."
 ---
 

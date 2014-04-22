@@ -4,7 +4,7 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2014-04-19T15:18:14-04:00</updated>
+ <updated>2014-04-22T18:09:31-04:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -13,9 +13,30 @@
 
  
  <entry>
+   <title>VTHacks and why hackathons are essential for everyone</title>
+   <link href="/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-the-global-hackathon-community.html"/>
+   <updated>2014-04-22T00:00:00-04:00</updated>
+   <id>/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-the-global-hackathon-community</id>
+   <content type="html">&lt;p&gt;Last weekend I had the pleasure of participating in &lt;a href=&quot;http://vthacks.com/&quot;&gt;VTHacks&lt;/a&gt; as a sponsor and judge representing Rackspace. This was not &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;https://www.facebook.com/media/set/?set=a.10150347775910404.349700.500210403&amp;amp;type=1&amp;amp;l=5fcdd086bf&quot;&gt;my&lt;/a&gt;&lt;/span&gt; &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;http://www.centralfloridafuture.com/mobile/students-startup-winning-business-1.2605980&quot;&gt;first&lt;/a&gt;&lt;/span&gt; &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;http://blogs.technet.com/b/bizspark_group_blog/archive/2012/09/19/highlights-from-startupweekend-blacksburg.aspx&quot;&gt;hackathon&lt;/a&gt;&lt;/span&gt;, but it was definitely one of the largest I have attended. The event boasted an RSVP count of ~600 and had sponsors from several big companies which can be found on their event page. The venue was &lt;a href=&quot;http://en.wikipedia.org/wiki/Cassell_Coliseum&quot;&gt;Cassel Coliseum&lt;/a&gt; located at Virginia Tech in Blacksburg, VA.&lt;/p&gt;
+
+&lt;p&gt;Hackathons are now gaining traction as technology becomes more open and available. These events have slowly built up from a group of friends getting together and working on projects to massive venues bringing people from across the country to work on projects. I was incredibly surprised at the amount of hardware projects specifically at VTHacks. I saw people using VR with the Occulous Rift and combining it with the Kinect to create a virtual environment where two people could interact with each other together. I saw drones covering the entire court, and some taking advantage of google glass to interact with a camera connected to it.&lt;/p&gt;
+
+&lt;p&gt;Here is the important part. Everyone should be involved in these events including non-technical individuals. This is bigger than just a few geeks getting together for a weekend. Students are starting to realize that taking a cookie cutter path of just going to college does not distinguish you enough. You have to tinker and learn and network with other people. Expose yourself to ideas you are not familiar with. When you interact with the community you will get so much out of it. All you have to do is particpate.&lt;/p&gt;
+
+&lt;p&gt;As for how I participated in VTHacks it mostly involved blogging and mentoring. I spent the majority of my time engaging with the teams and ensuring they had everything they needed to succeed in terms of technology questions, free hosting, or what I do on a daily basis as a developer. On Sunday I participated as a judge asking teams what they built and any hurdles they encountered, if at all. In particular we were looking to give out a prize from Rackspace to a team. We actually ended up announcing three winners, &lt;a href=&quot;https://twitter.com/lockboxcloud&quot;&gt;LockBox&lt;/a&gt; (innovative use of file uploads and security), PersonaliAds (tackling an interesting domain), and Space Game in Space (possibly the youngest hackers participating who were in Middle School using threads and networking with Java!)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/rackspace_winners.png&quot; alt=&quot;winners&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;I would like to thank &lt;a href=&quot;https://twitter.com/zacklytle&quot;&gt;Zack Lytle&lt;/a&gt; for giving me the opportunity to attend and help as he did most of the work with organizing Rackspace as a sponsor and I just kind of showed up to help :).&lt;/p&gt;
+
+&lt;p&gt;The next Blacksburg hackathon is at &lt;a href=&quot;https://heyo.com/hackathon&quot;&gt;Heyo&lt;/a&gt; (&lt;a href=&quot;https://www.facebook.com/events/234179516771748/?ref=22&quot;&gt;facebook event&lt;/a&gt;) with a prize of $1000. Good luck!&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Making runbooks more useful by exposing them through monitoring</title>
    <link href="/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html"/>
-   <updated>2014-04-19T15:18:14-04:00</updated>
+   <updated>2014-04-19T00:00:00-04:00</updated>
    <id>/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring</id>
    <content type="html">&lt;p&gt;In the &lt;a href=&quot;/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html&quot;&gt;Server Message Of The Day (MOTD) post&lt;/a&gt;, I mentioned the importance of sharing &lt;a href=&quot;http://en.wikipedia.org/wiki/Tribal_knowledge&quot;&gt;tribal knowledge&lt;/a&gt; across teams on fixing infrastructure issues. When any of our monitoring alarms kick off, any team member should be equipped to take action on the alarm, but we operate with so many different technologies that no one person could possibly be an expert in all of them. Most operations teams create &lt;a href=&quot;http://en.wikipedia.org/wiki/Runbook&quot;&gt;runbooks&lt;/a&gt; for common tasks, but we took it one step further and created runbooks for every alarm in our system. They don&amp;#39;t exactly cover every possible reason for an alarm triggering, but will always help to provide context for someone that doesn&amp;#39;t regularly deal with that subsystem.&lt;/p&gt;
 
@@ -30,55 +51,6 @@
 
 &lt;p&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/irc_example.png&quot; alt=&quot;One of the ways people get notified of issues and a link to the runbook for what to do&quot;&gt;&lt;/p&gt;
 </content>
- </entry>
- 
- <entry>
-   <title>Tip for debugging with Chefspec</title>
-   <link href="/devops/software/testing/2014/04/19/tip-for-debugging-with-chefspec.html"/>
-   <updated>2014-04-19T09:38:22-04:00</updated>
-   <id>/devops/software/testing/2014/04/19/tip-for-debugging-with-chefspec</id>
-   <content type="html">&lt;h2&gt;Using &lt;code&gt;find_resources&lt;/code&gt; in Chefspec&lt;/h2&gt;
-
-&lt;p&gt;My coworker &lt;a href=&quot;https://github.com/tobami/littlechef&quot;&gt;Matt Green&lt;/a&gt; and I were recently running into an issue with our Chefspec testing where we were looking for a specific chef resource to be called, but we made an error in our test code and had trouble debugging it. With a little bit of digging we found an easy way to see what calls were made for a resource using the function &lt;a href=&quot;https://github.com/sethvargo/chefspec/blob/v3.4.0/lib/chefspec/runner.rb#L195&quot;&gt;find_resources&lt;/a&gt;. While the function here is documented it is not in any of the official chef_spec &lt;a href=&quot;http://code.sethvargo.com/chefspec/&quot;&gt;documentation&lt;/a&gt; and so I would caution actually using it in tests. We found it useful to either print out the run or using &lt;code&gt;pry&lt;/code&gt; to drop into an interactive debugger for explore further.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;describe &amp;#39;reach::proxy&amp;#39; do
-  let(:chef_run) { ChefSpec::Runner.new.converge(&amp;#39;reach::proxy&amp;#39;) }
-
-  it &amp;#39;installs the apache logging conf&amp;#39; do
-    puts chef_run.find_resources(&amp;#39;template&amp;#39;)
-    expect(chef_run).to render_file(&amp;quot;/etc/apache2/conf.d/logging.con&amp;quot;)
-  end
-end
-
-------------
-
-Failures:
-
-reach::proxy
-  includes apache recipes (FAILED - 1)
-template[/etc/sysconfig/httpd]
-template[apache2.conf]
-template[apache2-conf-security]
-template[apache2-conf-charset]
-template[/etc/apache2/ports.conf]
-template[/etc/apache2/sites-available/default]
-template[/etc/apache2/mods-available/status.conf]
-template[/etc/apache2/mods-available/alias.conf]
-template[/etc/apache2/mods-available/autoindex.conf]
-template[/etc/apache2/mods-available/dir.conf]
-template[/etc/apache2/mods-available/mime.conf]
-template[/etc/apache2/mods-available/negotiation.conf]
-template[/etc/apache2/mods-available/setenvif.conf]
-template[/etc/apache2/ports.conf]
-template[/etc/apache2/mods-available/ssl.conf]
-template[/etc/apache2/mods-available/deflate.conf]
-template[/etc/apache2/mods-available/proxy.conf]
-template[/etc/apache2/conf.d/logging.conf]
-template[/etc/apache2/sites-available/reach-intproxy.conf]
-template[/etc/network/if-pre-up.d/iptables_load]
-template[/etc/iptables.d/all_established]
-template[/etc/iptables.d/all_icmp]
-template[/etc/iptables.d/ports_reach]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
  </entry>
  
  <entry>

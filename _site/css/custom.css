@@ -5,3 +5,7 @@
 .theme-base-09 li.sidebar-nav-item a {
   color: white;
 }
+
+.underline {
+  text-decoration: underline;
+}
