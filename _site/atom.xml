@@ -4,13 +4,60 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2014-04-22T18:37:54-04:00</updated>
+ <updated>2014-05-27T19:19:45-04:00</updated>
  <id></id>
  <author>
    <name></name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Why developers need to attend conferences like Gluecon</title>
+   <link href="/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html"/>
+   <updated>2014-05-25T00:00:00-04:00</updated>
+   <id>/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon</id>
+   <content type="html">&lt;p&gt;Last week I attended &lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;Gluecon&lt;/a&gt;, a developer-centric Cloud+DevOps event in Broomfield, Colorado. Whenever I join one of these conferences (about once or twice a year), I build out goals to maximize my time at the event and the return on investment for my role on the team. In addition, I spoke with many developers from all levels of experience to determine what value these conferences add. The results, while all over the spectrum, speak one clear message: team managers need to send their developers to more conferences. It is one of the best ways to help them grow (and make you as a manager look better). While going to a conference as a speaker holds completely different benefits I will be focusing on what benefits being an attendee has.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/gluecon_transparent_logo.png&quot; alt=&quot;Gluecon 2014 logo&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;This year, I spent some time asking other attendees what their take-away goals for GlueCon were&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;My manager wanted me to research potential new libraries or technologies in the community at large and this conference has some specific ones we are interested in using. I am using the conference as one way to gather information about whether or not we want to use it.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;These types, we&amp;#39;ll call them &amp;quot;explorers&amp;quot;, are here to bring ideas and insight back home for upcoming project decisions. They don&amp;#39;t necessarily know what questions to ask, but instead plan to absorb knowledge for any and all possible options. It is also a way for a developer to see what other companies are using that technology to help build confidence in using it.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;As a developer, I wanted to attend this conference as a form of personal education so I know what other tools exist out there and learn about how others use them in their environments.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is a way for them to advance their own knowledge in a domain and add a new tool to their box they might not have heard about. The more options your developer has the more equipped they are to handle problems in their projects.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Networking with other developers who have more experience with the specific technologies I am looking at. Building up this rapport allows me to ask them questions later down the road when I face issues using it and allowing me to easily bypass common pitfalls when I begin to use that technology.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Personally this is one of my favorites. Networking is a huge boon for a developer to grow in their field. Hearing about projects and frameworks is one thing, but building a web of experts that can be referred to later is something else completely.&lt;/p&gt;
+
+&lt;h2&gt;Some key added benefits that developers might not mention include&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Sending developers in a small group&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;While it may seem scary pulling several developers out of project development for several days to attend a conference it is hugely beneficial. Sending a group of developers is a team building activity with direct educational benefits. Attending a conference with a coworker helps them form a stronger bond since they are interacting outside of the work place.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Breaking up the monotony of projects on the job&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Sometimes developers can go for weeks or months working on the same project without anything to really break it up. This means tedious repetition and routine causing boredom or restlessness in a developer. By sending them to a conference it can give them renewed interest in their work.&lt;/p&gt;
+
+&lt;p&gt;For the developers, please attend a conference if you have never been. For the managers, I hope you encourage your developers to pick out a meaningful conference to attend this year. A great place to find upcoming conferences is on &lt;a href=&quot;http://lanyrd.com/&quot;&gt;Lanyrd&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>VTHacks and why hackathons are essential for everyone</title>
