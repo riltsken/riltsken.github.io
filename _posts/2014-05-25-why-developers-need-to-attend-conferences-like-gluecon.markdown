@@ -9,8 +9,9 @@ blurb: "At this year's Gluecon, I spoke with many developers from all levels of 
 [gluecon]: http://www.gluecon.com/2014/
 [gluecon-logo]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/gluecon_transparent_logo.png
 [lanyrd]: http://lanyrd.com/
+[djangocon]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/djangocon_logo.png
 
-Last week I attended [Gluecon][gluecon], a developer-centric Cloud+DevOps event in Broomfield, Colorado. Whenever I join one of these conferences (about once or twice a year), I build out goals to maximize my time at the event and the return on investment for my role on the team. In addition, I spoke with many developers from all levels of experience to determine what value these conferences add. The results, while all over the spectrum, speak one clear message: team managers need to send their developers to more conferences. It is one of the best ways to help them grow (and make you as a manager look better). While going to a conference as a speaker holds completely different benefits I will be focusing on what benefits being an attendee has.
+Last week I attended [Gluecon][gluecon], a developer-centric Cloud+DevOps event in Broomfield, Colorado. Whenever I join one of these conferences (about once or twice a year), I build out goals to maximize my time at the event and the return on investment for my role on the team. In addition, I spoke with many developers from all levels of experience to determine what value these conferences add. The results, while all over the spectrum, speak one clear message: team managers need to send their developers to more conferences. It is one of the best ways to help them grow (and make you as a manager look better). While going to a conference as a speaker holds completely different benefits I will be focusing on what an attendee gets out of it.
 
 [![Gluecon 2014 logo][gluecon-logo]][gluecon]
 
@@ -19,7 +20,7 @@ This year, I spent some time asking other attendees what their take-away goals f
 
  > My manager wanted me to research potential new libraries or technologies in the community at large and this conference has some specific ones we are interested in using. I am using the conference as one way to gather information about whether or not we want to use it.
 
-These types, we'll call them "explorers", are here to bring ideas and insight back home for upcoming project decisions. They don't necessarily know what questions to ask, but instead plan to absorb knowledge for any and all possible options. It is also a way for a developer to see what other companies are using that technology to help build confidence in using it.
+This developer was looking to explore ideas and bring insight back home for upcoming project decisions. They don't necessarily know what questions to ask, but instead plan to absorb knowledge for any and all possible options. It is also a way for a developer to see what other companies are using that technology to help build confidence in using it.
 
  > As a developer, I wanted to attend this conference as a form of personal education so I know what other tools exist out there and learn about how others use them in their environments.
 
@@ -38,6 +39,13 @@ While it may seem scary pulling several developers out of project development fo
 
  > Breaking up the monotony of projects on the job
 
-Sometimes developers can go for weeks or months working on the same project without anything to really break it up. This means tedious repetition and routine causing boredom or restlessness in a developer. By sending them to a conference it can give them renewed interest in their work.
+Sometimes developers can go for weeks or months working on the same project without anything to really shake things up. This means tedious repetition and routine causing boredom or restlessness in a developer. By sending them to a conference it can give them renewed interest in their work.
+
+Conclusion
+----
+
+The first conference I attended was DjangoCon in 2008 held at Google. I was working as an intern for a small non-profit company building a CRM. It was one of the main reasons for the amount of excitement I held for my project.
+
+![Djangocon 2008 logo][djangocon]
 
 For the developers, please attend a conference if you have never been. For the managers, I hope you encourage your developers to pick out a meaningful conference to attend this year. A great place to find upcoming conferences is on [Lanyrd][lanyrd].
