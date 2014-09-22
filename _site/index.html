@@ -69,6 +69,16 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/19/development-pipeline-for-the-rackspace-cloud-control-panel.html">
+        Development Pipeline for the Rackspace Cloud Control Panel
+      </a>
+    </h1>
+    <span class="post-date">19 Sep 2014</span>
+    The Cloud Control Panel at Rackspace has ~30 developers. All of the developers are expected to have the ability to modify any part of the system, however, the team is split into subteams who have specialized knowledge the product or infrastructure. There are about 8 subteams containing the ~30 developers. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy.
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html">
         Why developers need to attend conferences like Gluecon
       </a>
@@ -107,21 +117,11 @@
     On my team right now we are using rsyslog with Graylog2 and ElasticSearch to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it's own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region's Graylog2 instance. The original reason for this setup was that we had our logging infrastructure setup before multi-region was in place and we had to make a decision about how much time we wanted to spend setting it up.
   </div>
   
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">
-        How a server MOTD improved our DevOps team
-      </a>
-    </h1>
-    <span class="post-date">16 Mar 2014</span>
-    Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with Django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data.
-  </div>
-  
 </div>
 
 <div class="pagination">
   
-    <span class="pagination-item older">Older</span>
+    <a class="pagination-item older" href="/page2">Older</a>
   
   
     <span class="pagination-item newer">Newer</span>

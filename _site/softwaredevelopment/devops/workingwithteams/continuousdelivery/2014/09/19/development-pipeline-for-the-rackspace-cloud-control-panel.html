@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Development Pipeline for the Rackspace Cloud Control Panel
+    
+  </title>
+
+  <script type="application/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+
+  <!-- syntax highlighting CSS -->
+  <link rel="stylesheet" href="/css/syntax.css">
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/hyde.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-49052230-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+  <body class="theme-base-09">
+    <div class="container content">
+      <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1 class="sidebar-myname">Samuel Toriel</h1>
+      <p class="lead">A blog about Software and Operations</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <br />
+      <li class="sidebar-nav-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="sidebar-nav-item"><a href="/all_posts.html">All posts</a></li>
+      <li class="sidebar-nav-item"><a href="/about.html">About</a></li>
+      <li class="sidebar-nav-item"><a class="rs-nav-link" href="https://twitter.com/rilt" target="_new">@rilt</a></li>
+      <li class="sidebar-nav-item" target="_new"><a href="https://github.com/riltsken">riltsken on github</a></li>
+      <li class="sidebar-nav-item"><a href="/atom.xml">Atom Feed</a></li>
+    </ul>
+  </div>
+</div>
+
+      <!-- Main Content -->
+      <div class="post">
+  <h1 class="post-title">Development Pipeline for the Rackspace Cloud Control Panel</h1>
+  <span class="post-date">19 Sep 2014</span>
+  <h2>Foreword</h2>
+
+<p>The Cloud Control Panel at Rackspace has ~30 developers. All of the developers are expected to have the ability to modify any part of the system, however, the team is split into subteams who have specialized knowledge the product or infrastructure. There are about 8 subteams containing the ~30 developers. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy.</p>
+
+<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/Selection_052.png" alt="Github merge graph"></p>
+
+<h2>Development to Production?</h2>
+
+<p>Our pipeline is fairly standard in terms of what we want to happen from development to production. Branch, Merge, Tests, Deploy. We use a private github repository. When a developer takes a story from the backlog they create a branch with the storynumber-description as the name. The developer will add the feature and all appropriate unit, integration, and acceptance tests to that branch. During feature development they ask for feedback or a code review and a +1 means they are allowed to merge. This is important as ALL branches require a code review before merging. It is also important I define our types of testing. Unit tests are the smallest scope of ensuring specific functions work as expected. Integration tests contain a full scope of our service, but with external dependencies mocked out. Acceptance level testing includes using selenium and executing real scenarios a user would take in the browser working with the control panel and nothing mocked out.</p>
+
+<p>Before merging developers run their branch against a builder with their latest hash. Branch builds are a series of jenkins jobs which do things like run all of the unit / integration tests, a subset of the acceptance tests and linting the code. If everything is good the build triggers a script which marks the branch as &quot;ok to merge&quot; with a checkmark on github. If it does not pass it gives it an X or &quot;bad to merge&quot; with a link to the failed job.</p>
+
+<p>Our pipeline has had the same structure for several years, but evolved in how we used it.
+Merging code runs the same tasks as the branch builder and more. The additional tasks including compiling, creating a tarball as a distributable, or dist for short, and storing it as an artifact on jenkins. This dist triggers a deploy job sending this code to a preprod, staging, and preview environment[1]. Preprod matches production exactly. Staging uses API&#39;s that upstream teams have deployed to their preprod environment but not production. Preview is the same as preprod but, with all feature flags flipped on. At this point our acceptance testing suite kicks off and developers validate that they didn&#39;t break anything in the lower environments. If everything is considered good that dist is deployed to production.</p>
+
+<p>[1]: The actual deploy process is a bit detailed and more left to a followup post. Suffice to say it is basically downloading the artifact from jenkins, un-taring the project, symlinking it to a release directory and restarting some services.</p>
+
+<h2>The Early Days</h2>
+
+<p>In the early days of the Cloud Control Panel our team hovered around ~15 developers. As I mentioned earlier merging triggered deploying to all 3 lower environments and running acceptance level tests against them. This worked okay until we started to grow. As we had more developers join the team we realized that our 30 minute deploy process was taking several hours and even had the possibility of deploying unverified code. How did this happen? As I mentioned previously each merge deployed to the same environment. When we had 5 people merge this would trigger 5 deploys and 5 runs of acceptance level testing. The first round of acceptance tests would be halfway through, but the third merge of code would be on the environment which meant that we don&#39;t know if the tests completed against a single environment. Developer 1 would deploy to production thinking all the tests were green when, in fact, a defect had slipped through.</p>
+
+<p>We could have done all these tasks in serial and blocked lower environment deploys on a per merge basis, but this didn&#39;t fit our &quot;deploy to production fast&quot; workflow. With five people this would take the fifth person 2.5 hours (30 minutes per merge) to get to production. There are also issues when the 3rd person introduces a defect, but doesn&#39;t find out until an hour later (not fast feedback) so now the people in line have to wait for a revert or fix. We wanted to get code out there faster. It provides a real benefit for our team and customers to see features, changes, and fixes quickly.</p>
+
+<h2>The Bus Station</h2>
+
+<p>For awhile we had the above scenario with multiple people merging and huge headaches getting to production. It was a chaotic environment. Merging became an arduous task. I had no idea how long it would take me to get to production AND I had to guess as to what code was on the lower environments AND constantly watch for other merges coming in. This did not make for a happy developer. What came about from this chaos was an idea called the bus station. Every hour we deploy to the lower environments with the latest GOOD dist that was built. We run acceptance tests against that dist, which could contain several merges from different developers. The developers on that bus will verify their changes as good or bad and it gets sent off to production. This provides developers with a very structured time period in which their code will be deployed.</p>
+
+<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/CCPPipeline.png" style="max-width: 1500px" /></p>
+
+<p>Now, this system isn&#39;t perfect either and some of the drawbacks include missing the bus by a few minutes, or someone introducing a defect which affects the whole bus and requires a revert/hotfix, which if not caught quickly could require waiting for the next hourly bus deploy.</p>
+
+<p>This system, however, has created a much needed organized deployment process for our team. I have a better idea for knowing when my code will be deployed. Other people on the team can help spot defects as they are working together to deploy rather than individually. The team has built a great deal of tooling around the bus station to interact with our IRC channel for deploying and knowing at what stage the bus is currently at.</p>
+
+<h2>The Future</h2>
+
+<p>This isn&#39;t the end I think for our deployment pipeline. I would ideally like to see our individual applications for the control panel deployed independently. Currently we tarball our whole repo at once for deploys. Our javascript/css upload to cdn, python/django web backend, twisted and node.js services should all be separate deploy pipelines with their tests ran individually so that they can be deployed faster and with less dependencies. There are still many challenges ahead for us to reach this level, but doing so provides benefits to scaling our team and application.</p>
+
+<p>As a final note I also wanted to point out that on a much smaller project none of the above would be as much of an issue. Not every project has the same requirements for CI/CD. We have another service which has only ~6 contributors and 1 or 2 merges a day. That project has a much more manual and rudimentary deploy scheme where team members have to communicate with each other before merging to ensure they don&#39;t break the pipeline on deploys.</p>
+
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html">
+            Why developers need to attend conferences like Gluecon
+            <small>25 May 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone.html">
+            VTHacks and why hackathons are essential for everyone
+            <small>22 Apr 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html">
+            Making runbooks more useful by exposing them through monitoring
+            <small>19 Apr 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      <!-- Footer -->
+      <div class="footer">
+      </div>
+
+    </div>
+  </body>
+</html>

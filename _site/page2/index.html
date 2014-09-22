@@ -9,7 +9,7 @@
 
   <title>
     
-      All posts
+      Software and Ops
     
   </title>
 
@@ -65,42 +65,31 @@
 </div>
 
       <!-- Main Content -->
-      <div class="page">
-  <h1 class="page-title">All posts</h1>
-  <ul>
-
-  <li>
-    <a href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/19/development-pipeline-for-the-rackspace-cloud-control-panel.html">[09/19/14] Development Pipeline for the Rackspace Cloud Control Panel</a>
-  </li>
-  <br />
-
-  <li>
-    <a href="/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html">[05/25/14] Why developers need to attend conferences like Gluecon</a>
-  </li>
-  <br />
-
-  <li>
-    <a href="/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone.html">[04/22/14] VTHacks and why hackathons are essential for everyone</a>
-  </li>
-  <br />
-
-  <li>
-    <a href="/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html">[04/19/14] Making runbooks more useful by exposing them through monitoring</a>
-  </li>
-  <br />
-
-  <li>
-    <a href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html">[03/25/14] Multi-region logging architecture with Logstash, Kibana, and ElasticSearch</a>
-  </li>
-  <br />
-
-  <li>
-    <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">[03/16/14] How a server MOTD improved our DevOps team</a>
-  </li>
-  <br />
-
-</u>
+      <div class="posts">
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">
+        How a server MOTD improved our DevOps team
+      </a>
+    </h1>
+    <span class="post-date">16 Mar 2014</span>
+    Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with Django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data.
+  </div>
+  
 </div>
+
+<div class="pagination">
+  
+    <span class="pagination-item older">Older</span>
+  
+  
+    
+      <a class="pagination-item newer" href="/">Newer</a>
+    
+  
+</div>
+
 
 
       <!-- Footer -->
