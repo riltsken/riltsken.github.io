@@ -73,11 +73,11 @@ Several dashboards have been created for understanding where the current bus is 
 ![Acceptance test health for the current bus][AcceptanceTestDashboard]
 
 
-The Future
-----
-This isn't the end for our deployment pipeline. I would ideally like to see our individual applications for the control panel deployed independently. Currently we tarball our whole repo at once for deploys. Our javascript/css upload to cdn, python/django web backend, twisted and node.js services should all be separate deploy pipelines with their tests ran individually so that they can be deployed faster and with less dependencies. There are still many challenges ahead for us to reach this level, but doing so provides benefits to scaling our team and application.
-
-
 Not All Pipelines Are Created Equal
 ----
 The above tooling has all been built around our large team size. Not all continuous delivery pipelines have to follow what we have done, and I would actually argue most shouldn't. We have another service which has only ~6 contributors and 1 or 2 merges a day. That project has a much more manual and rudimentary deploy scheme where team members have to communicate with each other before merging to ensure they don't break the pipeline on deploys. This pipeline took less than a week to setup, compared to our main project above where individual team members have built up dashboards and irc commands over several years.
+
+
+The Future
+----
+This isn't the end for our deployment pipeline. I would ideally like to see our individual applications for the control panel deployed independently. Currently we tarball our whole repo at once for deploys. Our javascript/css upload to cdn, python/django web backend, twisted and node.js services should all be separate deploy pipelines with their tests ran individually so that they can be deployed faster and with less dependencies. There are still many challenges ahead for us to reach this level, but doing so provides benefits to scaling our team and application.
