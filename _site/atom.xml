@@ -4,7 +4,7 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2014-09-21T21:01:37-04:00</updated>
+ <updated>2014-09-21T21:06:33-04:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Development Pipeline for the Rackspace Cloud Control Panel</title>
-   <link href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/19/development-pipeline-for-the-rackspace-cloud-control-panel.html"/>
-   <updated>2014-09-19T00:00:00-04:00</updated>
-   <id>/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/19/development-pipeline-for-the-rackspace-cloud-control-panel</id>
+   <link href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html"/>
+   <updated>2014-09-21T00:00:00-04:00</updated>
+   <id>/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel</id>
    <content type="html">&lt;h2&gt;Foreword&lt;/h2&gt;
 
 &lt;p&gt;The Cloud Control Panel at Rackspace has ~30 developers. All of the developers are expected to have the ability to modify any part of the system, however, the team is split into subteams who have specialized knowledge the product or infrastructure. There are about 8 subteams containing the ~30 developers. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy.&lt;/p&gt;
