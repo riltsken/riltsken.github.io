@@ -38,7 +38,7 @@ If this change is required on a group of nodes this is still possible and again 
 
 Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our `fix` commands with the specific region environment. If you want to deploy to all environments you could just run several `fix` commands in-tandem or one after the other.
 
-It is important to use the environment attribute when using nodes_with_role so if they are not specific enough an accidental provision of other environments does not happen.
+It is important to use the environment attribute when using `nodes_with_role` so if they are not specific enough an accidental provision of other environments does not happen.
 
 Going back to that pull request where we had a green checkmark. Merging that branch into master doesn't do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and previews deploys. Each environment typically has three datacenters ORD, SYD, and DFW.
 
