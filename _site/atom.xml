@@ -4,7 +4,7 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2014-11-21T16:24:20-05:00</updated>
+ <updated>2014-11-21T16:26:38-05:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -25,11 +25,14 @@
 
 &lt;p&gt;What I took from the above were essentially questions about our workflow with littlechef. How can we test our changes? How do we know our changes will actually work? How do we not mess up real environments? Below is generally how our team makes changes with chef using littlechef. This works for a team of ~25 developers where 3-4 people are focused mostly on chef throughout the day. We manage ~200+ nodes.&lt;/p&gt;
 
-&lt;p&gt;Given that we are attempting to change a recipe that affects all web nodes:
-- Write unit test with chefspec expecting this change.
-- Run &lt;code&gt;fix&lt;/code&gt; against a specific web node in our &lt;em&gt;test&lt;/em&gt; environment. Ensure that the run did not error. This probably looks like &lt;code&gt;fix node:web-n01.test.mydns.com&lt;/code&gt;
-- SSH on to that specific web node and make sure our expected change occurred
-- Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.&lt;/p&gt;
+&lt;p&gt;Given that we are attempting to change a recipe that affects all web nodes:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Write unit test with chefspec expecting this change.&lt;/li&gt;
+&lt;li&gt;Run &lt;code&gt;fix&lt;/code&gt; against a specific web node in our &lt;em&gt;test&lt;/em&gt; environment. Ensure that the run did not error. This probably looks like &lt;code&gt;fix node:web-n01.test.mydns.com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;SSH on to that specific web node and make sure our expected change occurred&lt;/li&gt;
+&lt;li&gt;Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;If this change includes adding a new community cookbook there is an extra step required which is sync the cookbooks locally before attempting to provision that node with littlechef.&lt;/p&gt;
 

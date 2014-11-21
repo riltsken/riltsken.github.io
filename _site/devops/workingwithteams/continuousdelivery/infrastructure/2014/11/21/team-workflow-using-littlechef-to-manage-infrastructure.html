@@ -81,11 +81,14 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>What I took from the above were essentially questions about our workflow with littlechef. How can we test our changes? How do we know our changes will actually work? How do we not mess up real environments? Below is generally how our team makes changes with chef using littlechef. This works for a team of ~25 developers where 3-4 people are focused mostly on chef throughout the day. We manage ~200+ nodes.</p>
 
-<p>Given that we are attempting to change a recipe that affects all web nodes:
-- Write unit test with chefspec expecting this change.
-- Run <code>fix</code> against a specific web node in our <em>test</em> environment. Ensure that the run did not error. This probably looks like <code>fix node:web-n01.test.mydns.com</code>
-- SSH on to that specific web node and make sure our expected change occurred
-- Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.</p>
+<p>Given that we are attempting to change a recipe that affects all web nodes:</p>
+
+<ul>
+<li>Write unit test with chefspec expecting this change.</li>
+<li>Run <code>fix</code> against a specific web node in our <em>test</em> environment. Ensure that the run did not error. This probably looks like <code>fix node:web-n01.test.mydns.com</code></li>
+<li>SSH on to that specific web node and make sure our expected change occurred</li>
+<li>Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.</li>
+</ul>
 
 <p>If this change includes adding a new community cookbook there is an extra step required which is sync the cookbooks locally before attempting to provision that node with littlechef.</p>
 

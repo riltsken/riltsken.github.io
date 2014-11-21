@@ -24,6 +24,7 @@ Recently I was snooping on another team who was doing some work to get chef-solo
 What I took from the above were essentially questions about our workflow with littlechef. How can we test our changes? How do we know our changes will actually work? How do we not mess up real environments? Below is generally how our team makes changes with chef using littlechef. This works for a team of ~25 developers where 3-4 people are focused mostly on chef throughout the day. We manage ~200+ nodes.
 
 Given that we are attempting to change a recipe that affects all web nodes:
+
 - Write unit test with chefspec expecting this change.
 - Run `fix` against a specific web node in our _test_ environment. Ensure that the run did not error. This probably looks like `fix node:web-n01.test.mydns.com`
 - SSH on to that specific web node and make sure our expected change occurred
