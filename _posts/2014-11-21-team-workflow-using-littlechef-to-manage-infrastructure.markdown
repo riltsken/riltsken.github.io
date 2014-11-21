@@ -36,7 +36,7 @@ If this change is required on a group of nodes this is still possible and again 
 
 `fix --env=test_dfw nodes_with_role:cassandra`
 
-Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our fixes with the specific region environment. If you want to deploy to all environments you could just run several fixes in-tandem or one after the other.
+Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our `fix` commands with the specific region environment. If you want to deploy to all environments you could just run several `fix` commands in-tandem or one after the other.
 
 It is important to use the environment attribute when using nodes_with_role so if they are not specific enough an accidental provision of other environments does not happen.
 
