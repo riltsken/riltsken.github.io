@@ -69,7 +69,7 @@ fix-rackspace create \
     --post-plugins "add_role"
 ```
 
-All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins look like this [gist of plugin scripts][littlechef_rackspace_plugins] and our post plugins after the runlist has been ran are [gist of post plugin scripts][littlechef_rackspace_post_plugins]
+All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins are [here][littlechef_rackspace_plugins] and our post plugins after the runlist has been ran are [here][littlechef_rackspace_post_plugins]
 
 ``` yaml
 image: {imageid-placeholder}

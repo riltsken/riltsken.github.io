@@ -4,7 +4,7 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2014-11-21T16:26:38-05:00</updated>
+ <updated>2014-11-21T16:31:58-05:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -40,11 +40,11 @@
 
 &lt;p&gt;&lt;code&gt;fix --env=test_dfw nodes_with_role:cassandra&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our fixes with the specific region environment. If you want to deploy to all environments you could just run several fixes in-tandem or one after the other.&lt;/p&gt;
+&lt;p&gt;Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our &lt;code&gt;fix&lt;/code&gt; commands with the specific region environment. If you want to deploy to all environments you could just run several &lt;code&gt;fix&lt;/code&gt; commands in-tandem or one after the other.&lt;/p&gt;
 
-&lt;p&gt;It is important to use the environment attribute when using nodes&lt;em&gt;with&lt;/em&gt;role so if they are not specific enough an accidental provision of other environments does not happen.&lt;/p&gt;
+&lt;p&gt;It is important to use the environment attribute when using &lt;code&gt;nodes_with_role&lt;/code&gt; so if they are not specific enough an accidental provision of other environments does not happen.&lt;/p&gt;
 
-&lt;p&gt;Going back to that pull request where we had a green checkmark. Merging that branch into master doesn&amp;#39;t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and previews deploys. Each environment typically has three datacenters ORD, SYD, and DFW.&lt;/p&gt;
+&lt;p&gt;Going back to that pull request where we had a green checkmark. Merging that branch into master doesn&amp;#39;t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/littlechef_workflow/chef_run.png&quot; alt=&quot;Chef deploying to our preprod syd environment&quot;&gt;&lt;/p&gt;
 
@@ -68,7 +68,7 @@
     --plugins &lt;span class=&quot;s2&quot;&gt;&amp;quot;omnibus_install_11, bootstrap&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
     --post-plugins &lt;span class=&quot;s2&quot;&gt;&amp;quot;add_role&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins look like this &lt;a href=&quot;https://gist.github.com/riltsken/c9996cf9af2c6b9ecade&quot;&gt;gist of plugin scripts&lt;/a&gt; and our post plugins after the runlist has been ran are &lt;a href=&quot;https://gist.github.com/riltsken/44103d0e495827758fbe&quot;&gt;gist of post plugin scripts&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins are &lt;a href=&quot;https://gist.github.com/riltsken/c9996cf9af2c6b9ecade&quot;&gt;here&lt;/a&gt; and our post plugins after the runlist has been ran are &lt;a href=&quot;https://gist.github.com/riltsken/44103d0e495827758fbe&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;yaml language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;imageid-placeholder&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;l-Scalar-Plain&quot;&gt;flavor&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;flavorid-placeholder&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;l-Scalar-Plain&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
