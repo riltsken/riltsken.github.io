@@ -69,6 +69,16 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html">
+        Team workflow using littlechef to manage infrastructure
+      </a>
+    </h1>
+    <span class="post-date">21 Nov 2014</span>
+    Littlechef is a library allowing one to use chef without a centralized server orchestrating configuration management. It simplifies the testing and deployment model for managing servers by removing a layer from the stack. What this does is let you provision servers using your cli or programmatically in a similar fashion to ansible.
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html">
         Development Pipeline for the Rackspace Cloud Control Panel
       </a>
@@ -105,16 +115,6 @@
     </h1>
     <span class="post-date">19 Apr 2014</span>
     As mentioned in a previous post about our server message of the day (motd) we manage enough infrastructure that our team needs ways for being able to share tribal knowledge on how to fix issues. In Particular when we have monitoring alarms that kick off any of our team members should be able to take action on the alarm regardless of level, however, our team operates with so many different technologies it is difficult for any one person to be an expert in all of them.
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html">
-        Multi-region logging architecture with Logstash, Kibana, and ElasticSearch
-      </a>
-    </h1>
-    <span class="post-date">25 Mar 2014</span>
-    On my team right now we are using rsyslog with Graylog2 and ElasticSearch to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it's own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region's Graylog2 instance. The original reason for this setup was that we had our logging infrastructure setup before multi-region was in place and we had to make a decision about how much time we wanted to spend setting it up.
   </div>
   
 </div>

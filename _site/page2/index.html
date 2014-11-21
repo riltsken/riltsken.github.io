@@ -69,6 +69,16 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html">
+        Multi-region logging architecture with Logstash, Kibana, and ElasticSearch
+      </a>
+    </h1>
+    <span class="post-date">25 Mar 2014</span>
+    On my team right now we are using rsyslog with Graylog2 and ElasticSearch to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it's own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region's Graylog2 instance. The original reason for this setup was that we had our logging infrastructure setup before multi-region was in place and we had to make a decision about how much time we wanted to spend setting it up.
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">
         How a server MOTD improved our DevOps team
       </a>
