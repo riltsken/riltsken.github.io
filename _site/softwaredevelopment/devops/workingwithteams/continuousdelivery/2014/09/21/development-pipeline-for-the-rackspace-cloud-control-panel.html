@@ -65,9 +65,14 @@
 </div>
 
       <!-- Main Content -->
-      <div class="post">
+      <script type="text/javascript">
+window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+</script>
+
+<div class="post">
   <h1 class="post-title">Development Pipeline for the Rackspace Cloud Control Panel</h1>
   <span class="post-date">21 Sep 2014</span>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
   <h2>Foreword</h2>
 
 <p>The Cloud Control Panel at Rackspace has ~30 developers split into 8 subteams. All of them are expected to have the ability to modify any part of the system, however, each subteam has some type of specialized knowledge of the product or infrastructure. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy.</p>
@@ -127,6 +132,10 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 <p>This isn&#39;t the end for our deployment pipeline. I would ideally like to see our individual applications for the control panel deployed independently. Currently we tarball our whole repo at once for deploys. Our javascript/css upload to cdn, python/django web backend, twisted and node.js services should all be separate deploy pipelines with their tests ran individually so that they can be deployed faster and with less dependencies. There are still many challenges ahead for us to reach this level, but doing so provides benefits to scaling our team and application.</p>
 
+</div>
+
+<div>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
 </div>
 
 <div class="related">

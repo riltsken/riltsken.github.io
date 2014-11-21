@@ -65,9 +65,14 @@
 </div>
 
       <!-- Main Content -->
-      <div class="post">
+      <script type="text/javascript">
+window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+</script>
+
+<div class="post">
   <h1 class="post-title">Multi-region logging architecture with Logstash, Kibana, and ElasticSearch</h1>
   <span class="post-date">25 Mar 2014</span>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
   <h2>Background</h2>
 
 <p>On my team right now we are using rsyslog with <a href="http://graylog2.org/">Graylog2</a> and <a href="http://www.elasticsearch.org/">ElasticSearch</a> to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it&#39;s own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region&#39;s Graylog2 instance. The original reason for this setup was that we had our logging infrastructure setup before multi-region was in place and we had to make a decision about how much time we wanted to spend setting it up. We chose for the quickest option as we had other product work that needed to get done before improving our logging infrastructure. This has proved to be a costly choice for us. Our current system has degraded to the point where we barely use our Graylog2 interface anymore. There are several reasons for this. One is that it is frustrating to switch between the multiple region interfaces and setup the same filters for each one. Another is that the version of Graylog2 + ElasticSearch we are working with are struggling to keep up with the amount of logs we have. It has gotten to the point where even simple queries executed on Graylog2 cause alerts to fire on our ElasticSearch cluster requiring action from us to help restore it.</p>
@@ -160,6 +165,10 @@
 </code></pre></div>
 <p>Unfortunately I ran out of time during our hackweek due to other issues I had to look at outside of this project to get the implementation down 100% but this is the rough idea for how it would look. I hope to make a follow up post when we have fully implemented the desired architecture. For now, this documents some of the learnings I gained while working on this project for a few days.</p>
 
+</div>
+
+<div>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
 </div>
 
 <div class="related">
