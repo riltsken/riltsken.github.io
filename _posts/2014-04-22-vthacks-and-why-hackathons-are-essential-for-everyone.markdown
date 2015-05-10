@@ -14,7 +14,7 @@ blurb: "Last weekend I had the pleasure of participating in VTHacks as a sponsor
 [heyo]: https://heyo.com/hackathon
 [heyo_event]: https://www.facebook.com/events/234179516771748/?ref=22
 [swblacksburg_2014]: http://blacksburg.startupweekend.org/
-[winners]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/rackspace_winners.png
+[winners]: /images/rackspace_winners.png
 [zack]: https://twitter.com/zacklytle
 [lockbox]: https://twitter.com/lockboxcloud
 

@@ -77,7 +77,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>Recently I was snooping on another team who was doing some work to get chef-solo working in their infrastructure and made a brief comment about littlechef to see if they were moving to it. They made two comments</p>
 
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/littlechef_workflow/Selection_073.png" alt="Asking about our workflow with littlechef"></p>
+<p><img src="/images/littlechef_workflow/Selection_073.png" alt="Asking about our workflow with littlechef"></p>
 
 <p>What I took from the above were essentially questions about our workflow with littlechef. How can we test our changes? How do we know our changes will actually work? How do we not mess up real environments? Below is generally how our team makes changes with chef using littlechef. This works for a team of ~25 developers where 3-4 people are focused mostly on chef throughout the day. We manage ~200+ nodes.</p>
 
@@ -102,16 +102,16 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>Going back to that pull request where we had a green checkmark. Merging that branch into master doesn&#39;t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.</p>
 
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/littlechef_workflow/chef_run.png" alt="Chef deploying to our preprod syd environment"></p>
+<p><img src="/images/littlechef_workflow/chef_run.png" alt="Chef deploying to our preprod syd environment"></p>
 
 <p>After deploying to all lower environments we typically verify that our expected change happened and begin deploying to production. Production deploys are similar to our lower environments with one key difference. The order of environment deploys first goes to our inactive standby environment, and after completion goes on to our active production environments. We do not have to do a failover to do a successful deploy.</p>
 
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/littlechef_workflow/deploy%20order.png" alt="Order of chef deploys for production"></p>
+<p><img src="/images/littlechef_workflow/deploy%20order.png" alt="Order of chef deploys for production"></p>
 
 <h2>Provisioning or creating new nodes</h2>
 
 <p>To provision or create new nodes with littlechef a previous coworker <a href="http://davehking.com/">Dave H King</a> made a library (<a href="https://github.com/tildedave/littlechef-rackspace">Littlechef-Rackspace</a>) to make this really easy on Rackspace. It allows us to run a single command which brings up a node in our environment and runs plugins after it is created. The plugins we currently run install chef via omnibus and creates the node json file with extra information specific to how we setup our environment (private ips, labeling, environment). After the node is active and plugins have been ran it can take a runlist to configure the node as needed and add it to the node.json file.</p>
-<div class="highlight"><pre><code class="bash language-bash" data-lang="bash">fix-rackspace create <span class="se">\</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">fix-rackspace create <span class="se">\</span>
     --username &lt;username&gt; <span class="se">\</span>
     --key &lt;api_key&gt; <span class="se">\</span>
     --region &lt;region&gt; <span class="se">\</span>
@@ -125,7 +125,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
     --post-plugins <span class="s2">&quot;add_role&quot;</span>
 </code></pre></div>
 <p>All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins are <a href="https://gist.github.com/riltsken/c9996cf9af2c6b9ecade">here</a> and our post plugins after the runlist has been ran are <a href="https://gist.github.com/riltsken/44103d0e495827758fbe">here</a></p>
-<div class="highlight"><pre><code class="yaml language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">imageid-placeholder</span><span class="p-Indicator">}</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">imageid-placeholder</span><span class="p-Indicator">}</span>
 <span class="l-Scalar-Plain">flavor</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">flavorid-placeholder</span><span class="p-Indicator">}</span>
 <span class="l-Scalar-Plain">plugins</span><span class="p-Indicator">:</span>
     <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">omnibus_install_11</span>
@@ -153,7 +153,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
     <span class="p-Indicator">-</span> <span class="s">&quot;role[reach_web]&quot;</span>
 </code></pre></div>
 <p>And the new resulting command to spin up a web node in the dfw region for our preprod environment</p>
-<div class="highlight"><pre><code class="bash language-bash" data-lang="bash">fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
 </code></pre></div>
 </div>
 

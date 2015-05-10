@@ -6,14 +6,14 @@ date: 2014-09-21
 blurb: "The Cloud Control Panel at Rackspace has ~30 developers split into 8 subteams. All of them are expected to have the ability to modify any part of the system, however, each subteam has some type of specialized knowledge of the product or infrastructure. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy."
 ---
 
-[GithubMerges]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/Selection_052.png
-[JenkinsPipeline]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/CCPPipeline.png
-[BuildCommands]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/build_commands.png
-[PreprodCommands]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/preprod_commands.png
-[AcceptanceOwnershipCommands]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/acceptance_ownership_commands.png
-[BusDashboardSummary]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/bus_dashboard_summary.png
-[BusDashboardDetailed]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/Selection_056.png
-[AcceptanceTestDashboard]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/acceptance_test.png
+[GithubMerges]: /images/Selection_052.png
+[JenkinsPipeline]: /images/CCPPipeline.png
+[BuildCommands]: /images/build_commands.png
+[PreprodCommands]: /images/preprod_commands.png
+[AcceptanceOwnershipCommands]: /images/acceptance_ownership_commands.png
+[BusDashboardSummary]: /images/bus_dashboard_summary.png
+[BusDashboardDetailed]: /images/Selection_056.png
+[AcceptanceTestDashboard]: /images/acceptance_test.png
 
 Foreword
 -----
@@ -48,7 +48,7 @@ The Bus Station
 ----
 When a developer merges we take that code all the way to its built dist. Every hour we deploy to the lower environments with the latest _good_ dist that was built. We called this a bus. At this point the acceptance tests run against the lower environments, which could contain several merges from different developers. The developers on that bus will verify their changes as good or bad and it gets sent off to production. This provides developers with a very structured time period in which their code will be deployed.
 
-<img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/CCPPipeline.png" style="max-width: 1500px" />
+<img src="/images/CCPPipeline.png" style="max-width: 1500px" />
 
 Now, this system isn't perfect either and has some drawbacks. Having a dist that takes too long to build right before the next bus? Wait another hour. Someone introduces a defect which affects the whole bus? Wait another hour.
 
@@ -59,9 +59,9 @@ Tooling - IRC Commands
 ----
 We have a custom IRC bot with several useful commands to interact with deploys.
 
-<img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/preprod_commands.png" style="max-width: 1200px" />
+<img src="/images/preprod_commands.png" style="max-width: 1200px" />
 ![Commands for tracking the current deploy as good or bad][BuildCommands]
-<img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/acceptance_ownership_commands.png" style="max-width: 800px" />
+<img src="/images/acceptance_ownership_commands.png" style="max-width: 800px" />
 
 Tooling - Dashboards
 ----

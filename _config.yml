@@ -2,7 +2,7 @@ name: Samuel Toriel
 description: A blog about Software and Operations
 
 markdown: redcarpet
-pygments: true
+highlighter: pygments
 
 extensions: [fenced_code_blocks]
 

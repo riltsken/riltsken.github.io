@@ -24,7 +24,7 @@ Our backlog has some stories in place to remedy this situation, but are not on o
 
 I have to explain our current architecture a little bit first to setup why we would use the solution proposed first. The Cloud Control Panel at Rackspace is hosted in three different datacenters, ORD (US and Europe), DFW (backup), and SYD (Oceanic). All of our US and European traffic goes to ORD, while our Oceanic traffic goes to SYD. DFW is left as a warm backup that is ready in case any issue happens in the other two DC's. What we didn't want to do was make the same mistake as before with our logging and have multiple regional interfaces to access our logs. This meant collecting all of our logs and putting it into one datacenter for searching and querying. What that required was having each datacenter ship their logs to the collector which then puts these logs into ElasticSearch. There exists a node in each datacenter, called the broker, which then ships to the collector the logs for that datacenter. So let's go over this one more time. There is one collector node, one broker node per region shipping to the collector, and all nodes in the same datacenter ship nodes to their specified broker. We can then browse logs through our collector which will be running Kibana.
 
-![Full picture of proposed multi-region logging infrastructure](http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/multi-region logging architecture.png)
+![Full picture of proposed multi-region logging infrastructure](/images/multi-region logging architecture.png)
 
 Hackweek
 ---------
@@ -74,7 +74,7 @@ output {
 }
 ```
 
-![Specific datacenter logging from application nodes to broker](http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/multi-region logging - web to broker.png)
+![Specific datacenter logging from application nodes to broker](/images/multi-region logging - web to broker.png)
 
 Basically what logstash would do is take all new events from the apache error and access logs, tag them with 'broker', and when logstash checks its outputs any events tagged with 'broker' would get sent to our broker node. This is useful for us since we use logstash for processing and forwarding metrics to statsd from our logs as well. At this point we now have nodes in our environment forwarding to their local broker node in their datacenter.
 
