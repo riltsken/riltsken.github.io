@@ -81,14 +81,14 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>I have to explain our current architecture a little bit first to setup why we would use the solution proposed first. The Cloud Control Panel at Rackspace is hosted in three different datacenters, ORD (US and Europe), DFW (backup), and SYD (Oceanic). All of our US and European traffic goes to ORD, while our Oceanic traffic goes to SYD. DFW is left as a warm backup that is ready in case any issue happens in the other two DC&#39;s. What we didn&#39;t want to do was make the same mistake as before with our logging and have multiple regional interfaces to access our logs. This meant collecting all of our logs and putting it into one datacenter for searching and querying. What that required was having each datacenter ship their logs to the collector which then puts these logs into ElasticSearch. There exists a node in each datacenter, called the broker, which then ships to the collector the logs for that datacenter. So let&#39;s go over this one more time. There is one collector node, one broker node per region shipping to the collector, and all nodes in the same datacenter ship nodes to their specified broker. We can then browse logs through our collector which will be running Kibana.</p>
 
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/multi-region%20logging%20architecture.png" alt="Full picture of proposed multi-region logging infrastructure"></p>
+<p><img src="/images/multi-region%20logging%20architecture.png" alt="Full picture of proposed multi-region logging infrastructure"></p>
 
 <h2>Hackweek</h2>
 
 <p>For the hackweek we broke up different portions of the infrastructure to different team members. I tackled setting up the broker node for a region and the collector. Having all nodes in the specified datacenter ship logs to the broker over a private network, which then in turn sent its logs to the collector on a public network over an encrypted channel. Our team already uses logstash for all of our nodes to send metrics to statsd, so most of the initial boostrapping of getting the logstash agent installed and running was already handled. We use Chef and Berkshelf to manage our infrastructure, which means we are using the <a href="https://github.com/lusis/chef-logstash">logstash cookbook</a> at version 0.7.6 at the time of this writing. Earlier versions of the cookbook had all the configuration rules for logstash written as node attributes which we put at the role level. As this method of creating rules was deprecated I moved them into configuration files that sit in the logstash conf.d directory. Logstash reads these config files in order, I found <a href="https://groups.google.com/forum/#!topic/logstash-users/eNYmpFueHtM">a convention I liked here</a> about numbering each config file which I decided to follow.</p>
 
 <p>To get all nodes in a specific datacenter to send their logs to the broker I decided to use tags to handle forwarding the logs I wanted. An example of what this would look like via config files would be the following</p>
-<div class="highlight"><pre><code class="erb language-erb" data-lang="erb"><span class="x">00_input_base.conf</span>
+<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="x">00_input_base.conf</span>
 
 <span class="x">input {</span>
 <span class="x">  file {</span>
@@ -96,7 +96,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 <span class="x">    &#39;type&#39; =&gt; &#39;rackspace-monitoring-agent&#39;</span>
 <span class="x">  }</span>
 <span class="x">}</span>
-</code></pre></div><div class="highlight"><pre><code class="erb language-erb" data-lang="erb"><span class="x">01_input_apache.conf</span>
+</code></pre></div><div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="x">01_input_apache.conf</span>
 
 <span class="x">input {</span>
 <span class="x">  file {</span>
@@ -110,7 +110,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 <span class="x">    &#39;tags&#39; =&gt; [&#39;broker&#39;]</span>
 <span class="x">  }</span>
 <span class="x">}</span>
-</code></pre></div><div class="highlight"><pre><code class="erb language-erb" data-lang="erb"><span class="x">90_forward_to_broker.conf</span>
+</code></pre></div><div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="x">90_forward_to_broker.conf</span>
 
 <span class="x">output {</span>
 <span class="x">  if &#39;broker&#39; in [tags] {</span>
@@ -122,12 +122,12 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 <span class="x">  }</span>
 <span class="x">}</span>
 </code></pre></div>
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/multi-region%20logging%20-%20web%20to%20broker.png" alt="Specific datacenter logging from application nodes to broker"></p>
+<p><img src="/images/multi-region%20logging%20-%20web%20to%20broker.png" alt="Specific datacenter logging from application nodes to broker"></p>
 
 <p>Basically what logstash would do is take all new events from the apache error and access logs, tag them with &#39;broker&#39;, and when logstash checks its outputs any events tagged with &#39;broker&#39; would get sent to our broker node. This is useful for us since we use logstash for processing and forwarding metrics to statsd from our logs as well. At this point we now have nodes in our environment forwarding to their local broker node in their datacenter.</p>
 
 <p>The next step is to forward our logs to the collector. To do this we create a different set of conf.d files for our logstash agent to run on the broker node. For this portion we were originally going to use stunnel to create an encrypted channel for the logs to be sent over to the collector, however, as I was reading about the different inputs and outputs supported by logstash I stumbled on <a href="https://github.com/elasticsearch/logstash-forwarder">lumberjack</a>. Now, I actually had quite a few issues with understanding how lumberjack should be used in the context of logstash. What I see now is that it can either <strong>REPLACE</strong> the logstash agent as a log handler and forwarder or logstash can <strong>CREATE</strong> a lumberjack instance on the fly to send events as output or read events forwarded by lumberjack. In the first case, you would actually have to compile and build the lumberjack project and run the agent as a service. In the second case the logstash agent handles all of that and one should just use the inputs and outputs as normal.</p>
-<div class="highlight"><pre><code class="erb language-erb" data-lang="erb"><span class="x">91_forward_to_collector.conf</span>
+<div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="x">91_forward_to_collector.conf</span>
 
 <span class="x">input {</span>
 <span class="x">  redis {</span>
@@ -144,7 +144,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 <span class="x">    &#39;ssl_certificate&#39; =&gt; &#39;</span><span class="cp">&lt;%=</span> <span class="n">node</span><span class="o">[</span><span class="s2">&quot;selfsigned_ssl&quot;</span><span class="o">][</span><span class="s2">&quot;directory&quot;</span><span class="o">]</span> <span class="cp">%&gt;&lt;%=</span> <span class="n">node</span><span class="o">[</span><span class="s2">&quot;selfsigned_ssl&quot;</span><span class="o">][</span><span class="s2">&quot;ssl_cert&quot;</span><span class="o">]</span> <span class="cp">%&gt;</span><span class="x">&#39;</span>
 <span class="x">  }</span>
 <span class="x">}</span>
-</code></pre></div><div class="highlight"><pre><code class="erb language-erb" data-lang="erb"><span class="x">92_lumberjack_collector.conf</span>
+</code></pre></div><div class="highlight"><pre><code class="language-erb" data-lang="erb"><span class="x">92_lumberjack_collector.conf</span>
 
 <span class="x">input {</span>
 <span class="x">  lumberjack {</span>

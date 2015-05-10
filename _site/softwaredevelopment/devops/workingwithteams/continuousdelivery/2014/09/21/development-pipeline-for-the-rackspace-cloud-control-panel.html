@@ -77,7 +77,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>The Cloud Control Panel at Rackspace has ~30 developers split into 8 subteams. All of them are expected to have the ability to modify any part of the system, however, each subteam has some type of specialized knowledge of the product or infrastructure. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy.</p>
 
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/Selection_052.png" alt="Github merge graph"></p>
+<p><img src="/images/Selection_052.png" alt="Github merge graph"></p>
 
 <h2>Development to Production?</h2>
 
@@ -102,7 +102,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 <p>When a developer merges we take that code all the way to its built dist. Every hour we deploy to the lower environments with the latest <em>good</em> dist that was built. We called this a bus. At this point the acceptance tests run against the lower environments, which could contain several merges from different developers. The developers on that bus will verify their changes as good or bad and it gets sent off to production. This provides developers with a very structured time period in which their code will be deployed.</p>
 
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/CCPPipeline.png" style="max-width: 1500px" /></p>
+<p><img src="/images/CCPPipeline.png" style="max-width: 1500px" /></p>
 
 <p>Now, this system isn&#39;t perfect either and has some drawbacks. Having a dist that takes too long to build right before the next bus? Wait another hour. Someone introduces a defect which affects the whole bus? Wait another hour.</p>
 
@@ -112,17 +112,17 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 <p>We have a custom IRC bot with several useful commands to interact with deploys.</p>
 
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/preprod_commands.png" style="max-width: 1200px" />
-<img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/build_commands.png" alt="Commands for tracking the current deploy as good or bad">
-<img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/acceptance_ownership_commands.png" style="max-width: 800px" /></p>
+<p><img src="/images/preprod_commands.png" style="max-width: 1200px" />
+<img src="/images/build_commands.png" alt="Commands for tracking the current deploy as good or bad">
+<img src="/images/acceptance_ownership_commands.png" style="max-width: 800px" /></p>
 
 <h2>Tooling - Dashboards</h2>
 
 <p>Several dashboards have been created for understanding where the current bus is at in the pipeline and what the current health of our acceptance level tests are.</p>
 
-<p><img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/bus_dashboard_summary.png" alt="Dashboard at the top of jenkins">
-<img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/Selection_056.png" alt="A detailed dashboard for the pipeline">
-<img src="http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/acceptance_test.png" alt="Acceptance test health for the current bus"></p>
+<p><img src="/images/bus_dashboard_summary.png" alt="Dashboard at the top of jenkins">
+<img src="/images/Selection_056.png" alt="A detailed dashboard for the pipeline">
+<img src="/images/acceptance_test.png" alt="Acceptance test health for the current bus"></p>
 
 <h2>Not All Pipelines Are Created Equal</h2>
 

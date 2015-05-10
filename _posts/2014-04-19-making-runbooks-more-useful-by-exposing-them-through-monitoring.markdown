@@ -7,9 +7,9 @@ blurb: "As mentioned in a previous post about our server message of the day (mot
 ---
 
 [servermotd]: /devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html
-[1_description]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/node_description.png
-[2_actions]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/context_and_actions.png
-[3_irc]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/irc_example.png
+[1_description]: /images/node_description.png
+[2_actions]: /images/context_and_actions.png
+[3_irc]: /images/irc_example.png
 [tribal]: http://en.wikipedia.org/wiki/Tribal_knowledge
 [runbooks]: http://en.wikipedia.org/wiki/Runbook
 [pagerduty]: https://www.pagerduty.com/

@@ -7,9 +7,9 @@ blurb: "Littlechef is a library allowing one to use chef without a centralized s
 ---
 
 [littlechef]: https://github.com/tobami/littlechef
-[mburns_comment]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/littlechef_workflow/Selection_073.png
-[chef_deploy]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/littlechef_workflow/chef_run.png
-[deploy_order]: http://b7cc86bc05773bcecd41-4057535a55b255b6cbfb486a61b5692d.r49.cf1.rackcdn.com/littlechef_workflow/deploy%20order.png
+[mburns_comment]: /images/littlechef_workflow/Selection_073.png
+[chef_deploy]: /images/littlechef_workflow/chef_run.png
+[deploy_order]: /images/littlechef_workflow/deploy%20order.png
 [dave_king]: http://davehking.com/
 [littlechef_rackspace]: https://github.com/tildedave/littlechef-rackspace
 [littlechef_rackspace_plugins]: https://gist.github.com/riltsken/c9996cf9af2c6b9ecade
