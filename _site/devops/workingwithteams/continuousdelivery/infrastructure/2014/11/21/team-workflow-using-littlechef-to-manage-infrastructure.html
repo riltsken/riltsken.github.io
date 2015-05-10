@@ -77,7 +77,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>Recently I was snooping on another team who was doing some work to get chef-solo working in their infrastructure and made a brief comment about littlechef to see if they were moving to it. They made two comments</p>
 
-<p><img src="/images/littlechef_workflow/Selection_073.png" alt="Asking about our workflow with littlechef"></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/Selection_073.png" alt="Asking about our workflow with littlechef"></p>
 
 <p>What I took from the above were essentially questions about our workflow with littlechef. How can we test our changes? How do we know our changes will actually work? How do we not mess up real environments? Below is generally how our team makes changes with chef using littlechef. This works for a team of ~25 developers where 3-4 people are focused mostly on chef throughout the day. We manage ~200+ nodes.</p>
 
@@ -102,11 +102,11 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>Going back to that pull request where we had a green checkmark. Merging that branch into master doesn&#39;t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.</p>
 
-<p><img src="/images/littlechef_workflow/chef_run.png" alt="Chef deploying to our preprod syd environment"></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/chef_run.png" alt="Chef deploying to our preprod syd environment"></p>
 
 <p>After deploying to all lower environments we typically verify that our expected change happened and begin deploying to production. Production deploys are similar to our lower environments with one key difference. The order of environment deploys first goes to our inactive standby environment, and after completion goes on to our active production environments. We do not have to do a failover to do a successful deploy.</p>
 
-<p><img src="/images/littlechef_workflow/deploy%20order.png" alt="Order of chef deploys for production"></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/deploy%20order.png" alt="Order of chef deploys for production"></p>
 
 <h2>Provisioning or creating new nodes</h2>
 

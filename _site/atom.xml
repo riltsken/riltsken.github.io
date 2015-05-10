@@ -4,7 +4,7 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2015-05-10T13:24:23-06:00</updated>
+ <updated>2015-05-10T13:55:50-06:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -21,7 +21,7 @@
 
 &lt;p&gt;Recently I was snooping on another team who was doing some work to get chef-solo working in their infrastructure and made a brief comment about littlechef to see if they were moving to it. They made two comments&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/littlechef_workflow/Selection_073.png&quot; alt=&quot;Asking about our workflow with littlechef&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/Selection_073.png&quot; alt=&quot;Asking about our workflow with littlechef&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;What I took from the above were essentially questions about our workflow with littlechef. How can we test our changes? How do we know our changes will actually work? How do we not mess up real environments? Below is generally how our team makes changes with chef using littlechef. This works for a team of ~25 developers where 3-4 people are focused mostly on chef throughout the day. We manage ~200+ nodes.&lt;/p&gt;
 
@@ -46,11 +46,11 @@
 
 &lt;p&gt;Going back to that pull request where we had a green checkmark. Merging that branch into master doesn&amp;#39;t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/littlechef_workflow/chef_run.png&quot; alt=&quot;Chef deploying to our preprod syd environment&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/chef_run.png&quot; alt=&quot;Chef deploying to our preprod syd environment&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;After deploying to all lower environments we typically verify that our expected change happened and begin deploying to production. Production deploys are similar to our lower environments with one key difference. The order of environment deploys first goes to our inactive standby environment, and after completion goes on to our active production environments. We do not have to do a failover to do a successful deploy.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/littlechef_workflow/deploy%20order.png&quot; alt=&quot;Order of chef deploys for production&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/deploy%20order.png&quot; alt=&quot;Order of chef deploys for production&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Provisioning or creating new nodes&lt;/h2&gt;
 
@@ -110,7 +110,7 @@
 
 &lt;p&gt;The Cloud Control Panel at Rackspace has ~30 developers split into 8 subteams. All of them are expected to have the ability to modify any part of the system, however, each subteam has some type of specialized knowledge of the product or infrastructure. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/Selection_052.png&quot; alt=&quot;Github merge graph&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/Selection_052.png&quot; alt=&quot;Github merge graph&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Development to Production?&lt;/h2&gt;
 
@@ -135,7 +135,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;When a developer merges we take that code all the way to its built dist. Every hour we deploy to the lower environments with the latest &lt;em&gt;good&lt;/em&gt; dist that was built. We called this a bus. At this point the acceptance tests run against the lower environments, which could contain several merges from different developers. The developers on that bus will verify their changes as good or bad and it gets sent off to production. This provides developers with a very structured time period in which their code will be deployed.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/CCPPipeline.png&quot; style=&quot;max-width: 1500px&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/CCPPipeline.png&quot; style=&quot;max-width: 1500px&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now, this system isn&amp;#39;t perfect either and has some drawbacks. Having a dist that takes too long to build right before the next bus? Wait another hour. Someone introduces a defect which affects the whole bus? Wait another hour.&lt;/p&gt;
 
@@ -145,17 +145,17 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;We have a custom IRC bot with several useful commands to interact with deploys.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/preprod_commands.png&quot; style=&quot;max-width: 1200px&quot; /&gt;
-&lt;img src=&quot;/images/build_commands.png&quot; alt=&quot;Commands for tracking the current deploy as good or bad&quot;&gt;
-&lt;img src=&quot;/images/acceptance_ownership_commands.png&quot; style=&quot;max-width: 800px&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/preprod_commands.png&quot; style=&quot;max-width: 1200px&quot; /&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/build_commands.png&quot; alt=&quot;Commands for tracking the current deploy as good or bad&quot;&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/acceptance_ownership_commands.png&quot; style=&quot;max-width: 800px&quot; /&gt;&lt;/p&gt;
 
 &lt;h2&gt;Tooling - Dashboards&lt;/h2&gt;
 
 &lt;p&gt;Several dashboards have been created for understanding where the current bus is at in the pipeline and what the current health of our acceptance level tests are.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/bus_dashboard_summary.png&quot; alt=&quot;Dashboard at the top of jenkins&quot;&gt;
-&lt;img src=&quot;/images/Selection_056.png&quot; alt=&quot;A detailed dashboard for the pipeline&quot;&gt;
-&lt;img src=&quot;/images/acceptance_test.png&quot; alt=&quot;Acceptance test health for the current bus&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/bus_dashboard_summary.png&quot; alt=&quot;Dashboard at the top of jenkins&quot;&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/Selection_056.png&quot; alt=&quot;A detailed dashboard for the pipeline&quot;&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/acceptance_test.png&quot; alt=&quot;Acceptance test health for the current bus&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Not All Pipelines Are Created Equal&lt;/h2&gt;
 
@@ -174,7 +174,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
    <id>/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon</id>
    <content type="html">&lt;p&gt;Last week I attended &lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;Gluecon&lt;/a&gt;, a developer-centric Cloud+DevOps event in Broomfield, Colorado. Whenever I join one of these conferences (about once or twice a year), I build out goals to maximize my time at the event and the return on investment for my role on the team. In addition, I spoke with many developers from all levels of experience to determine what value these conferences add. The results, while all over the spectrum, speak one clear message: team managers need to send their developers to more conferences. It is one of the best ways to help them grow (and make you as a manager look better). While going to a conference as a speaker holds completely different benefits I will be focusing on what an attendee gets out of it.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;&lt;img src=&quot;/images/gluecon_transparent_logo.png&quot; alt=&quot;Gluecon 2014 logo&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/gluecon_transparent_logo.png&quot; alt=&quot;Gluecon 2014 logo&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2&gt;This year, I spent some time asking other attendees what their take-away goals for GlueCon were&lt;/h2&gt;
 
@@ -214,7 +214,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;The first conference I attended was DjangoCon in 2008 held at Google. I was working as an intern for a small non-profit company building a CRM. It was one of the main reasons for the amount of excitement I held for my project.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/djangocon_logo.png&quot; alt=&quot;Djangocon 2008 logo&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/djangocon_logo.png&quot; alt=&quot;Djangocon 2008 logo&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;For the developers, please attend a conference if you have never been. For the managers, I hope you encourage your developers to pick out a meaningful conference to attend this year. A great place to find upcoming conferences is on &lt;a href=&quot;http://lanyrd.com/&quot;&gt;Lanyrd&lt;/a&gt;.&lt;/p&gt;
 </content>
@@ -233,7 +233,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;As for how I participated in VTHacks it mostly involved blogging and mentoring. I spent the majority of my time engaging with the teams and ensuring they had everything they needed to succeed in terms of technology questions, free hosting, or what I do on a daily basis as a developer. On Sunday I participated as a judge asking teams what they built and any hurdles they encountered, if at all. In particular we were looking to give out a prize from Rackspace to a team. We actually ended up announcing three winners, &lt;a href=&quot;https://twitter.com/lockboxcloud&quot;&gt;LockBox&lt;/a&gt; (innovative use of file uploads and security), PersonaliAds (tackling an interesting domain), and Space Game in Space (possibly the youngest hackers participating who were in Middle School using threads and networking with Java!)&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/rackspace_winners.png&quot; alt=&quot;winners&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/rackspace_winners.png&quot; alt=&quot;winners&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;I would like to thank &lt;a href=&quot;https://twitter.com/zacklytle&quot;&gt;Zack Lytle&lt;/a&gt; for giving me the opportunity to attend and help as he did most of the work with organizing Rackspace as a sponsor and I just kind of showed up to help :).&lt;/p&gt;
 
@@ -250,14 +250,14 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;Our runbooks are composed of the node&amp;#39;s title and definition, its role in the system, and important config files. After that block is a section for all the system&amp;#39;s monitoring alerts and what actions you can take to investigate or fix them. This is one of the runbooks for Cassandra:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/node_description.png&quot; alt=&quot;A description of the nodes role and configuration files&quot;&gt;
-&lt;img src=&quot;/images/context_and_actions.png&quot; alt=&quot;The actions we expect someone to take when initially debugging an issue when that alarm triggers&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/node_description.png&quot; alt=&quot;A description of the nodes role and configuration files&quot;&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/context_and_actions.png&quot; alt=&quot;The actions we expect someone to take when initially debugging an issue when that alarm triggers&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Triggered alarms link the runbook&lt;/h2&gt;
 
 &lt;p&gt;We use IRC for team communication since we&amp;#39;re all distributed. The alerts will stream into the channel via bot with direct links to the runbooks and every triggered alarm. While we do have a proper escalation path through &lt;a href=&quot;https://www.pagerduty.com/&quot;&gt;PagerDuty&lt;/a&gt;, this keeps the whole team aware of issues and gives anyone an easy path for investigation and action.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/irc_example.png&quot; alt=&quot;One of the ways people get notified of issues and a link to the runbook for what to do&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/irc_example.png&quot; alt=&quot;One of the ways people get notified of issues and a link to the runbook for what to do&quot;&gt;&lt;/p&gt;
 </content>
  </entry>
  
@@ -274,7 +274,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;I have to explain our current architecture a little bit first to setup why we would use the solution proposed first. The Cloud Control Panel at Rackspace is hosted in three different datacenters, ORD (US and Europe), DFW (backup), and SYD (Oceanic). All of our US and European traffic goes to ORD, while our Oceanic traffic goes to SYD. DFW is left as a warm backup that is ready in case any issue happens in the other two DC&amp;#39;s. What we didn&amp;#39;t want to do was make the same mistake as before with our logging and have multiple regional interfaces to access our logs. This meant collecting all of our logs and putting it into one datacenter for searching and querying. What that required was having each datacenter ship their logs to the collector which then puts these logs into ElasticSearch. There exists a node in each datacenter, called the broker, which then ships to the collector the logs for that datacenter. So let&amp;#39;s go over this one more time. There is one collector node, one broker node per region shipping to the collector, and all nodes in the same datacenter ship nodes to their specified broker. We can then browse logs through our collector which will be running Kibana.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/multi-region%20logging%20architecture.png&quot; alt=&quot;Full picture of proposed multi-region logging infrastructure&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/multi-region%20logging%20architecture.png&quot; alt=&quot;Full picture of proposed multi-region logging infrastructure&quot;&gt;&lt;/p&gt;
 
 &lt;h2&gt;Hackweek&lt;/h2&gt;
 
@@ -315,7 +315,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 &lt;span class=&quot;x&quot;&gt;  }&lt;/span&gt;
 &lt;span class=&quot;x&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;/images/multi-region%20logging%20-%20web%20to%20broker.png&quot; alt=&quot;Specific datacenter logging from application nodes to broker&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/multi-region%20logging%20-%20web%20to%20broker.png&quot; alt=&quot;Specific datacenter logging from application nodes to broker&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;Basically what logstash would do is take all new events from the apache error and access logs, tag them with &amp;#39;broker&amp;#39;, and when logstash checks its outputs any events tagged with &amp;#39;broker&amp;#39; would get sent to our broker node. This is useful for us since we use logstash for processing and forwarding metrics to statsd from our logs as well. At this point we now have nodes in our environment forwarding to their local broker node in their datacenter.&lt;/p&gt;
 
@@ -372,23 +372,23 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 &lt;p&gt;When I first started working on this team we had almost no documentation about how the different types of servers in our environment were setup. When you would SSH onto a node to debug an issue or alert it would take a little extra digging to get started. While we do use chef for configuration of our servers it would take awhile to trace all of the different recipes, where they install services, what scripts you can run, and other useful information about that node. Another issue is making sure that developers at all levels have access to the same information. We want to make sure all, from junior to senior, developers are able to tackle issues that arise.&lt;/p&gt;
 
 &lt;p&gt;To that end &lt;a href=&quot;https://github.com/AMeng&quot;&gt;Alex Meng&lt;/a&gt; one of the developers on the team took it upon himself during a hackday to improve the process. He did this by generating MOTD&amp;#39;s for our servers via chef. Below is a Cassandra node in our test environment. The MOTD is great for immediately being able to start diagnosing issues without having to look at chef for where everything on this node is located.
-&lt;img src=&quot;/images/reach_cass_motd.png&quot; alt=&quot;Example of a Cassandra node MOTD in our test environment. Full picture.&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd.png&quot; alt=&quot;Example of a Cassandra node MOTD in our test environment. Full picture.&quot; /&gt;&lt;/p&gt;
 
 &lt;h2&gt;Load and network information&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/reach_cass_motd_1.png&quot; alt=&quot;Top of MOTD describing load and network interfaces. Cropped.&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd_1.png&quot; alt=&quot;Top of MOTD describing load and network interfaces. Cropped.&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;When you first ssh into a node the very top shows some basic &lt;strong&gt;load information&lt;/strong&gt; about the node and what &lt;strong&gt;network interfaces&lt;/strong&gt; it has available. The network interfaces has proven useful if you have services running on different interfaces and need quick access to that information. For example, on this cassandra node we would access the cassandra cli (cqlsh) from the private network interface.&lt;/p&gt;
 
 &lt;h2&gt;Node description&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/reach_cass_motd_2.png&quot; alt=&quot;Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd_2.png&quot; alt=&quot;Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The next piece of information we add is our &lt;strong&gt;project name&lt;/strong&gt; along with the &lt;strong&gt;node name&lt;/strong&gt; (cassandra, load balancer, proxy, web), &lt;strong&gt;region&lt;/strong&gt; (dfw, ord, syd), &lt;strong&gt;environment&lt;/strong&gt; (test, staging, preprod, production) and &lt;strong&gt;hostname&lt;/strong&gt; which is blurred out. This helps a person ensure they know they are on the right node. The environment text is large so people are more careful if they are jumping on several boxes, some of which could be production.&lt;/p&gt;
 
 &lt;h2&gt;Services and location of important information&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/reach_cass_motd_3.png&quot; alt=&quot;Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd_3.png&quot; alt=&quot;Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The next section describes the &lt;strong&gt;services running&lt;/strong&gt; on the box. This one only happens to be running Cassandra, but some nodes might be running multiple services (in general, our nodes are assigned a single function, but some applications require multiple services on a box). It will also describe where &lt;strong&gt;logs&lt;/strong&gt; and &lt;strong&gt;important configuration&lt;/strong&gt; files are located on the node. Other things we include sometimes on here are location of &lt;strong&gt;script files&lt;/strong&gt; or &lt;strong&gt;cron jobs&lt;/strong&gt; that are running on the system. At the end of our MOTD is a link to the &lt;strong&gt;documentation&lt;/strong&gt; which describes in detail the role of this node in our architecture.&lt;/p&gt;
 

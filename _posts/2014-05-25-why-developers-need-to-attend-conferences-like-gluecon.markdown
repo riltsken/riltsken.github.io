@@ -7,9 +7,9 @@ blurb: "At this year's Gluecon, I spoke with many developers from all levels of 
 ---
 
 [gluecon]: http://www.gluecon.com/2014/
-[gluecon-logo]: /images/gluecon_transparent_logo.png
+[gluecon-logo]: {{ site.data.config[0]['assets'] }}gluecon_transparent_logo.png
 [lanyrd]: http://lanyrd.com/
-[djangocon]: /images/djangocon_logo.png
+[djangocon]: {{ site.data.config[0]['assets'] }}djangocon_logo.png
 
 Last week I attended [Gluecon][gluecon], a developer-centric Cloud+DevOps event in Broomfield, Colorado. Whenever I join one of these conferences (about once or twice a year), I build out goals to maximize my time at the event and the return on investment for my role on the team. In addition, I spoke with many developers from all levels of experience to determine what value these conferences add. The results, while all over the spectrum, speak one clear message: team managers need to send their developers to more conferences. It is one of the best ways to help them grow (and make you as a manager look better). While going to a conference as a speaker holds completely different benefits I will be focusing on what an attendee gets out of it.
 
