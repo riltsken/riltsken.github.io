@@ -8,6 +8,8 @@ blurb: "Recently Netflix in collaboration with Google, Amazon, Microsoft, and Cl
 
 Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.
 
+At FullContact we use an Identity Provider called Okta to handle all of our Authentication which is backed by an LDAP provider called JumpCloud.
+
 Setting up Okta
 ==
 
@@ -38,7 +40,6 @@ Spinnaker itself is broken into several microservices. Looking at `/opt` you sho
 $ ls /opt
 clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdriver  userdata
 ```
-
 
 Looking at the `/opt/spinnaker/config` directory we'll find all the configurations from the different services. We can override any configuration value with an `appname-local.yml` file. The ones we are going to change are `gate-local.yml` and `settings.js`. When making changes to these files you'll have to restart their respective service and/or regenerate their configuration file. `service gate restart` and `/opt/spinnaker/bin/reconfigure_spinnaker.sh`.
 

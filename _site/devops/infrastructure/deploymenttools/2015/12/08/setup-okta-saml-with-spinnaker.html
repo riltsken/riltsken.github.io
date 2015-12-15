@@ -75,6 +75,8 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
   <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
   <p>Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.</p>
 
+<p>At FullContact we use an Identity Provider called Okta to handle all of our Authentication which is backed by an LDAP provider called JumpCloud.</p>
+
 <h1>Setting up Okta</h1>
 
 <h2>Step 1</h2>
