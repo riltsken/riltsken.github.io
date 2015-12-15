@@ -75,7 +75,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
   <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
   <p>Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.</p>
 
-<p>At FullContact we use an Identity Provider called Okta to handle all of our Authentication which is backed by an LDAP provider called JumpCloud.</p>
+<p>At <a href="https://www.fullcontact.com/">FullContact</a> we use <a href="https://www.okta.com/">Okta</a> to handle all of our Authentication which is backed by an LDAP provider called <a href="https://www.jumpcloud.com/">JumpCloud</a>.</p>
 
 <h1>Setting up Okta</h1>
 
@@ -202,6 +202,8 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
 <p>One can access http://GATE_URL/auth/info to see your information after successfully authenticating. If you get a 403 forbidden it means you have not authenticated correctly.</p>
 
 <p>Specific roles and access to accounts can be configured, but we currently have not set this up. Hopefully this is useful enough to at least get you started along the right path.</p>
+
+<p>Thanks to my team mates, <a href="https://twitter.com/charliesullivan">@charliesullivan</a> and <a href="https://twitter.com/alexbmeng">@alexbmeng</a>, who did some code diving and contributed to setting this up for our environment</p>
 
 </div>
 

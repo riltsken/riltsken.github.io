@@ -6,9 +6,16 @@ date: 2015-12-08
 blurb: "Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker."
 ---
 
+[fullcontact]: https://www.fullcontact.com/
+[okta]: https://www.okta.com/
+[jumpcloud]: https://www.jumpcloud.com/
+[csullivan]: https://twitter.com/charliesullivan
+[ameng]: https://twitter.com/alexbmeng
+
+
 Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.
 
-At FullContact we use an Identity Provider called Okta to handle all of our Authentication which is backed by an LDAP provider called JumpCloud.
+At [FullContact][FullContact] we use [Okta][Okta] to handle all of our Authentication which is backed by an LDAP provider called [JumpCloud][JumpCloud].
 
 Setting up Okta
 ==
@@ -150,3 +157,5 @@ When hitting your spinnaker instance with authEnabled it will redirect to the ea
 One can access http://GATE_URL/auth/info to see your information after successfully authenticating. If you get a 403 forbidden it means you have not authenticated correctly.
 
 Specific roles and access to accounts can be configured, but we currently have not set this up. Hopefully this is useful enough to at least get you started along the right path.
+
+Thanks to my team mates, [@charliesullivan][csullivan] and [@alexbmeng][ameng], who did some code diving and contributed to setting this up for our environment
