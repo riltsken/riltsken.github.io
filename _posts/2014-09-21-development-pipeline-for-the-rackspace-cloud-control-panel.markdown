@@ -6,14 +6,14 @@ date: 2014-09-21
 blurb: "The Cloud Control Panel at Rackspace has ~30 developers split into 8 subteams. All of them are expected to have the ability to modify any part of the system, however, each subteam has some type of specialized knowledge of the product or infrastructure. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy."
 ---
 
-[GithubMerges]: {{ site.data.config[0]['assets'] }}Selection_052.png
-[JenkinsPipeline]: {{ site.data.config[0]['assets'] }}CCPPipeline.png
-[BuildCommands]: {{ site.data.config[0]['assets'] }}build_commands.png
-[PreprodCommands]: {{ site.data.config[0]['assets'] }}preprod_commands.png
-[AcceptanceOwnershipCommands]: {{ site.data.config[0]['assets'] }}acceptance_ownership_commands.png
-[BusDashboardSummary]: {{ site.data.config[0]['assets'] }}bus_dashboard_summary.png
-[BusDashboardDetailed]: {{ site.data.config[0]['assets'] }}Selection_056.png
-[AcceptanceTestDashboard]: {{ site.data.config[0]['assets'] }}acceptance_test.png
+[GithubMerges]: {{ site.data.config['assets'] }}Selection_052.png
+[JenkinsPipeline]: {{ site.data.config['assets'] }}CCPPipeline.png
+[BuildCommands]: {{ site.data.config['assets'] }}build_commands.png
+[PreprodCommands]: {{ site.data.config['assets'] }}preprod_commands.png
+[AcceptanceOwnershipCommands]: {{ site.data.config['assets'] }}acceptance_ownership_commands.png
+[BusDashboardSummary]: {{ site.data.config['assets'] }}bus_dashboard_summary.png
+[BusDashboardDetailed]: {{ site.data.config['assets'] }}Selection_056.png
+[AcceptanceTestDashboard]: {{ site.data.config['assets'] }}acceptance_test.png
 
 Foreword
 -----
@@ -48,7 +48,7 @@ The Bus Station
 ----
 When a developer merges we take that code all the way to its built dist. Every hour we deploy to the lower environments with the latest _good_ dist that was built. We called this a bus. At this point the acceptance tests run against the lower environments, which could contain several merges from different developers. The developers on that bus will verify their changes as good or bad and it gets sent off to production. This provides developers with a very structured time period in which their code will be deployed.
 
-<img src="{{ site.data.config[0]['assets'] }}CCPPipeline.png" style="max-width: 1500px" />
+<img src="{{ site.data.config['assets'] }}CCPPipeline.png" style="max-width: 1500px" />
 
 Now, this system isn't perfect either and has some drawbacks. Having a dist that takes too long to build right before the next bus? Wait another hour. Someone introduces a defect which affects the whole bus? Wait another hour.
 
@@ -59,9 +59,9 @@ Tooling - IRC Commands
 ----
 We have a custom IRC bot with several useful commands to interact with deploys.
 
-<img src="{{ site.data.config[0]['assets'] }}preprod_commands.png" style="max-width: 1200px" />
+<img src="{{ site.data.config['assets'] }}preprod_commands.png" style="max-width: 1200px" />
 ![Commands for tracking the current deploy as good or bad][BuildCommands]
-<img src="{{ site.data.config[0]['assets'] }}acceptance_ownership_commands.png" style="max-width: 800px" />
+<img src="{{ site.data.config['assets'] }}acceptance_ownership_commands.png" style="max-width: 800px" />
 
 Tooling - Dashboards
 ----

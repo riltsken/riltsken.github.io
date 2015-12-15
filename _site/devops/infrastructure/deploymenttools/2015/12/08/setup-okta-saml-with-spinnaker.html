@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Setting up Spinnaker authentication with Okta and SAML
+    
+  </title>
+
+  <script type="application/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+
+  <!-- syntax highlighting CSS -->
+  <link rel="stylesheet" href="/css/syntax.css">
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/hyde.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-49052230-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+  <body class="theme-base-09">
+    <div class="container content">
+      <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1 class="sidebar-myname">Samuel Toriel</h1>
+      <p class="lead">A blog about Software and Operations</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <br />
+      <li class="sidebar-nav-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="sidebar-nav-item"><a href="/all_posts.html">All posts</a></li>
+      <li class="sidebar-nav-item"><a href="/about.html">About</a></li>
+      <li class="sidebar-nav-item"><a class="rs-nav-link" href="https://twitter.com/rilt" target="_new">@rilt</a></li>
+      <li class="sidebar-nav-item" target="_new"><a href="https://github.com/riltsken">riltsken on github</a></li>
+      <li class="sidebar-nav-item"><a href="/atom.xml">Atom Feed</a></li>
+    </ul>
+  </div>
+</div>
+
+      <!-- Main Content -->
+      <script type="text/javascript">
+window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+</script>
+
+<div class="post">
+  <h1 class="post-title">Setting up Spinnaker authentication with Okta and SAML</h1>
+  <span class="post-date">08 Dec 2015</span>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
+  <p>Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.</p>
+
+<h1>Setting up Okta</h1>
+
+<h2>Step 1</h2>
+
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_1.png" alt=""></p>
+
+<h2>Step 2</h2>
+
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_2.png" alt=""></p>
+
+<h2>Step 3</h2>
+
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_3.png" alt=""></p>
+
+<h2>Step 4</h2>
+
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_4.png" alt=""></p>
+
+<h1>Setting up Spinnaker</h1>
+
+<p>We use the <code>InstallSpinnaker.sh</code> script provided by the Spinnaker team here <a href="https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh">https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh</a></p>
+
+<p>Spinnaker itself is broken into several microservices. Looking at <code>/opt</code> you should see all the different service folders here.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ ls /opt
+clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdriver  userdata
+</code></pre></div>
+<p>Looking at the <code>/opt/spinnaker/config</code> directory we&#39;ll find all the configurations from the different services. We can override any configuration value with an <code>appname-local.yml</code> file. The ones we are going to change are <code>gate-local.yml</code> and <code>settings.js</code>. When making changes to these files you&#39;ll have to restart their respective service and/or regenerate their configuration file. <code>service gate restart</code> and <code>/opt/spinnaker/bin/reconfigure_spinnaker.sh</code>.</p>
+
+<h2>Gate configuration</h2>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">gate-local.yml</span>
+
+<span class="l-Scalar-Plain">saml</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+  <span class="l-Scalar-Plain">requireAuthentication</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+  <span class="l-Scalar-Plain">url</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">okta_idp_url_for_application</span><span class="p-Indicator">}</span>
+  <span class="l-Scalar-Plain">certificate</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">base64_encoded_certificate</span><span class="p-Indicator">}</span>
+  <span class="l-Scalar-Plain">issuerId</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://www.okta.com/{anyid}</span>
+  <span class="l-Scalar-Plain">keyStore</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">spinnaker.jks</span>
+  <span class="l-Scalar-Plain">keyStoreType</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">JKS</span>
+  <span class="l-Scalar-Plain">keyStorePassword</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">somepassword</span><span class="p-Indicator">}</span>
+  <span class="l-Scalar-Plain">keyStoreAliasName</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">okta</span>
+</code></pre></div>
+<p>The above properties <code>url</code> and <code>certificate</code> will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.</p>
+
+<p>The <code>issuerId</code> is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id</p>
+
+<p>The <code>keyStore</code> is generated using the java keytool utility. Specifically this command:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &quot;okta&quot;
+</code></pre></div>
+<p>where <code>okta.cert</code> is the previously described certificate not base64 encoded. It produces a file called <code>spinnaker.jks</code> and shares the alias with <code>keyStoreAliasName</code> in the <code>gate-local.yml</code> config. The keytool will prompt for a password which will be shared in the <code>gate-local.yml</code> config. The <code>spinnaker.jks</code> file should be placed with your local config or otherwise specified with a correct path in the config to it&#39;s location.</p>
+
+<p>Now restart gate <code>service gate restart</code></p>
+
+<h2>Webapp configuration</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">settings.js
+
+window.spinnakerSettings = {
+  gateUrl: `${gateUrl}`,
+  bakeryDetailUrl: `${bakeryBaseUrl}/api/v1/global/logs/?html=true`,
+  pollSchedule: 30000,
+  defaultTimeZone: &#39;America/Denver&#39;, // see http://momentjs.com/timezone/docs/#/data-utilities/
+  providers: {
+    gce: {
+      defaults: {
+        account: `${googlePrimaryAccount}`,
+        region: `${googleDefaultRegion}`,
+        zone: `${googleDefaultZone}`,
+      },
+      primaryAccounts: [`${googlePrimaryAccount}`],
+      challengeDestructiveActions: [`${googlePrimaryAccount}`],
+    },
+    aws: {
+      defaults: {
+        account: `${awsPrimaryAccount}`,
+        region: `${awsDefaultRegion}`
+      },
+      primaryAccounts: [`${awsPrimaryAccount}`],
+      primaryRegions: [&#39;eu-west-1&#39;, &#39;us-east-1&#39;, &#39;us-west-1&#39;, &#39;us-west-2&#39;],
+      challengeDestructiveActions: [`${awsPrimaryAccount}`],
+      preferredZonesByAccount: {}
+    }
+  },
+  whatsNew: {
+    gistId: &#39;32526cd608db3d811b38&#39;,
+    fileName: &#39;news.md&#39;,
+  },
+  authEndpoint: &#39;https://YOUR_GATE_HOST/auth/info&#39;,
+  authEnabled: true,
+  feature: {
+    pipelines: true,
+    notifications: true,
+    fastProperty: true,
+    vpcMigrator: false,
+    rebakeControlEnabled: true,
+    netflixMode: false,
+  },
+};
+
+window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAccount}`] = {
+  &#39;us-east-1&#39;: [&#39;us-east-1a&#39;, &#39;us-east-1b&#39;, &#39;us-east-1d&#39;, &#39;us-east-1e&#39;],
+  &#39;us-west-1&#39;: [&#39;us-west-1a&#39;, &#39;us-west-1b&#39;, &#39;us-west-1c&#39;],
+  &#39;us-west-2&#39;: [&#39;us-west-2a&#39;, &#39;us-west-2b&#39;, &#39;us-west-2c&#39;],
+  &#39;eu-west-1&#39;: [&#39;eu-west-1a&#39;, &#39;eu-west-1b&#39;, &#39;eu-west-1c&#39;],
+  &#39;ap-northeast-1&#39;: [&#39;ap-northeast-1a&#39;, &#39;ap-northeast-1b&#39;, &#39;ap-northeast-1c&#39;],
+  &#39;ap-southeast-1&#39;: [&#39;ap-southeast-1a&#39;, &#39;ap-southeast-1b&#39;],
+  &#39;ap-southeast-2&#39;: [&#39;ap-southeast-2a&#39;, &#39;ap-southeast-2b&#39;],
+  &#39;sa-east-1&#39;: [&#39;sa-east-1a&#39;, &#39;sa-east-1b&#39;]
+};
+</code></pre></div>
+<p>This is actually the normal settings.js but we had to add a few extra configuration options which were:</p>
+
+<ul>
+<li><code>authEndpoint</code> this should be <code>https://YOUR_GATE_HOST/auth/info</code>. Normally this is running on localhost:8084</li>
+<li><code>authEnabled</code> should be set to <code>true</code></li>
+</ul>
+
+<p>Now run <code>/opt/spinnaker/bin/reconfigure_spinnaker.sh</code> for the settings to regenerate.</p>
+
+<h1>How this works</h1>
+
+<p>When hitting your spinnaker instance with authEnabled it will redirect to the earlier saml url configuration setting we provided to gate. Gate will create a signed message asking for access from Okta. Okta will ask them to sign into their account and redirect them back to spinnaker. Spinnaker validates the returned message signature using the certificate gate has access to.</p>
+
+<p>One can access http://GATE_URL/auth/info to see your information after successfully authenticating. If you get a 403 forbidden it means you have not authenticated correctly.</p>
+
+<p>Specific roles and access to accounts can be configured, but we currently have not set this up. Hopefully this is useful enough to at least get you started along the right path.</p>
+
+</div>
+
+<div>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html">
+            Team workflow using littlechef to manage infrastructure
+            <small>21 Nov 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html">
+            Development Pipeline for the Rackspace Cloud Control Panel
+            <small>21 Sep 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html">
+            Why developers need to attend conferences like Gluecon
+            <small>25 May 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      <!-- Footer -->
+      <div class="footer">
+      </div>
+
+    </div>
+  </body>
+</html>

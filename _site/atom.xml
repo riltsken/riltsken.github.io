@@ -4,13 +4,148 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2015-05-10T13:55:50-06:00</updated>
+ <updated>2015-12-14T18:08:17-07:00</updated>
  <id></id>
  <author>
    <name></name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Setting up Spinnaker authentication with Okta and SAML</title>
+   <link href="/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker.html"/>
+   <updated>2015-12-08T00:00:00-07:00</updated>
+   <id>/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker</id>
+   <content type="html">&lt;p&gt;Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.&lt;/p&gt;
+
+&lt;h1&gt;Setting up Okta&lt;/h1&gt;
+
+&lt;h2&gt;Step 1&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_1.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;Step 2&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;Step 3&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_3.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;Step 4&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_4.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h1&gt;Setting up Spinnaker&lt;/h1&gt;
+
+&lt;p&gt;We use the &lt;code&gt;InstallSpinnaker.sh&lt;/code&gt; script provided by the Spinnaker team here &lt;a href=&quot;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&quot;&gt;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Spinnaker itself is broken into several microservices. Looking at &lt;code&gt;/opt&lt;/code&gt; you should see all the different service folders here.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ ls /opt
+clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdriver  userdata
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Looking at the &lt;code&gt;/opt/spinnaker/config&lt;/code&gt; directory we&amp;#39;ll find all the configurations from the different services. We can override any configuration value with an &lt;code&gt;appname-local.yml&lt;/code&gt; file. The ones we are going to change are &lt;code&gt;gate-local.yml&lt;/code&gt; and &lt;code&gt;settings.js&lt;/code&gt;. When making changes to these files you&amp;#39;ll have to restart their respective service and/or regenerate their configuration file. &lt;code&gt;service gate restart&lt;/code&gt; and &lt;code&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Gate configuration&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;gate-local.yml&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;saml&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;requireAuthentication&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;okta_idp_url_for_application&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;certificate&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;base64_encoded_certificate&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;issuerId&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;http://www.okta.com/{anyid}&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;keyStore&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;spinnaker.jks&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;keyStoreType&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;JKS&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;keyStorePassword&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;somepassword&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;keyStoreAliasName&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;okta&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The above properties &lt;code&gt;url&lt;/code&gt; and &lt;code&gt;certificate&lt;/code&gt; will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;issuerId&lt;/code&gt; is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;keyStore&lt;/code&gt; is generated using the java keytool utility. Specifically this command:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &amp;quot;okta&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;where &lt;code&gt;okta.cert&lt;/code&gt; is the previously described certificate not base64 encoded. It produces a file called &lt;code&gt;spinnaker.jks&lt;/code&gt; and shares the alias with &lt;code&gt;keyStoreAliasName&lt;/code&gt; in the &lt;code&gt;gate-local.yml&lt;/code&gt; config. The keytool will prompt for a password which will be shared in the &lt;code&gt;gate-local.yml&lt;/code&gt; config. The &lt;code&gt;spinnaker.jks&lt;/code&gt; file should be placed with your local config or otherwise specified with a correct path in the config to it&amp;#39;s location.&lt;/p&gt;
+
+&lt;p&gt;Now restart gate &lt;code&gt;service gate restart&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2&gt;Webapp configuration&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;settings.js
+
+window.spinnakerSettings = {
+  gateUrl: `${gateUrl}`,
+  bakeryDetailUrl: `${bakeryBaseUrl}/api/v1/global/logs/?html=true`,
+  pollSchedule: 30000,
+  defaultTimeZone: &amp;#39;America/Denver&amp;#39;, // see http://momentjs.com/timezone/docs/#/data-utilities/
+  providers: {
+    gce: {
+      defaults: {
+        account: `${googlePrimaryAccount}`,
+        region: `${googleDefaultRegion}`,
+        zone: `${googleDefaultZone}`,
+      },
+      primaryAccounts: [`${googlePrimaryAccount}`],
+      challengeDestructiveActions: [`${googlePrimaryAccount}`],
+    },
+    aws: {
+      defaults: {
+        account: `${awsPrimaryAccount}`,
+        region: `${awsDefaultRegion}`
+      },
+      primaryAccounts: [`${awsPrimaryAccount}`],
+      primaryRegions: [&amp;#39;eu-west-1&amp;#39;, &amp;#39;us-east-1&amp;#39;, &amp;#39;us-west-1&amp;#39;, &amp;#39;us-west-2&amp;#39;],
+      challengeDestructiveActions: [`${awsPrimaryAccount}`],
+      preferredZonesByAccount: {}
+    }
+  },
+  whatsNew: {
+    gistId: &amp;#39;32526cd608db3d811b38&amp;#39;,
+    fileName: &amp;#39;news.md&amp;#39;,
+  },
+  authEndpoint: &amp;#39;https://YOUR_GATE_HOST/auth/info&amp;#39;,
+  authEnabled: true,
+  feature: {
+    pipelines: true,
+    notifications: true,
+    fastProperty: true,
+    vpcMigrator: false,
+    rebakeControlEnabled: true,
+    netflixMode: false,
+  },
+};
+
+window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAccount}`] = {
+  &amp;#39;us-east-1&amp;#39;: [&amp;#39;us-east-1a&amp;#39;, &amp;#39;us-east-1b&amp;#39;, &amp;#39;us-east-1d&amp;#39;, &amp;#39;us-east-1e&amp;#39;],
+  &amp;#39;us-west-1&amp;#39;: [&amp;#39;us-west-1a&amp;#39;, &amp;#39;us-west-1b&amp;#39;, &amp;#39;us-west-1c&amp;#39;],
+  &amp;#39;us-west-2&amp;#39;: [&amp;#39;us-west-2a&amp;#39;, &amp;#39;us-west-2b&amp;#39;, &amp;#39;us-west-2c&amp;#39;],
+  &amp;#39;eu-west-1&amp;#39;: [&amp;#39;eu-west-1a&amp;#39;, &amp;#39;eu-west-1b&amp;#39;, &amp;#39;eu-west-1c&amp;#39;],
+  &amp;#39;ap-northeast-1&amp;#39;: [&amp;#39;ap-northeast-1a&amp;#39;, &amp;#39;ap-northeast-1b&amp;#39;, &amp;#39;ap-northeast-1c&amp;#39;],
+  &amp;#39;ap-southeast-1&amp;#39;: [&amp;#39;ap-southeast-1a&amp;#39;, &amp;#39;ap-southeast-1b&amp;#39;],
+  &amp;#39;ap-southeast-2&amp;#39;: [&amp;#39;ap-southeast-2a&amp;#39;, &amp;#39;ap-southeast-2b&amp;#39;],
+  &amp;#39;sa-east-1&amp;#39;: [&amp;#39;sa-east-1a&amp;#39;, &amp;#39;sa-east-1b&amp;#39;]
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This is actually the normal settings.js but we had to add a few extra configuration options which were:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;authEndpoint&lt;/code&gt; this should be &lt;code&gt;https://YOUR_GATE_HOST/auth/info&lt;/code&gt;. Normally this is running on localhost:8084&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;authEnabled&lt;/code&gt; should be set to &lt;code&gt;true&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now run &lt;code&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt; for the settings to regenerate.&lt;/p&gt;
+
+&lt;h1&gt;How this works&lt;/h1&gt;
+
+&lt;p&gt;When hitting your spinnaker instance with authEnabled it will redirect to the earlier saml url configuration setting we provided to gate. Gate will create a signed message asking for access from Okta. Okta will ask them to sign into their account and redirect them back to spinnaker. Spinnaker validates the returned message signature using the certificate gate has access to.&lt;/p&gt;
+
+&lt;p&gt;One can access http://GATE_URL/auth/info to see your information after successfully authenticating. If you get a 403 forbidden it means you have not authenticated correctly.&lt;/p&gt;
+
+&lt;p&gt;Specific roles and access to accounts can be configured, but we currently have not set this up. Hopefully this is useful enough to at least get you started along the right path.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Team workflow using littlechef to manage infrastructure</title>

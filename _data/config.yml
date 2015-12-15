@@ -1,2 +1,2 @@
-- assets: http://d1dj72mlaoziwu.cloudfront.net/
-
+assets: http://d1dj72mlaoziwu.cloudfront.net/
+local_assets: http://localhost:4000/images/
