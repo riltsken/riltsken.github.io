@@ -7,8 +7,8 @@ blurb: "One of the questions I see come up quite often in slack are how to model
 ---
 
 [configuration_script]: https://gist.github.com/riltsken/84004a3b6964823e3ae6
-[big_pipeline]: {{ site.data.config['local_assets'] }}spinnaker-pipelines/pipeline.png
-[big_pipeline2]: {{ site.data.config['local_assets'] }}spinnaker-pipelines/pipelines3.png
+[big_pipeline]: {{ site.data.config['assets'] }}spinnaker-pipelines/pipeline.png
+[big_pipeline2]: {{ site.data.config['assets'] }}spinnaker-pipelines/pipelines3.png
 [tomas]: https://twitter.com/tomaslin
 [cameron]: https://twitter.com/cfieber
 [slack]: https://spinnakerteam.slack.com
@@ -33,11 +33,11 @@ One very important concept in pipelines is understanding where and how the Sprin
 
 As of this writing (2016-02-08) the `Deploy Stage` in Spinnaker "requires" a `Bake Stage` or `Find Image Stage`. When I say "requires" I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.
 
-![]({{ site.data.config['local_assets'] }}spinnaker-pipelines/bake_or_find_error.png)
+![]({{ site.data.config['assets'] }}spinnaker-pipelines/bake_or_find_error.png)
 
 To get around using the `Bake Stage` or `Find Image Stage` we'll have to edit the pipeline json for the `Deploy Stage` using the key `amiName` to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.
 
-![]({{ site.data.config['local_assets'] }}spinnaker-pipelines/spinnaker_edit_json.png)
+![]({{ site.data.config['assets'] }}spinnaker-pipelines/spinnaker_edit_json.png)
 
 ```
 {
@@ -123,16 +123,16 @@ export JAVA_RUN_COMMAND='app.jar'
 Now what does this look like on the spinnaker side?
 
 [Link to big][big_pipeline]
-![]({{ site.data.config['local_assets'] }}spinnaker-pipelines/pipeline.png)
+![]({{ site.data.config['assets'] }}spinnaker-pipelines/pipeline.png)
 
 And in the `Deploy Stage` the `Advanced Settings` of our `Server Group`
-![]({{ site.data.config['local_assets'] }}spinnaker-pipelines/pipelines2.png)
+![]({{ site.data.config['assets'] }}spinnaker-pipelines/pipelines2.png)
 
 Now our AMI has all the information it needs upon booting up in its autoscaling group to correctly tag itself, download its jar file, add additional motd information, and setup configuration for the application to boot.
 
 If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the `Deploy Stage` adds information about the deploy to the `deployedServerGroups` array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.
 
-```
+``` plaintext
 {account=staging,capacity={desired=1, max=1, min=1},
 parentStage=23452655­c6de­4aac­b529­55e1357dfee7, region=us­east1,
 ami=ami­999af013, storeType=ebs, vmType=pv, serverGroup=service1-049}
