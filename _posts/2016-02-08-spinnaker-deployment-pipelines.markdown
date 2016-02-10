@@ -50,7 +50,7 @@ To get around using the `Bake Stage` or `Find Image Stage` we'll have to edit th
   "clusters": [
     {
       "application": "some application name",
-      "strategy": "redblack"
+      "strategy": "redblack",
       "provider": "aws",
       "cloudProvider": "aws",
       ...
