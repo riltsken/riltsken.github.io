@@ -3,7 +3,7 @@ layout: post
 title: "Spinnaker deployment pipelines"
 categories: DevOps Infrastructure DeploymentTools
 date: 2016-02-08
-blurb: "blah"
+blurb: "One of the questions I see come up quite often in slack are how to model deployment pipelines which do not follow `trigger` -> `bake image with *nix package artifact` -> `deploy image`"
 ---
 
 [configuration_script]: https://gist.github.com/riltsken/84004a3b6964823e3ae6
