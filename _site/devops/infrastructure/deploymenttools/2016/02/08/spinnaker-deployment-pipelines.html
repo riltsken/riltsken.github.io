@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Spinnaker deployment pipelines
+    
+  </title>
+
+  <script type="application/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+
+  <!-- syntax highlighting CSS -->
+  <link rel="stylesheet" href="/css/syntax.css">
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/hyde.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-49052230-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+  <body class="theme-base-09">
+    <div class="container content">
+      <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1 class="sidebar-myname">Samuel Toriel</h1>
+      <p class="lead">A blog about Software and Operations</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <br />
+      <li class="sidebar-nav-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="sidebar-nav-item"><a href="/all_posts.html">All posts</a></li>
+      <li class="sidebar-nav-item"><a href="/about.html">About</a></li>
+      <li class="sidebar-nav-item"><a class="rs-nav-link" href="https://twitter.com/rilt" target="_new">@rilt</a></li>
+      <li class="sidebar-nav-item" target="_new"><a href="https://github.com/riltsken">riltsken on github</a></li>
+      <li class="sidebar-nav-item"><a href="/atom.xml">Atom Feed</a></li>
+    </ul>
+  </div>
+</div>
+
+      <!-- Main Content -->
+      <script type="text/javascript">
+window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+</script>
+
+<div class="post">
+  <h1 class="post-title">Spinnaker deployment pipelines</h1>
+  <span class="post-date">08 Feb 2016</span>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
+  <p>I&#39;d like to especially thank <a href="https://twitter.com/tomaslin">Tomás Lin</a> and <a href="https://twitter.com/cfieber">Cameron Fieber</a> for which the below would not be possible without their endless involvement in the <a href="https://spinnakerteam.slack.com">#spinnakerteam</a> slack channel.</p>
+
+<p>One of the questions I see come up quite often in slack are how to model deployment pipelines which do not follow</p>
+
+<p><code>trigger</code> <span style="font-weight:bold; font-size: 26px;">⇨</span> <code>bake image with *nix package artifact</code> <span style="font-weight:bold; font-size: 26px;">⇨</span> <code>deploy image</code></p>
+
+<p>Different organizations have their own restrictions or legacy systems which require alternative deployment methods to the above. Because Jenkins jobs are a first class citizen in Spinnaker this gives it the ability to execute complex tasks and pass on any information required from a previous step. I will outline out how to take advantage of this.</p>
+
+<p>One very important concept in pipelines is understanding where and how the Spring Expression Language (SpEL) can be used. A few of these rules are outlined below:</p>
+
+<ul>
+<li>Spinnaker uses uses the delimiter <code>${}</code> for SpEL.</li>
+<li>Variables can be defined in several ways:
+
+<ol>
+<li>The first stage of a pipeline allows defining parameters which can be accessed via <code>${ parameter.key }</code></li>
+<li>The first stage of a pipeline allows parameters to be read from a trigger and accessed via <code>${ trigger.properties.key }</code></li>
+<li>Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via <code>${ key }</code></li>
+</ol></li>
+<li><code>Deploy Stage</code> will create an array called <code>${ deployedServerGroups }</code> which gives enough information to access the deployed cluster.</li>
+</ul>
+
+<p>As of this writing (2016-02-08) the <code>Deploy Stage</code> in Spinnaker &quot;requires&quot; a <code>Bake Stage</code> or <code>Find Image Stage</code>. When I say &quot;requires&quot; I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.</p>
+
+<p><img src="http://localhost:4000/images/spinnaker-pipelines/bake_or_find_error.png" alt=""></p>
+
+<p>To get around using the <code>Bake Stage</code> or <code>Find Image Stage</code> we&#39;ll have to edit the pipeline json for the <code>Deploy Stage</code> using the key <code>amiName</code> to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.</p>
+
+<p><img src="http://localhost:4000/images/spinnaker-pipelines/spinnaker_edit_json.png" alt=""></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+  &quot;requisiteStageRefIds&quot;: [
+    &quot;1&quot;
+  ],
+  &quot;refId&quot;: &quot;2&quot;,
+  &quot;type&quot;: &quot;deploy&quot;,
+  &quot;name&quot;: &quot;Deploy&quot;,
+  &quot;clusters&quot;: [
+    {
+      &quot;application&quot;: &quot;some application name&quot;,
+      &quot;strategy&quot;: &quot;redblack&quot;
+      &quot;provider&quot;: &quot;aws&quot;,
+      &quot;cloudProvider&quot;: &quot;aws&quot;,
+      ...
+      &quot;amiName&quot;: &quot;${image_id}&quot;, &lt;=== Inject your own image id
+      ...
+    }
+  ]
+}
+</code></pre></div>
+<p>For our own organization we actually have a fairly active rotating AMI id as we make changes to the base AMI used for our applications so it updates often. To keep this rotating AMI id fresh for our 35+ microservices we put this information into a github repo, along with other context for each application to help it deploy properly. Upon bootup we have our applications bootstrap themselves in the simplest way possible.</p>
+
+<ol>
+<li>Download a JAR file from S3</li>
+<li>Export environment variables for use by the application JAR</li>
+<li>Tag our system</li>
+</ol>
+
+<p>To accomplish this for so many microservices we decided to create a github repo which spits out the configuration for bootstrap in the form of User Data (this is catered towards AWS):</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">root
+ \__applications
+   \__service1
+     \__production.yaml
+     \__staging.yaml
+    \__service2
+      \__production.yaml
+      \__staging.yaml
+      \__beta.yaml
+ \__scripts
+   \__configuration_script.py  
+   \__ami_table.yaml
+</code></pre></div>
+<p>This is what <a href="https://gist.github.com/riltsken/84004a3b6964823e3ae6">configuration_script.py</a> looks like. It takes in an application configuration as shown below.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">ami_name: java_ami_hvm
+environment: staging
+tags:
+  role: webapplication
+  team: ops
+
+userdata: |
+  export CONFIG=&#39;staging.yaml&#39;
+  export JAVA_OPTS=&#39;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8
+  export JAVA_HOME=&#39;/opt/java8&#39;
+  export JAVA_RUN_COMMAND=&#39;app.jar&#39;
+</code></pre></div>
+<p>The resulting transformation after going through our script would be a yaml file like the following to be used as variables in our pipeline.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">application_name: service1
+environment: staging
+base64_userdata: &#39;ZXhwb3J0IFJFVklTSU9OPXMzOi8vJHtidWNrZXR9L3NlcnZpY2UxLyR7Y29tbWl0aGFzaH0vJHt0aW1lc3RhbXB9CmV4cG9ydCBUQUdTPSd7InJvbGUiOiAid2ViYXBwbGljYXRpb24iLCAidGVhbSI6ICJvcHMiLCAiZW52aXJvbm1lbnQiOiAic3RhZ2luZyIsICJuYW1lIjogInNlcnZpY2UxIicKZXhwb3J0IEFQUExJQ0FUSU9OX05BTUU9c2VydmljZTEKZXhwb3J0IENPTkZJRz0nc3RhZ2luZy55YW1sJwpleHBvcnQgSkFWQV9PUFRTPSctWG14MjUwMG0gLXNlcnZlciAtWFg6K1VzZUNvbXByZXNzZWRPb3BzIC1YWDorVXNlUGFyTmV3R0MgLURmaWxlLmVuY29kaW5nPVVURi04CmV4cG9ydCBKQVZBX0hPTUU9Jy9vcHQvamF2YTgnCmV4cG9ydCBKQVZBX1JVTl9DT01NQU5EPSdhcHAuamFyJwo=&#39;
+</code></pre></div>
+<p>where the transformed <code>base64_userdata</code> in plaintext is</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">export REVISION=s3://${bucket}/service1/${commithash}/${timestamp}
+export TAGS=&#39;{&quot;role&quot;: &quot;webapplication&quot;, &quot;team&quot;: &quot;ops&quot;, &quot;environment&quot;: &quot;staging&quot;, &quot;name&quot;: &quot;service1&quot;&#39;
+export APPLICATION_NAME=service1
+export CONFIG=&#39;staging.yaml&#39;
+export JAVA_OPTS=&#39;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8
+export JAVA_HOME=&#39;/opt/java8&#39;
+export JAVA_RUN_COMMAND=&#39;app.jar&#39;
+</code></pre></div>
+<p>Now what does this look like on the spinnaker side?</p>
+
+<p><a href="http://localhost:4000/images/spinnaker-pipelines/pipeline.png">Link to big</a>
+<img src="http://localhost:4000/images/spinnaker-pipelines/pipeline.png" alt=""></p>
+
+<p>And in the <code>Deploy Stage</code> the <code>Advanced Settings</code> of our <code>Server Group</code>
+<img src="http://localhost:4000/images/spinnaker-pipelines/pipelines2.png" alt=""></p>
+
+<p>Now our AMI has all the information it needs upon booting up in its autoscaling group to correctly tag itself, download its jar file, add additional motd information, and setup configuration for the application to boot.</p>
+
+<p>If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the <code>Deploy Stage</code> adds information about the deploy to the <code>deployedServerGroups</code> array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{account=staging,capacity={desired=1, max=1, min=1},
+parentStage=23452655­c6de­4aac­b529­55e1357dfee7, region=us­east1,
+ami=ami­999af013, storeType=ebs, vmType=pv, serverGroup=service1-049}
+</code></pre></div>
+<p>Specifically, I created a jenkins job which accepted <code>${ deployedServerGroups[0].serverGroup }</code> and then accessed the cluster by looking up the tag via aws cli.</p>
+
+<p>Hopefully these are useful tidbits for getting started. Good luck on your pipeline creation!</p>
+
+</div>
+
+<div>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker.html">
+            Setting up Spinnaker authentication with Okta and SAML
+            <small>08 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html">
+            Team workflow using littlechef to manage infrastructure
+            <small>21 Nov 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html">
+            Development Pipeline for the Rackspace Cloud Control Panel
+            <small>21 Sep 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      <!-- Footer -->
+      <div class="footer">
+      </div>
+
+    </div>
+  </body>
+</html>
