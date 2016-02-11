@@ -25,7 +25,7 @@ One very important concept in pipelines is understanding where and how the Sprin
 
  * Spinnaker uses uses the delimiter `${}` for SpEL.
  * Variables can be defined in several ways:
-   1. The first stage of a pipeline allows defining parameters which can be accessed via `${ parameter.key }`
+   1. The first stage of a pipeline allows defining parameters which can be accessed via `${ parameters.key }`
    2. The first stage of a pipeline allows parameters to be read from a trigger and accessed via `${ trigger.properties.key }`
    3. Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via `${ key }`
  * `Deploy Stage` will create an array called `${ deployedServerGroups }` which gives enough information to access the deployed cluster.
