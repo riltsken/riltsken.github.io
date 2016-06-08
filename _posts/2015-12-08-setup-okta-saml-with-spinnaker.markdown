@@ -11,7 +11,12 @@ blurb: "Recently Netflix in collaboration with Google, Amazon, Microsoft, and Cl
 [jumpcloud]: https://www.jumpcloud.com/
 [csullivan]: https://twitter.com/charliesullivan
 [ameng]: https://twitter.com/alexbmeng
+[migration]: http://www.spinnaker.io/docs/gate-saml-config
+[securing-spinnaker]: http://www.spinnaker.io/docs/securing-spinnaker#section-saml-2-0
 
+
+As of release _2.54.0_, Gate has changed the way the SAML authentication mechanism is configured. Please follow the [migration guide][migration]. If you stumbled on this guide looking for how to configure SAML follow the [securing spinnaker guide][securing-spinnaker] instead
+---
 
 Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.
 

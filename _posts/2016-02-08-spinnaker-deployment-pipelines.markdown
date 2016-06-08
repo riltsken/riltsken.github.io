@@ -132,7 +132,7 @@ Now our AMI has all the information it needs upon booting up in its autoscaling 
 
 If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the `Deploy Stage` adds information about the deploy to the `deployedServerGroups` array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.
 
-``` plaintext
+```
 {account=staging,capacity={desired=1, max=1, min=1},
 parentStage=23452655­c6de­4aac­b529­55e1357dfee7, region=us­east1,
 ami=ami­999af013, storeType=ebs, vmType=pv, serverGroup=service1-049}

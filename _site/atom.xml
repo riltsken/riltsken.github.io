@@ -4,7 +4,7 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2016-02-09T22:01:33-07:00</updated>
+ <updated>2016-06-08T09:40:38-06:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -32,7 +32,7 @@
 &lt;li&gt;Variables can be defined in several ways:
 
 &lt;ol&gt;
-&lt;li&gt;The first stage of a pipeline allows defining parameters which can be accessed via &lt;code&gt;${ parameter.key }&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;The first stage of a pipeline allows defining parameters which can be accessed via &lt;code&gt;${ parameters.key }&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;The first stage of a pipeline allows parameters to be read from a trigger and accessed via &lt;code&gt;${ trigger.properties.key }&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via &lt;code&gt;${ key }&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;&lt;/li&gt;
@@ -41,11 +41,11 @@
 
 &lt;p&gt;As of this writing (2016-02-08) the &lt;code&gt;Deploy Stage&lt;/code&gt; in Spinnaker &amp;quot;requires&amp;quot; a &lt;code&gt;Bake Stage&lt;/code&gt; or &lt;code&gt;Find Image Stage&lt;/code&gt;. When I say &amp;quot;requires&amp;quot; I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/spinnaker-pipelines/bake_or_find_error.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/bake_or_find_error.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;To get around using the &lt;code&gt;Bake Stage&lt;/code&gt; or &lt;code&gt;Find Image Stage&lt;/code&gt; we&amp;#39;ll have to edit the pipeline json for the &lt;code&gt;Deploy Stage&lt;/code&gt; using the key &lt;code&gt;amiName&lt;/code&gt; to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://localhost:4000/images/spinnaker-pipelines/spinnaker_edit_json.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/spinnaker_edit_json.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{
   &amp;quot;requisiteStageRefIds&amp;quot;: [
     &amp;quot;1&amp;quot;
@@ -56,7 +56,7 @@
   &amp;quot;clusters&amp;quot;: [
     {
       &amp;quot;application&amp;quot;: &amp;quot;some application name&amp;quot;,
-      &amp;quot;strategy&amp;quot;: &amp;quot;redblack&amp;quot;
+      &amp;quot;strategy&amp;quot;: &amp;quot;redblack&amp;quot;,
       &amp;quot;provider&amp;quot;: &amp;quot;aws&amp;quot;,
       &amp;quot;cloudProvider&amp;quot;: &amp;quot;aws&amp;quot;,
       ...
@@ -117,11 +117,11 @@ export JAVA_RUN_COMMAND=&amp;#39;app.jar&amp;#39;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now what does this look like on the spinnaker side?&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://localhost:4000/images/spinnaker-pipelines/pipeline.png&quot;&gt;Link to big&lt;/a&gt;
-&lt;img src=&quot;http://localhost:4000/images/spinnaker-pipelines/pipeline.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot;&gt;Link to big&lt;/a&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;And in the &lt;code&gt;Deploy Stage&lt;/code&gt; the &lt;code&gt;Advanced Settings&lt;/code&gt; of our &lt;code&gt;Server Group&lt;/code&gt;
-&lt;img src=&quot;http://localhost:4000/images/spinnaker-pipelines/pipelines2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipelines2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;Now our AMI has all the information it needs upon booting up in its autoscaling group to correctly tag itself, download its jar file, add additional motd information, and setup configuration for the application to boot.&lt;/p&gt;
 
@@ -141,7 +141,9 @@ ami=ami­999af013, storeType=ebs, vmType=pv, serverGroup=service1-049}
    <link href="/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker.html"/>
    <updated>2015-12-08T00:00:00-07:00</updated>
    <id>/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker</id>
-   <content type="html">&lt;p&gt;Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.&lt;/p&gt;
+   <content type="html">&lt;h2&gt;As of release &lt;em&gt;2.54.0&lt;/em&gt;, Gate has changed the way the SAML authentication mechanism is configured. Please follow the &lt;a href=&quot;http://www.spinnaker.io/docs/gate-saml-config&quot;&gt;migration guide&lt;/a&gt;. If you stumbled on this guide looking for how to configure SAML follow the &lt;a href=&quot;http://www.spinnaker.io/docs/securing-spinnaker#section-saml-2-0&quot;&gt;securing spinnaker guide&lt;/a&gt; instead&lt;/h2&gt;
+
+&lt;p&gt;Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.&lt;/p&gt;
 
 &lt;p&gt;At &lt;a href=&quot;https://www.fullcontact.com/&quot;&gt;FullContact&lt;/a&gt; we use &lt;a href=&quot;https://www.okta.com/&quot;&gt;Okta&lt;/a&gt; to handle all of our Authentication which is backed by an LDAP provider called &lt;a href=&quot;https://www.jumpcloud.com/&quot;&gt;JumpCloud&lt;/a&gt;.&lt;/p&gt;
 

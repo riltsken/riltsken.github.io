@@ -88,7 +88,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 <li>Variables can be defined in several ways:
 
 <ol>
-<li>The first stage of a pipeline allows defining parameters which can be accessed via <code>${ parameter.key }</code></li>
+<li>The first stage of a pipeline allows defining parameters which can be accessed via <code>${ parameters.key }</code></li>
 <li>The first stage of a pipeline allows parameters to be read from a trigger and accessed via <code>${ trigger.properties.key }</code></li>
 <li>Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via <code>${ key }</code></li>
 </ol></li>
@@ -97,11 +97,11 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>As of this writing (2016-02-08) the <code>Deploy Stage</code> in Spinnaker &quot;requires&quot; a <code>Bake Stage</code> or <code>Find Image Stage</code>. When I say &quot;requires&quot; I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.</p>
 
-<p><img src="http://localhost:4000/images/spinnaker-pipelines/bake_or_find_error.png" alt=""></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/bake_or_find_error.png" alt=""></p>
 
 <p>To get around using the <code>Bake Stage</code> or <code>Find Image Stage</code> we&#39;ll have to edit the pipeline json for the <code>Deploy Stage</code> using the key <code>amiName</code> to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.</p>
 
-<p><img src="http://localhost:4000/images/spinnaker-pipelines/spinnaker_edit_json.png" alt=""></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/spinnaker_edit_json.png" alt=""></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">{
   &quot;requisiteStageRefIds&quot;: [
     &quot;1&quot;
@@ -112,7 +112,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
   &quot;clusters&quot;: [
     {
       &quot;application&quot;: &quot;some application name&quot;,
-      &quot;strategy&quot;: &quot;redblack&quot;
+      &quot;strategy&quot;: &quot;redblack&quot;,
       &quot;provider&quot;: &quot;aws&quot;,
       &quot;cloudProvider&quot;: &quot;aws&quot;,
       ...
@@ -173,11 +173,11 @@ export JAVA_RUN_COMMAND=&#39;app.jar&#39;
 </code></pre></div>
 <p>Now what does this look like on the spinnaker side?</p>
 
-<p><a href="http://localhost:4000/images/spinnaker-pipelines/pipeline.png">Link to big</a>
-<img src="http://localhost:4000/images/spinnaker-pipelines/pipeline.png" alt=""></p>
+<p><a href="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png">Link to big</a>
+<img src="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png" alt=""></p>
 
 <p>And in the <code>Deploy Stage</code> the <code>Advanced Settings</code> of our <code>Server Group</code>
-<img src="http://localhost:4000/images/spinnaker-pipelines/pipelines2.png" alt=""></p>
+<img src="http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipelines2.png" alt=""></p>
 
 <p>Now our AMI has all the information it needs upon booting up in its autoscaling group to correctly tag itself, download its jar file, add additional motd information, and setup configuration for the application to boot.</p>
 
