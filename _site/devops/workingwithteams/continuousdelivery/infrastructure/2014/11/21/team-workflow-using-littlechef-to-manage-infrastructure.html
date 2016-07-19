@@ -73,45 +73,47 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
   <h1 class="post-title">Team workflow using littlechef to manage infrastructure</h1>
   <span class="post-date">21 Nov 2014</span>
   <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
-  <p><a href="https://github.com/tobami/littlechef">Littlechef</a> is a library allowing one to use chef without a centralized server orchestrating configuration management. It simplifies the testing and deployment model for managing servers by removing a layer from the stack. What this does is let you provision servers using your cli or programmatically in a similar fashion to ansible.</p>
+  
+<p><a href="https://github.com/tobami/littlechef">Littlechef</a> is a library allowing one to use chef without a centralized server orchestrating configuration management. It simplifies the testing and deployment model for managing servers by removing a layer from the stack. What this does is let you provision servers using your cli or programmatically in a similar fashion to ansible.</p>
 
 <p>Recently I was snooping on another team who was doing some work to get chef-solo working in their infrastructure and made a brief comment about littlechef to see if they were moving to it. They made two comments</p>
 
-<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/Selection_073.png" alt="Asking about our workflow with littlechef"></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/Selection_073.png" alt="Asking about our workflow with littlechef" /></p>
 
 <p>What I took from the above were essentially questions about our workflow with littlechef. How can we test our changes? How do we know our changes will actually work? How do we not mess up real environments? Below is generally how our team makes changes with chef using littlechef. This works for a team of ~25 developers where 3-4 people are focused mostly on chef throughout the day. We manage ~200+ nodes.</p>
 
 <p>Given that we are attempting to change a recipe that affects all web nodes:</p>
 
 <ul>
-<li>Write unit test with chefspec expecting this change.</li>
-<li>Run <code>fix</code> against a specific web node in our <em>test</em> environment. Ensure that the run did not error. This probably looks like <code>fix node:web-n01.test.mydns.com</code></li>
-<li>SSH on to that specific web node and make sure our expected change occurred</li>
-<li>Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.</li>
+  <li>Write unit test with chefspec expecting this change.</li>
+  <li>Run <code class="highlighter-rouge">fix</code> against a specific web node in our <em>test</em> environment. Ensure that the run did not error. This probably looks like <code class="highlighter-rouge">fix node:web-n01.test.mydns.com</code></li>
+  <li>SSH on to that specific web node and make sure our expected change occurred</li>
+  <li>Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.</li>
 </ul>
 
 <p>If this change includes adding a new community cookbook there is an extra step required which is sync the cookbooks locally before attempting to provision that node with littlechef.</p>
 
 <p>If this change is required on a group of nodes this is still possible and again would still take place in the <em>test</em> environment.</p>
 
-<p><code>fix --env=test_dfw nodes_with_role:cassandra</code></p>
+<p><code class="highlighter-rouge">fix --env=test_dfw nodes_with_role:cassandra</code></p>
 
-<p>Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our <code>fix</code> commands with the specific region environment. If you want to deploy to all environments you could just run several <code>fix</code> commands in-tandem or one after the other.</p>
+<p>Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our <code class="highlighter-rouge">fix</code> commands with the specific region environment. If you want to deploy to all environments you could just run several <code class="highlighter-rouge">fix</code> commands in-tandem or one after the other.</p>
 
-<p>It is important to use the environment attribute when using <code>nodes_with_role</code> so if they are not specific enough an accidental provision of other environments does not happen.</p>
+<p>It is important to use the environment attribute when using <code class="highlighter-rouge">nodes_with_role</code> so if they are not specific enough an accidental provision of other environments does not happen.</p>
 
-<p>Going back to that pull request where we had a green checkmark. Merging that branch into master doesn&#39;t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.</p>
+<p>Going back to that pull request where we had a green checkmark. Merging that branch into master doesn’t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.</p>
 
-<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/chef_run.png" alt="Chef deploying to our preprod syd environment"></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/chef_run.png" alt="Chef deploying to our preprod syd environment" /></p>
 
 <p>After deploying to all lower environments we typically verify that our expected change happened and begin deploying to production. Production deploys are similar to our lower environments with one key difference. The order of environment deploys first goes to our inactive standby environment, and after completion goes on to our active production environments. We do not have to do a failover to do a successful deploy.</p>
 
-<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/deploy%20order.png" alt="Order of chef deploys for production"></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/deploy%20order.png" alt="Order of chef deploys for production" /></p>
 
-<h2>Provisioning or creating new nodes</h2>
+<h2 id="provisioning-or-creating-new-nodes">Provisioning or creating new nodes</h2>
 
 <p>To provision or create new nodes with littlechef a previous coworker <a href="http://davehking.com/">Dave H King</a> made a library (<a href="https://github.com/tildedave/littlechef-rackspace">Littlechef-Rackspace</a>) to make this really easy on Rackspace. It allows us to run a single command which brings up a node in our environment and runs plugins after it is created. The plugins we currently run install chef via omnibus and creates the node json file with extra information specific to how we setup our environment (private ips, labeling, environment). After the node is active and plugins have been ran it can take a runlist to configure the node as needed and add it to the node.json file.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">fix-rackspace create <span class="se">\</span>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>fix-rackspace create <span class="se">\</span>
     --username &lt;username&gt; <span class="se">\</span>
     --key &lt;api_key&gt; <span class="se">\</span>
     --region &lt;region&gt; <span class="se">\</span>
@@ -123,9 +125,12 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
     --runlist <span class="s2">"role[base],role[reach_base],role[reach_dfw_preprod],role[web]"</span> <span class="se">\</span>
     --plugins <span class="s2">"omnibus_install_11, bootstrap"</span> <span class="se">\</span>
     --post-plugins <span class="s2">"add_role"</span>
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins are <a href="https://gist.github.com/riltsken/c9996cf9af2c6b9ecade">here</a> and our post plugins after the runlist has been ran are <a href="https://gist.github.com/riltsken/44103d0e495827758fbe">here</a></p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">image</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">imageid-placeholder</span><span class="pi">}</span>
+
+<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">image</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">imageid-placeholder</span><span class="pi">}</span>
 <span class="s">flavor</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">flavorid-placeholder</span><span class="pi">}</span>
 <span class="s">plugins</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">omnibus_install_11</span>
@@ -151,10 +156,15 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
   <span class="s">web</span><span class="pi">:</span>
     <span class="s">runlist</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s2">"</span><span class="s">role[reach_web]"</span>
-</code></pre></div>
+</code></pre>
+</div>
+
 <p>And the new resulting command to spin up a web node in the dfw region for our preprod environment</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
-</code></pre></div>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
+</code></pre>
+</div>
+
 </div>
 
 <div>

@@ -1,7 +1,7 @@
 name: Samuel Toriel
 description: A blog about Software and Operations
 
-markdown: redcarpet
+markdown: kramdown
 highlighter: rouge
 
 extensions: [fenced_code_blocks]

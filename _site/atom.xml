@@ -4,7 +4,7 @@
  <title></title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2016-07-19T16:04:02-06:00</updated>
+ <updated>2016-07-19T16:13:25-06:00</updated>
  <id></id>
  <author>
    <name></name>
@@ -17,36 +17,38 @@
    <link href="/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines.html"/>
    <updated>2016-02-08T00:00:00-07:00</updated>
    <id>/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines</id>
-   <content type="html">&lt;p&gt;I&amp;#39;d like to especially thank &lt;a href=&quot;https://twitter.com/tomaslin&quot;&gt;Tomás Lin&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/cfieber&quot;&gt;Cameron Fieber&lt;/a&gt; for which the below would not be possible without their endless involvement in the &lt;a href=&quot;https://spinnakerteam.slack.com&quot;&gt;#spinnakerteam&lt;/a&gt; slack channel.&lt;/p&gt;
+   <content type="html">
+&lt;p&gt;I’d like to especially thank &lt;a href=&quot;https://twitter.com/tomaslin&quot;&gt;Tomás Lin&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/cfieber&quot;&gt;Cameron Fieber&lt;/a&gt; for which the below would not be possible without their endless involvement in the &lt;a href=&quot;https://spinnakerteam.slack.com&quot;&gt;#spinnakerteam&lt;/a&gt; slack channel.&lt;/p&gt;
 
 &lt;p&gt;One of the questions I see come up quite often in slack are how to model deployment pipelines which do not follow&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;trigger&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code&gt;bake image with *nix package artifact&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code&gt;deploy image&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;trigger&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;bake image with *nix package artifact&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy image&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Different organizations have their own restrictions or legacy systems which require alternative deployment methods to the above. Because Jenkins jobs are a first class citizen in Spinnaker this gives it the ability to execute complex tasks and pass on any information required from a previous step. I will outline out how to take advantage of this.&lt;/p&gt;
 
 &lt;p&gt;One very important concept in pipelines is understanding where and how the Spring Expression Language (SpEL) can be used. A few of these rules are outlined below:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Spinnaker uses uses the delimiter &lt;code&gt;${}&lt;/code&gt; for SpEL.&lt;/li&gt;
-&lt;li&gt;Variables can be defined in several ways:
-
-&lt;ol&gt;
-&lt;li&gt;The first stage of a pipeline allows defining parameters which can be accessed via &lt;code&gt;${ parameters.key }&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;The first stage of a pipeline allows parameters to be read from a trigger and accessed via &lt;code&gt;${ trigger.properties.key }&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via &lt;code&gt;${ key }&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Deploy Stage&lt;/code&gt; will create an array called &lt;code&gt;${ deployedServerGroups }&lt;/code&gt; which gives enough information to access the deployed cluster.&lt;/li&gt;
+  &lt;li&gt;Spinnaker uses uses the delimiter &lt;code class=&quot;highlighter-rouge&quot;&gt;${}&lt;/code&gt; for SpEL.&lt;/li&gt;
+  &lt;li&gt;Variables can be defined in several ways:
+    &lt;ol&gt;
+      &lt;li&gt;The first stage of a pipeline allows defining parameters which can be accessed via &lt;code class=&quot;highlighter-rouge&quot;&gt;${ parameters.key }&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;The first stage of a pipeline allows parameters to be read from a trigger and accessed via &lt;code class=&quot;highlighter-rouge&quot;&gt;${ trigger.properties.key }&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via &lt;code class=&quot;highlighter-rouge&quot;&gt;${ key }&lt;/code&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; will create an array called &lt;code class=&quot;highlighter-rouge&quot;&gt;${ deployedServerGroups }&lt;/code&gt; which gives enough information to access the deployed cluster.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;As of this writing (2016-02-08) the &lt;code&gt;Deploy Stage&lt;/code&gt; in Spinnaker &amp;quot;requires&amp;quot; a &lt;code&gt;Bake Stage&lt;/code&gt; or &lt;code&gt;Find Image Stage&lt;/code&gt;. When I say &amp;quot;requires&amp;quot; I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.&lt;/p&gt;
+&lt;p&gt;As of this writing (2016-02-08) the &lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; in Spinnaker “requires” a &lt;code class=&quot;highlighter-rouge&quot;&gt;Bake Stage&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Find Image Stage&lt;/code&gt;. When I say “requires” I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/bake_or_find_error.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/bake_or_find_error.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;To get around using the &lt;code&gt;Bake Stage&lt;/code&gt; or &lt;code&gt;Find Image Stage&lt;/code&gt; we&amp;#39;ll have to edit the pipeline json for the &lt;code&gt;Deploy Stage&lt;/code&gt; using the key &lt;code&gt;amiName&lt;/code&gt; to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.&lt;/p&gt;
+&lt;p&gt;To get around using the &lt;code class=&quot;highlighter-rouge&quot;&gt;Bake Stage&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Find Image Stage&lt;/code&gt; we’ll have to edit the pipeline json for the &lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; using the key &lt;code class=&quot;highlighter-rouge&quot;&gt;amiName&lt;/code&gt; to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/spinnaker_edit_json.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/spinnaker_edit_json.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;requisiteStageRefIds&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -65,17 +67,20 @@
     &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;For our own organization we actually have a fairly active rotating AMI id as we make changes to the base AMI used for our applications so it updates often. To keep this rotating AMI id fresh for our 35+ microservices we put this information into a github repo, along with other context for each application to help it deploy properly. Upon bootup we have our applications bootstrap themselves in the simplest way possible.&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Download a JAR file from S3&lt;/li&gt;
-&lt;li&gt;Export environment variables for use by the application JAR&lt;/li&gt;
-&lt;li&gt;Tag our system&lt;/li&gt;
+  &lt;li&gt;Download a JAR file from S3&lt;/li&gt;
+  &lt;li&gt;Export environment variables for use by the application JAR&lt;/li&gt;
+  &lt;li&gt;Tag our system&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;To accomplish this for so many microservices we decided to create a github repo which spits out the configuration for bootstrap in the form of User Data (this is catered towards AWS):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;root
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root
  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_applications
    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_service1
      &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_production.yaml
@@ -87,9 +92,12 @@
  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_scripts
    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_configuration_script.py  
    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_ami_table.yaml
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;This is what &lt;a href=&quot;https://gist.github.com/riltsken/84004a3b6964823e3ae6&quot;&gt;configuration_script.py&lt;/a&gt; looks like. It takes in an application configuration as shown below.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;s&quot;&gt;ami_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;java_ami_hvm&lt;/span&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;ami_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;java_ami_hvm&lt;/span&gt;
 &lt;span class=&quot;s&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;staging&lt;/span&gt;
 &lt;span class=&quot;s&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
   &lt;span class=&quot;s&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;webapplication&lt;/span&gt;
@@ -100,37 +108,48 @@
   &lt;span class=&quot;no&quot;&gt;export JAVA_OPTS=&#39;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&lt;/span&gt;
   &lt;span class=&quot;no&quot;&gt;export JAVA_HOME=&#39;/opt/java8&#39;&lt;/span&gt;
   &lt;span class=&quot;no&quot;&gt;export JAVA_RUN_COMMAND=&#39;app.jar&#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;The resulting transformation after going through our script would be a yaml file like the following to be used as variables in our pipeline.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;application_name: &lt;span class=&quot;s1&quot;&gt;&#39;service1&#39;&lt;/span&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;application_name: &lt;span class=&quot;s1&quot;&gt;&#39;service1&#39;&lt;/span&gt;
 environment: &lt;span class=&quot;s1&quot;&gt;&#39;staging&#39;&lt;/span&gt;
 base64_userdata: &lt;span class=&quot;s1&quot;&gt;&#39;ZXhwb3J0IFJFVklTSU9OPXMzOi8vJHtidWNrZXR9L3NlcnZpY2UxLyR7Y29tbWl0aGFzaH0vJHt0aW1lc3RhbXB9CmV4cG9ydCBUQUdTPSd7InJvbGUiOiAid2ViYXBwbGljYXRpb24iLCAidGVhbSI6ICJvcHMiLCAiZW52aXJvbm1lbnQiOiAic3RhZ2luZyIsICJuYW1lIjogInNlcnZpY2UxIicKZXhwb3J0IEFQUExJQ0FUSU9OX05BTUU9c2VydmljZTEKZXhwb3J0IENPTkZJRz0nc3RhZ2luZy55YW1sJwpleHBvcnQgSkFWQV9PUFRTPSctWG14MjUwMG0gLXNlcnZlciAtWFg6K1VzZUNvbXByZXNzZWRPb3BzIC1YWDorVXNlUGFyTmV3R0MgLURmaWxlLmVuY29kaW5nPVVURi04CmV4cG9ydCBKQVZBX0hPTUU9Jy9vcHQvamF2YTgnCmV4cG9ydCBKQVZBX1JVTl9DT01NQU5EPSdhcHAuamFyJwo=&#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;where the transformed &lt;code&gt;base64_userdata&lt;/code&gt; in plaintext is&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;REVISION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;s3://&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bucket&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/service1/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;commithash&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;timestamp&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;where the transformed &lt;code class=&quot;highlighter-rouge&quot;&gt;base64_userdata&lt;/code&gt; in plaintext is&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;REVISION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;s3://&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bucket&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/service1/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;commithash&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;timestamp&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TAGS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;{&quot;role&quot;: &quot;webapplication&quot;, &quot;team&quot;: &quot;ops&quot;, &quot;environment&quot;: &quot;staging&quot;, &quot;name&quot;: &quot;service1&quot;&#39;&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;APPLICATION_NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;service1
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;staging.yaml
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_OPTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&#39;&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/java8
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_RUN_COMMAND&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;app.jar
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;Now what does this look like on the spinnaker side?&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot;&gt;Link to big&lt;/a&gt;
-&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;And in the &lt;code&gt;Deploy Stage&lt;/code&gt; the &lt;code&gt;Advanced Settings&lt;/code&gt; of our &lt;code&gt;Server Group&lt;/code&gt;
-&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipelines2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;And in the &lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; the &lt;code class=&quot;highlighter-rouge&quot;&gt;Advanced Settings&lt;/code&gt; of our &lt;code class=&quot;highlighter-rouge&quot;&gt;Server Group&lt;/code&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipelines2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now our AMI has all the information it needs upon booting up in its autoscaling group to correctly tag itself, download its jar file, add additional motd information, and setup configuration for the application to boot.&lt;/p&gt;
 
-&lt;p&gt;If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the &lt;code&gt;Deploy Stage&lt;/code&gt; adds information about the deploy to the &lt;code&gt;deployedServerGroups&lt;/code&gt; array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-shell&quot; data-lang=&quot;shell&quot;&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;account&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;staging,capacity&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;desired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+&lt;p&gt;If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the &lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; adds information about the deploy to the &lt;code class=&quot;highlighter-rouge&quot;&gt;deployedServerGroups&lt;/code&gt; array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;account&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;staging,capacity&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;desired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
 &lt;span class=&quot;nv&quot;&gt;parentStage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;23452655­c6de­4aac­b529­55e1357dfee7, &lt;span class=&quot;nv&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;us­east1,
 &lt;span class=&quot;nv&quot;&gt;ami&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ami­999af013, &lt;span class=&quot;nv&quot;&gt;storeType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ebs, &lt;span class=&quot;nv&quot;&gt;vmType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;pv, &lt;span class=&quot;nv&quot;&gt;serverGroup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;service1-049&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Specifically, I created a jenkins job which accepted &lt;code&gt;${ deployedServerGroups[0].serverGroup }&lt;/code&gt; and then accessed the cluster by looking up the tag via aws cli.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Specifically, I created a jenkins job which accepted &lt;code class=&quot;highlighter-rouge&quot;&gt;${ deployedServerGroups[0].serverGroup }&lt;/code&gt; and then accessed the cluster by looking up the tag via aws cli.&lt;/p&gt;
 
 &lt;p&gt;Hopefully these are useful tidbits for getting started. Good luck on your pipeline creation!&lt;/p&gt;
 </content>
@@ -141,42 +160,43 @@ base64_userdata: &lt;span class=&quot;s1&quot;&gt;&#39;ZXhwb3J0IFJFVklTSU9OPXMzO
    <link href="/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker.html"/>
    <updated>2015-12-08T00:00:00-07:00</updated>
    <id>/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker</id>
-   <content type="html">&lt;h2&gt;As of release &lt;em&gt;2.54.0&lt;/em&gt;, Gate has changed the way the SAML authentication mechanism is configured. Please follow the &lt;a href=&quot;http://www.spinnaker.io/docs/gate-saml-config&quot;&gt;migration guide&lt;/a&gt;. If you stumbled on this guide looking for how to configure SAML follow the &lt;a href=&quot;http://www.spinnaker.io/docs/securing-spinnaker#section-saml-2-0&quot;&gt;securing spinnaker guide&lt;/a&gt; instead&lt;/h2&gt;
+   <content type="html">
+&lt;h2 id=&quot;as-of-release-2540-gate-has-changed-the-way-the-saml-authentication-mechanism-is-configured-please-follow-the-migration-guidemigration-if-you-stumbled-on-this-guide-looking-for-how-to-configure-saml-follow-the-securing-spinnaker-guidesecuring-spinnaker-instead&quot;&gt;As of release &lt;em&gt;2.54.0&lt;/em&gt;, Gate has changed the way the SAML authentication mechanism is configured. Please follow the &lt;a href=&quot;http://www.spinnaker.io/docs/gate-saml-config&quot;&gt;migration guide&lt;/a&gt;. If you stumbled on this guide looking for how to configure SAML follow the &lt;a href=&quot;http://www.spinnaker.io/docs/securing-spinnaker#section-saml-2-0&quot;&gt;securing spinnaker guide&lt;/a&gt; instead&lt;/h2&gt;
 
 &lt;p&gt;Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.&lt;/p&gt;
 
 &lt;p&gt;At &lt;a href=&quot;https://www.fullcontact.com/&quot;&gt;FullContact&lt;/a&gt; we use &lt;a href=&quot;https://www.okta.com/&quot;&gt;Okta&lt;/a&gt; to handle all of our Authentication which is backed by an LDAP provider called &lt;a href=&quot;https://www.jumpcloud.com/&quot;&gt;JumpCloud&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h1&gt;Setting up Okta&lt;/h1&gt;
+&lt;h1 id=&quot;setting-up-okta&quot;&gt;Setting up Okta&lt;/h1&gt;
 
-&lt;h2&gt;Step 1&lt;/h2&gt;
+&lt;h2 id=&quot;step-1&quot;&gt;Step 1&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_1.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;step-2&quot;&gt;Step 2&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Step 2&lt;/h2&gt;
+&lt;h2 id=&quot;step-3&quot;&gt;Step 3&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_2.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;step-4&quot;&gt;Step 4&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Step 3&lt;/h2&gt;
+&lt;h1 id=&quot;setting-up-spinnaker&quot;&gt;Setting up Spinnaker&lt;/h1&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_3.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;We use the &lt;code class=&quot;highlighter-rouge&quot;&gt;InstallSpinnaker.sh&lt;/code&gt; script provided by the Spinnaker team here &lt;a href=&quot;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&quot;&gt;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2&gt;Step 4&lt;/h2&gt;
+&lt;p&gt;Spinnaker itself is broken into several microservices. Looking at &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt&lt;/code&gt; you should see all the different service folders here.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-saml/spinnaker_okta_integration_4.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;h1&gt;Setting up Spinnaker&lt;/h1&gt;
-
-&lt;p&gt;We use the &lt;code&gt;InstallSpinnaker.sh&lt;/code&gt; script provided by the Spinnaker team here &lt;a href=&quot;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&quot;&gt;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Spinnaker itself is broken into several microservices. Looking at &lt;code&gt;/opt&lt;/code&gt; you should see all the different service folders here.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;$ ls /opt
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls /opt
 clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdriver  userdata
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Looking at the &lt;code&gt;/opt/spinnaker/config&lt;/code&gt; directory we&amp;#39;ll find all the configurations from the different services. We can override any configuration value with an &lt;code&gt;appname-local.yml&lt;/code&gt; file. The ones we are going to change are &lt;code&gt;gate-local.yml&lt;/code&gt; and &lt;code&gt;settings.js&lt;/code&gt;. When making changes to these files you&amp;#39;ll have to restart their respective service and/or regenerate their configuration file. &lt;code&gt;service gate restart&lt;/code&gt; and &lt;code&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;h2&gt;Gate configuration&lt;/h2&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;s&quot;&gt;gate-local.yml&lt;/span&gt;
+&lt;p&gt;Looking at the &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/spinnaker/config&lt;/code&gt; directory we’ll find all the configurations from the different services. We can override any configuration value with an &lt;code class=&quot;highlighter-rouge&quot;&gt;appname-local.yml&lt;/code&gt; file. The ones we are going to change are &lt;code class=&quot;highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;settings.js&lt;/code&gt;. When making changes to these files you’ll have to restart their respective service and/or regenerate their configuration file. &lt;code class=&quot;highlighter-rouge&quot;&gt;service gate restart&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;gate-configuration&quot;&gt;Gate configuration&lt;/h2&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;gate-local.yml&lt;/span&gt;
 
 &lt;span class=&quot;s&quot;&gt;saml&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
   &lt;span class=&quot;s&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
@@ -188,20 +208,26 @@ clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdrive
   &lt;span class=&quot;s&quot;&gt;keyStoreType&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;JKS&lt;/span&gt;
   &lt;span class=&quot;s&quot;&gt;keyStorePassword&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;somepassword&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
   &lt;span class=&quot;s&quot;&gt;keyStoreAliasName&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;okta&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The above properties &lt;code&gt;url&lt;/code&gt; and &lt;code&gt;certificate&lt;/code&gt; will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;The &lt;code&gt;issuerId&lt;/code&gt; is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id&lt;/p&gt;
+&lt;p&gt;The above properties &lt;code class=&quot;highlighter-rouge&quot;&gt;url&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;certificate&lt;/code&gt; will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.&lt;/p&gt;
 
-&lt;p&gt;The &lt;code&gt;keyStore&lt;/code&gt; is generated using the java keytool utility. Specifically this command:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &quot;okta&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;where &lt;code&gt;okta.cert&lt;/code&gt; is the previously described certificate not base64 encoded. It produces a file called &lt;code&gt;spinnaker.jks&lt;/code&gt; and shares the alias with &lt;code&gt;keyStoreAliasName&lt;/code&gt; in the &lt;code&gt;gate-local.yml&lt;/code&gt; config. The keytool will prompt for a password which will be shared in the &lt;code&gt;gate-local.yml&lt;/code&gt; config. The &lt;code&gt;spinnaker.jks&lt;/code&gt; file should be placed with your local config or otherwise specified with a correct path in the config to it&amp;#39;s location.&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;issuerId&lt;/code&gt; is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id&lt;/p&gt;
 
-&lt;p&gt;Now restart gate &lt;code&gt;service gate restart&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;keyStore&lt;/code&gt; is generated using the java keytool utility. Specifically this command:&lt;/p&gt;
 
-&lt;h2&gt;Webapp configuration&lt;/h2&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;settings.js
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &quot;okta&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;where &lt;code class=&quot;highlighter-rouge&quot;&gt;okta.cert&lt;/code&gt; is the previously described certificate not base64 encoded. It produces a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;spinnaker.jks&lt;/code&gt; and shares the alias with &lt;code class=&quot;highlighter-rouge&quot;&gt;keyStoreAliasName&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; config. The keytool will prompt for a password which will be shared in the &lt;code class=&quot;highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; config. The &lt;code class=&quot;highlighter-rouge&quot;&gt;spinnaker.jks&lt;/code&gt; file should be placed with your local config or otherwise specified with a correct path in the config to it’s location.&lt;/p&gt;
+
+&lt;p&gt;Now restart gate &lt;code class=&quot;highlighter-rouge&quot;&gt;service gate restart&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;webapp-configuration&quot;&gt;Webapp configuration&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;settings.js
 
 window.spinnakerSettings = {
   gateUrl: `${gateUrl}`,
@@ -255,17 +281,19 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
   &#39;ap-southeast-2&#39;: [&#39;ap-southeast-2a&#39;, &#39;ap-southeast-2b&#39;],
   &#39;sa-east-1&#39;: [&#39;sa-east-1a&#39;, &#39;sa-east-1b&#39;]
 };
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;This is actually the normal settings.js but we had to add a few extra configuration options which were:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;authEndpoint&lt;/code&gt; this should be &lt;code&gt;https://YOUR_GATE_HOST/auth/info&lt;/code&gt;. Normally this is running on localhost:8084&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;authEnabled&lt;/code&gt; should be set to &lt;code&gt;true&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;authEndpoint&lt;/code&gt; this should be &lt;code class=&quot;highlighter-rouge&quot;&gt;https://YOUR_GATE_HOST/auth/info&lt;/code&gt;. Normally this is running on localhost:8084&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;authEnabled&lt;/code&gt; should be set to &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Now run &lt;code&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt; for the settings to regenerate.&lt;/p&gt;
+&lt;p&gt;Now run &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt; for the settings to regenerate.&lt;/p&gt;
 
-&lt;h1&gt;How this works&lt;/h1&gt;
+&lt;h1 id=&quot;how-this-works&quot;&gt;How this works&lt;/h1&gt;
 
 &lt;p&gt;When hitting your spinnaker instance with authEnabled it will redirect to the earlier saml url configuration setting we provided to gate. Gate will create a signed message asking for access from Okta. Okta will ask them to sign into their account and redirect them back to spinnaker. Spinnaker validates the returned message signature using the certificate gate has access to.&lt;/p&gt;
 
@@ -282,45 +310,47 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
    <link href="/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html"/>
    <updated>2014-11-21T00:00:00-07:00</updated>
    <id>/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure</id>
-   <content type="html">&lt;p&gt;&lt;a href=&quot;https://github.com/tobami/littlechef&quot;&gt;Littlechef&lt;/a&gt; is a library allowing one to use chef without a centralized server orchestrating configuration management. It simplifies the testing and deployment model for managing servers by removing a layer from the stack. What this does is let you provision servers using your cli or programmatically in a similar fashion to ansible.&lt;/p&gt;
+   <content type="html">
+&lt;p&gt;&lt;a href=&quot;https://github.com/tobami/littlechef&quot;&gt;Littlechef&lt;/a&gt; is a library allowing one to use chef without a centralized server orchestrating configuration management. It simplifies the testing and deployment model for managing servers by removing a layer from the stack. What this does is let you provision servers using your cli or programmatically in a similar fashion to ansible.&lt;/p&gt;
 
 &lt;p&gt;Recently I was snooping on another team who was doing some work to get chef-solo working in their infrastructure and made a brief comment about littlechef to see if they were moving to it. They made two comments&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/Selection_073.png&quot; alt=&quot;Asking about our workflow with littlechef&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/Selection_073.png&quot; alt=&quot;Asking about our workflow with littlechef&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;What I took from the above were essentially questions about our workflow with littlechef. How can we test our changes? How do we know our changes will actually work? How do we not mess up real environments? Below is generally how our team makes changes with chef using littlechef. This works for a team of ~25 developers where 3-4 people are focused mostly on chef throughout the day. We manage ~200+ nodes.&lt;/p&gt;
 
 &lt;p&gt;Given that we are attempting to change a recipe that affects all web nodes:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Write unit test with chefspec expecting this change.&lt;/li&gt;
-&lt;li&gt;Run &lt;code&gt;fix&lt;/code&gt; against a specific web node in our &lt;em&gt;test&lt;/em&gt; environment. Ensure that the run did not error. This probably looks like &lt;code&gt;fix node:web-n01.test.mydns.com&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;SSH on to that specific web node and make sure our expected change occurred&lt;/li&gt;
-&lt;li&gt;Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.&lt;/li&gt;
+  &lt;li&gt;Write unit test with chefspec expecting this change.&lt;/li&gt;
+  &lt;li&gt;Run &lt;code class=&quot;highlighter-rouge&quot;&gt;fix&lt;/code&gt; against a specific web node in our &lt;em&gt;test&lt;/em&gt; environment. Ensure that the run did not error. This probably looks like &lt;code class=&quot;highlighter-rouge&quot;&gt;fix node:web-n01.test.mydns.com&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;SSH on to that specific web node and make sure our expected change occurred&lt;/li&gt;
+  &lt;li&gt;Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;If this change includes adding a new community cookbook there is an extra step required which is sync the cookbooks locally before attempting to provision that node with littlechef.&lt;/p&gt;
 
 &lt;p&gt;If this change is required on a group of nodes this is still possible and again would still take place in the &lt;em&gt;test&lt;/em&gt; environment.&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;fix --env=test_dfw nodes_with_role:cassandra&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;fix --env=test_dfw nodes_with_role:cassandra&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our &lt;code&gt;fix&lt;/code&gt; commands with the specific region environment. If you want to deploy to all environments you could just run several &lt;code&gt;fix&lt;/code&gt; commands in-tandem or one after the other.&lt;/p&gt;
+&lt;p&gt;Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our &lt;code class=&quot;highlighter-rouge&quot;&gt;fix&lt;/code&gt; commands with the specific region environment. If you want to deploy to all environments you could just run several &lt;code class=&quot;highlighter-rouge&quot;&gt;fix&lt;/code&gt; commands in-tandem or one after the other.&lt;/p&gt;
 
-&lt;p&gt;It is important to use the environment attribute when using &lt;code&gt;nodes_with_role&lt;/code&gt; so if they are not specific enough an accidental provision of other environments does not happen.&lt;/p&gt;
+&lt;p&gt;It is important to use the environment attribute when using &lt;code class=&quot;highlighter-rouge&quot;&gt;nodes_with_role&lt;/code&gt; so if they are not specific enough an accidental provision of other environments does not happen.&lt;/p&gt;
 
-&lt;p&gt;Going back to that pull request where we had a green checkmark. Merging that branch into master doesn&amp;#39;t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.&lt;/p&gt;
+&lt;p&gt;Going back to that pull request where we had a green checkmark. Merging that branch into master doesn’t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/chef_run.png&quot; alt=&quot;Chef deploying to our preprod syd environment&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/chef_run.png&quot; alt=&quot;Chef deploying to our preprod syd environment&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;After deploying to all lower environments we typically verify that our expected change happened and begin deploying to production. Production deploys are similar to our lower environments with one key difference. The order of environment deploys first goes to our inactive standby environment, and after completion goes on to our active production environments. We do not have to do a failover to do a successful deploy.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/deploy%20order.png&quot; alt=&quot;Order of chef deploys for production&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/littlechef_workflow/deploy%20order.png&quot; alt=&quot;Order of chef deploys for production&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Provisioning or creating new nodes&lt;/h2&gt;
+&lt;h2 id=&quot;provisioning-or-creating-new-nodes&quot;&gt;Provisioning or creating new nodes&lt;/h2&gt;
 
 &lt;p&gt;To provision or create new nodes with littlechef a previous coworker &lt;a href=&quot;http://davehking.com/&quot;&gt;Dave H King&lt;/a&gt; made a library (&lt;a href=&quot;https://github.com/tildedave/littlechef-rackspace&quot;&gt;Littlechef-Rackspace&lt;/a&gt;) to make this really easy on Rackspace. It allows us to run a single command which brings up a node in our environment and runs plugins after it is created. The plugins we currently run install chef via omnibus and creates the node json file with extra information specific to how we setup our environment (private ips, labeling, environment). After the node is active and plugins have been ran it can take a runlist to configure the node as needed and add it to the node.json file.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;fix-rackspace create &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fix-rackspace create &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
     --username &amp;lt;username&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
     --key &amp;lt;api_key&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
     --region &amp;lt;region&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
@@ -332,9 +362,12 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
     --runlist &lt;span class=&quot;s2&quot;&gt;&quot;role[base],role[reach_base],role[reach_dfw_preprod],role[web]&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
     --plugins &lt;span class=&quot;s2&quot;&gt;&quot;omnibus_install_11, bootstrap&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
     --post-plugins &lt;span class=&quot;s2&quot;&gt;&quot;add_role&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins are &lt;a href=&quot;https://gist.github.com/riltsken/c9996cf9af2c6b9ecade&quot;&gt;here&lt;/a&gt; and our post plugins after the runlist has been ran are &lt;a href=&quot;https://gist.github.com/riltsken/44103d0e495827758fbe&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;s&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;imageid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;imageid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;s&quot;&gt;flavor&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;flavorid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;s&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;omnibus_install_11&lt;/span&gt;
@@ -360,10 +393,15 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
   &lt;span class=&quot;s&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;s&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[reach_web]&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;And the new resulting command to spin up a web node in the dfw region for our preprod environment&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</content>
  </entry>
  
  <entry>
@@ -371,64 +409,56 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
    <link href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html"/>
    <updated>2014-09-21T00:00:00-06:00</updated>
    <id>/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel</id>
-   <content type="html">&lt;h2&gt;Foreword&lt;/h2&gt;
-
+   <content type="html">
+&lt;h2 id=&quot;foreword&quot;&gt;Foreword&lt;/h2&gt;
 &lt;p&gt;The Cloud Control Panel at Rackspace has ~30 developers split into 8 subteams. All of them are expected to have the ability to modify any part of the system, however, each subteam has some type of specialized knowledge of the product or infrastructure. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/Selection_052.png&quot; alt=&quot;Github merge graph&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/Selection_052.png&quot; alt=&quot;Github merge graph&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Development to Production?&lt;/h2&gt;
-
+&lt;h2 id=&quot;development-to-production&quot;&gt;Development to Production?&lt;/h2&gt;
 &lt;p&gt;Our pipeline is fairly standard in terms of what we want to happen from development to production. Branch, merge, test, and deploy. We use a private github repository. When a developer takes a story from the backlog they create a feature branch with git. The developer will add the feature and all appropriate unit, integration, and acceptance tests to that branch. During feature development they ask for feedback or a code review and a +1 means they are allowed to merge. This is important as &lt;em&gt;all&lt;/em&gt; branches require a code review before merging. I want to define acceptance level testing as this is a term we use on our team for tests which use selenium to execute real scenarios a user would take in the browser working with the control panel using real upstream APIs.&lt;/p&gt;
 
-&lt;p&gt;Before merging developers run their branch against a builder with their latest hash. Branch builds are a series of jenkins jobs which do things like run all of the unit / integration tests, a subset of the acceptance tests and linting the code. If everything is good the build triggers a script which marks the branch as &amp;quot;ok to merge&amp;quot; with a checkmark on github. If it does not pass it gives it an X or &amp;quot;bad to merge&amp;quot; with a link to the failed job.&lt;/p&gt;
+&lt;p&gt;Before merging developers run their branch against a builder with their latest hash. Branch builds are a series of jenkins jobs which do things like run all of the unit / integration tests, a subset of the acceptance tests and linting the code. If everything is good the build triggers a script which marks the branch as “ok to merge” with a checkmark on github. If it does not pass it gives it an X or “bad to merge” with a link to the failed job.&lt;/p&gt;
 
 &lt;p&gt;Our pipeline has had the same structure for several years, but evolved in how we used it.
-Merging code runs the same tasks as the branch builder and more. The additional tasks including compiling, creating a tarball as a distributable, and storing it as an artifact on jenkins. For brevity I will be referring to this as a &amp;quot;dist&amp;quot;. After the dist is created it triggers a deploy job sending this code to a preprod, staging, and preview environment[1]. Preprod matches production exactly. Staging uses API&amp;#39;s that upstream teams have deployed to their preprod environment but not production. Preview is the same as preprod but, with all feature flags flipped on. At this point our acceptance testing suite kicks off and developers validate that they didn&amp;#39;t break anything in the lower environments. If everything is considered good that dist is deployed to production.&lt;/p&gt;
+Merging code runs the same tasks as the branch builder and more. The additional tasks including compiling, creating a tarball as a distributable, and storing it as an artifact on jenkins. For brevity I will be referring to this as a “dist”. After the dist is created it triggers a deploy job sending this code to a preprod, staging, and preview environment&lt;a href=&quot;The actual deploy process is a bit detailed and left for followup post. Suffice to say it is basically downloading the artifact from jenkins, un-taring the project, symlinking it to a release directory and restarting some services.&quot;&gt;1&lt;/a&gt;. Preprod matches production exactly. Staging uses API’s that upstream teams have deployed to their preprod environment but not production. Preview is the same as preprod but, with all feature flags flipped on. At this point our acceptance testing suite kicks off and developers validate that they didn’t break anything in the lower environments. If everything is considered good that dist is deployed to production.&lt;/p&gt;
 
-&lt;p&gt;[1]: The actual deploy process is a bit detailed and left for followup post. Suffice to say it is basically downloading the artifact from jenkins, un-taring the project, symlinking it to a release directory and restarting some services.&lt;/p&gt;
+&lt;h2 id=&quot;the-early-days&quot;&gt;The Early Days&lt;/h2&gt;
+&lt;p&gt;In the early days of the Cloud Control Panel our team hovered around ~15 developers. As I mentioned earlier merging triggered deploying to all 3 lower environments and running acceptance level tests against them. This worked okay until we started to grow. As we had more developers join the team we realized that our 30 minute deploy process was taking several hours and even had the possibility of deploying unverified code. How did this happen? As I mentioned previously each merge deployed to the same environment. When we had 5 people merge this would trigger 5 deploys and 5 runs of acceptance level testing. The first round of acceptance tests would be halfway through, but the third merge of code would be on the environment which meant that we don’t know if the tests completed against a single environment. Developer 1 would deploy to production thinking all the tests were green when, in fact, a defect had slipped through.&lt;/p&gt;
 
-&lt;h2&gt;The Early Days&lt;/h2&gt;
-
-&lt;p&gt;In the early days of the Cloud Control Panel our team hovered around ~15 developers. As I mentioned earlier merging triggered deploying to all 3 lower environments and running acceptance level tests against them. This worked okay until we started to grow. As we had more developers join the team we realized that our 30 minute deploy process was taking several hours and even had the possibility of deploying unverified code. How did this happen? As I mentioned previously each merge deployed to the same environment. When we had 5 people merge this would trigger 5 deploys and 5 runs of acceptance level testing. The first round of acceptance tests would be halfway through, but the third merge of code would be on the environment which meant that we don&amp;#39;t know if the tests completed against a single environment. Developer 1 would deploy to production thinking all the tests were green when, in fact, a defect had slipped through.&lt;/p&gt;
-
-&lt;p&gt;We could have done all these tasks in serial and blocked lower environment deploys on a per merge basis, but this didn&amp;#39;t fit our &amp;quot;deploy to production fast&amp;quot; workflow. With five people this would take the fifth person 2.5 hours (30 minutes per merge) to get to production. There are also issues when the 3rd person introduces a defect, but doesn&amp;#39;t find out until an hour later (not fast feedback) so now the people in line have to wait for a revert or fix. We wanted to get code out there faster. It provides a real benefit for our team and customers to see features, changes, and fixes quickly.&lt;/p&gt;
+&lt;p&gt;We could have done all these tasks in serial and blocked lower environment deploys on a per merge basis, but this didn’t fit our “deploy to production fast” workflow. With five people this would take the fifth person 2.5 hours (30 minutes per merge) to get to production. There are also issues when the 3rd person introduces a defect, but doesn’t find out until an hour later (not fast feedback) so now the people in line have to wait for a revert or fix. We wanted to get code out there faster. It provides a real benefit for our team and customers to see features, changes, and fixes quickly.&lt;/p&gt;
 
 &lt;p&gt;It was a chaotic environment. Merging became an arduous task. I had no idea how long it would take me to get to production &lt;em&gt;and&lt;/em&gt; I had to guess as to what code was on the lower environments &lt;em&gt;and&lt;/em&gt; constantly watch for other merges coming in. This did not make for a happy developer. What came about from this chaos was an idea called the bus station.&lt;/p&gt;
 
-&lt;h2&gt;The Bus Station&lt;/h2&gt;
-
+&lt;h2 id=&quot;the-bus-station&quot;&gt;The Bus Station&lt;/h2&gt;
 &lt;p&gt;When a developer merges we take that code all the way to its built dist. Every hour we deploy to the lower environments with the latest &lt;em&gt;good&lt;/em&gt; dist that was built. We called this a bus. At this point the acceptance tests run against the lower environments, which could contain several merges from different developers. The developers on that bus will verify their changes as good or bad and it gets sent off to production. This provides developers with a very structured time period in which their code will be deployed.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/CCPPipeline.png&quot; style=&quot;max-width: 1500px&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Now, this system isn&amp;#39;t perfect either and has some drawbacks. Having a dist that takes too long to build right before the next bus? Wait another hour. Someone introduces a defect which affects the whole bus? Wait another hour.&lt;/p&gt;
+&lt;p&gt;Now, this system isn’t perfect either and has some drawbacks. Having a dist that takes too long to build right before the next bus? Wait another hour. Someone introduces a defect which affects the whole bus? Wait another hour.&lt;/p&gt;
 
 &lt;p&gt;This system, however, has created an organized process for our team. I have a better idea for knowing when code will be deployed. Other people on the team can help spot defects as they are working together to deploy rather than individually. The team has built a great deal of tooling around the bus station to interact with our IRC channel and dashboards for dispersing knowledge about the state of a current deploy&lt;/p&gt;
 
-&lt;h2&gt;Tooling - IRC Commands&lt;/h2&gt;
-
+&lt;h2 id=&quot;tooling---irc-commands&quot;&gt;Tooling - IRC Commands&lt;/h2&gt;
 &lt;p&gt;We have a custom IRC bot with several useful commands to interact with deploys.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/preprod_commands.png&quot; style=&quot;max-width: 1200px&quot; /&gt;
-&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/build_commands.png&quot; alt=&quot;Commands for tracking the current deploy as good or bad&quot;&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/build_commands.png&quot; alt=&quot;Commands for tracking the current deploy as good or bad&quot; /&gt;
 &lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/acceptance_ownership_commands.png&quot; style=&quot;max-width: 800px&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Tooling - Dashboards&lt;/h2&gt;
+&lt;h2 id=&quot;tooling---dashboards&quot;&gt;Tooling - Dashboards&lt;/h2&gt;
 
 &lt;p&gt;Several dashboards have been created for understanding where the current bus is at in the pipeline and what the current health of our acceptance level tests are.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/bus_dashboard_summary.png&quot; alt=&quot;Dashboard at the top of jenkins&quot;&gt;
-&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/Selection_056.png&quot; alt=&quot;A detailed dashboard for the pipeline&quot;&gt;
-&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/acceptance_test.png&quot; alt=&quot;Acceptance test health for the current bus&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/bus_dashboard_summary.png&quot; alt=&quot;Dashboard at the top of jenkins&quot; /&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/Selection_056.png&quot; alt=&quot;A detailed dashboard for the pipeline&quot; /&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/acceptance_test.png&quot; alt=&quot;Acceptance test health for the current bus&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Not All Pipelines Are Created Equal&lt;/h2&gt;
+&lt;h2 id=&quot;not-all-pipelines-are-created-equal&quot;&gt;Not All Pipelines Are Created Equal&lt;/h2&gt;
+&lt;p&gt;The above tooling has all been built around our large team size. Not all continuous delivery pipelines have to follow what we have done, and I would actually argue most shouldn’t. We have another service which has only ~6 contributors and 1 or 2 merges a day. That project has a much more manual and rudimentary deploy scheme where team members have to communicate with each other before merging to ensure they don’t break the pipeline on deploys. This pipeline took less than a week to setup, compared to our main project above where individual team members have built up dashboards and irc commands over several years.&lt;/p&gt;
 
-&lt;p&gt;The above tooling has all been built around our large team size. Not all continuous delivery pipelines have to follow what we have done, and I would actually argue most shouldn&amp;#39;t. We have another service which has only ~6 contributors and 1 or 2 merges a day. That project has a much more manual and rudimentary deploy scheme where team members have to communicate with each other before merging to ensure they don&amp;#39;t break the pipeline on deploys. This pipeline took less than a week to setup, compared to our main project above where individual team members have built up dashboards and irc commands over several years.&lt;/p&gt;
-
-&lt;h2&gt;The Future&lt;/h2&gt;
-
-&lt;p&gt;This isn&amp;#39;t the end for our deployment pipeline. I would ideally like to see our individual applications for the control panel deployed independently. Currently we tarball our whole repo at once for deploys. Our javascript/css upload to cdn, python/django web backend, twisted and node.js services should all be separate deploy pipelines with their tests ran individually so that they can be deployed faster and with less dependencies. There are still many challenges ahead for us to reach this level, but doing so provides benefits to scaling our team and application.&lt;/p&gt;
+&lt;h2 id=&quot;the-future&quot;&gt;The Future&lt;/h2&gt;
+&lt;p&gt;This isn’t the end for our deployment pipeline. I would ideally like to see our individual applications for the control panel deployed independently. Currently we tarball our whole repo at once for deploys. Our javascript/css upload to cdn, python/django web backend, twisted and node.js services should all be separate deploy pipelines with their tests ran individually so that they can be deployed faster and with less dependencies. There are still many challenges ahead for us to reach this level, but doing so provides benefits to scaling our team and application.&lt;/p&gt;
 </content>
  </entry>
  
@@ -437,49 +467,50 @@ Merging code runs the same tasks as the branch builder and more. The additional 
    <link href="/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html"/>
    <updated>2014-05-25T00:00:00-06:00</updated>
    <id>/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon</id>
-   <content type="html">&lt;p&gt;Last week I attended &lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;Gluecon&lt;/a&gt;, a developer-centric Cloud+DevOps event in Broomfield, Colorado. Whenever I join one of these conferences (about once or twice a year), I build out goals to maximize my time at the event and the return on investment for my role on the team. In addition, I spoke with many developers from all levels of experience to determine what value these conferences add. The results, while all over the spectrum, speak one clear message: team managers need to send their developers to more conferences. It is one of the best ways to help them grow (and make you as a manager look better). While going to a conference as a speaker holds completely different benefits I will be focusing on what an attendee gets out of it.&lt;/p&gt;
+   <content type="html">
+&lt;p&gt;Last week I attended &lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;Gluecon&lt;/a&gt;, a developer-centric Cloud+DevOps event in Broomfield, Colorado. Whenever I join one of these conferences (about once or twice a year), I build out goals to maximize my time at the event and the return on investment for my role on the team. In addition, I spoke with many developers from all levels of experience to determine what value these conferences add. The results, while all over the spectrum, speak one clear message: team managers need to send their developers to more conferences. It is one of the best ways to help them grow (and make you as a manager look better). While going to a conference as a speaker holds completely different benefits I will be focusing on what an attendee gets out of it.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/gluecon_transparent_logo.png&quot; alt=&quot;Gluecon 2014 logo&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/gluecon_transparent_logo.png&quot; alt=&quot;Gluecon 2014 logo&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2&gt;This year, I spent some time asking other attendees what their take-away goals for GlueCon were&lt;/h2&gt;
+&lt;h2 id=&quot;this-year-i-spent-some-time-asking-other-attendees-what-their-take-away-goals-for-gluecon-were&quot;&gt;This year, I spent some time asking other attendees what their take-away goals for GlueCon were&lt;/h2&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;My manager wanted me to research potential new libraries or technologies in the community at large and this conference has some specific ones we are interested in using. I am using the conference as one way to gather information about whether or not we want to use it.&lt;/p&gt;
+  &lt;p&gt;My manager wanted me to research potential new libraries or technologies in the community at large and this conference has some specific ones we are interested in using. I am using the conference as one way to gather information about whether or not we want to use it.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;This developer was looking to explore ideas and bring insight back home for upcoming project decisions. They don&amp;#39;t necessarily know what questions to ask, but instead plan to absorb knowledge for any and all possible options. It is also a way for a developer to see what other companies are using that technology to help build confidence in using it.&lt;/p&gt;
+&lt;p&gt;This developer was looking to explore ideas and bring insight back home for upcoming project decisions. They don’t necessarily know what questions to ask, but instead plan to absorb knowledge for any and all possible options. It is also a way for a developer to see what other companies are using that technology to help build confidence in using it.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;As a developer, I wanted to attend this conference as a form of personal education so I know what other tools exist out there and learn about how others use them in their environments.&lt;/p&gt;
+  &lt;p&gt;As a developer, I wanted to attend this conference as a form of personal education so I know what other tools exist out there and learn about how others use them in their environments.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;This is a way for them to advance their own knowledge in a domain and add a new tool to their box they might not have heard about. The more options your developer has the more equipped they are to handle problems in their projects.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Networking with other developers who have more experience with the specific technologies I am looking at. Building up this rapport allows me to ask them questions later down the road when I face issues using it and allowing me to easily bypass common pitfalls when I begin to use that technology.&lt;/p&gt;
+  &lt;p&gt;Networking with other developers who have more experience with the specific technologies I am looking at. Building up this rapport allows me to ask them questions later down the road when I face issues using it and allowing me to easily bypass common pitfalls when I begin to use that technology.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Personally this is one of my favorites. Networking is a huge boon for a developer to grow in their field. Hearing about projects and frameworks is one thing, but building a web of experts that can be referred to later is something else completely.&lt;/p&gt;
 
-&lt;h2&gt;Some key added benefits that developers might not mention include&lt;/h2&gt;
+&lt;h2 id=&quot;some-key-added-benefits-that-developers-might-not-mention-include&quot;&gt;Some key added benefits that developers might not mention include&lt;/h2&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Sending developers in a small group&lt;/p&gt;
+  &lt;p&gt;Sending developers in a small group&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;While it may seem scary pulling several developers out of project development for several days to attend a conference it is hugely beneficial. Sending a group of developers is a team building activity with direct educational benefits. Attending a conference with a coworker helps them form a stronger bond since they are interacting outside of the work place.&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Breaking up the monotony of projects on the job&lt;/p&gt;
+  &lt;p&gt;Breaking up the monotony of projects on the job&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;Sometimes developers can go for weeks or months working on the same project without anything to really shake things up. This means tedious repetition and routine causing boredom or restlessness in a developer. By sending them to a conference it can give them renewed interest in their work.&lt;/p&gt;
 
-&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;The first conference I attended was DjangoCon in 2008 held at Google. I was working as an intern for a small non-profit company building a CRM. It was one of the main reasons for the amount of excitement I held for my project.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/djangocon_logo.png&quot; alt=&quot;Djangocon 2008 logo&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/djangocon_logo.png&quot; alt=&quot;Djangocon 2008 logo&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;For the developers, please attend a conference if you have never been. For the managers, I hope you encourage your developers to pick out a meaningful conference to attend this year. A great place to find upcoming conferences is on &lt;a href=&quot;http://lanyrd.com/&quot;&gt;Lanyrd&lt;/a&gt;.&lt;/p&gt;
 </content>
@@ -490,7 +521,8 @@ Merging code runs the same tasks as the branch builder and more. The additional 
    <link href="/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone.html"/>
    <updated>2014-04-22T00:00:00-06:00</updated>
    <id>/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone</id>
-   <content type="html">&lt;p&gt;Last weekend I had the pleasure of participating in &lt;a href=&quot;http://vthacks.com/&quot;&gt;VTHacks&lt;/a&gt; as a sponsor and judge representing Rackspace. This was not &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;https://www.facebook.com/media/set/?set=a.10150347775910404.349700.500210403&amp;amp;type=1&amp;amp;l=5fcdd086bf&quot;&gt;my&lt;/a&gt;&lt;/span&gt; &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;http://www.centralfloridafuture.com/mobile/students-startup-winning-business-1.2605980&quot;&gt;first&lt;/a&gt;&lt;/span&gt; &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;http://blogs.technet.com/b/bizspark_group_blog/archive/2012/09/19/highlights-from-startupweekend-blacksburg.aspx&quot;&gt;hackathon&lt;/a&gt;&lt;/span&gt;, but it was definitely one of the largest I have attended. The event boasted an RSVP count of ~600 and had sponsors from several big companies which can be found on their event page. The venue was &lt;a href=&quot;http://en.wikipedia.org/wiki/Cassell_Coliseum&quot;&gt;Cassel Coliseum&lt;/a&gt; located at Virginia Tech in Blacksburg, VA.&lt;/p&gt;
+   <content type="html">
+&lt;p&gt;Last weekend I had the pleasure of participating in &lt;a href=&quot;http://vthacks.com/&quot;&gt;VTHacks&lt;/a&gt; as a sponsor and judge representing Rackspace. This was not &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;https://www.facebook.com/media/set/?set=a.10150347775910404.349700.500210403&amp;amp;type=1&amp;amp;l=5fcdd086bf&quot;&gt;my&lt;/a&gt;&lt;/span&gt; &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;http://www.centralfloridafuture.com/mobile/students-startup-winning-business-1.2605980&quot;&gt;first&lt;/a&gt;&lt;/span&gt; &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;http://blogs.technet.com/b/bizspark_group_blog/archive/2012/09/19/highlights-from-startupweekend-blacksburg.aspx&quot;&gt;hackathon&lt;/a&gt;&lt;/span&gt;, but it was definitely one of the largest I have attended. The event boasted an RSVP count of ~600 and had sponsors from several big companies which can be found on their event page. The venue was &lt;a href=&quot;http://en.wikipedia.org/wiki/Cassell_Coliseum&quot;&gt;Cassel Coliseum&lt;/a&gt; located at Virginia Tech in Blacksburg, VA.&lt;/p&gt;
 
 &lt;p&gt;Hackathons are now gaining traction as technology becomes more open and available. These events have slowly built up from a group of friends getting together to massive venues bringing people from across the country to work on projects. I was incredibly surprised at the amount of hardware projects specifically at VTHacks. I saw people using VR with the Oculus Rift and combining it with the Kinect to create a virtual environment where two people could interact with each other together. I saw drones covering the entire court, and some taking advantage of google glass to interact with a camera connected to it.&lt;/p&gt;
 
@@ -498,7 +530,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;As for how I participated in VTHacks it mostly involved blogging and mentoring. I spent the majority of my time engaging with the teams and ensuring they had everything they needed to succeed in terms of technology questions, free hosting, or what I do on a daily basis as a developer. On Sunday I participated as a judge asking teams what they built and any hurdles they encountered, if at all. In particular we were looking to give out a prize from Rackspace to a team. We actually ended up announcing three winners, &lt;a href=&quot;https://twitter.com/lockboxcloud&quot;&gt;LockBox&lt;/a&gt; (innovative use of file uploads and security), PersonaliAds (tackling an interesting domain), and Space Game in Space (possibly the youngest hackers participating who were in Middle School using threads and networking with Java!)&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/rackspace_winners.png&quot; alt=&quot;winners&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/rackspace_winners.png&quot; alt=&quot;winners&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I would like to thank &lt;a href=&quot;https://twitter.com/zacklytle&quot;&gt;Zack Lytle&lt;/a&gt; for giving me the opportunity to attend and help as he did most of the work with organizing Rackspace as a sponsor and I just kind of showed up to help :).&lt;/p&gt;
 
@@ -511,18 +543,19 @@ Merging code runs the same tasks as the branch builder and more. The additional 
    <link href="/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html"/>
    <updated>2014-04-19T00:00:00-06:00</updated>
    <id>/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring</id>
-   <content type="html">&lt;p&gt;In the &lt;a href=&quot;/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html&quot;&gt;Server Message Of The Day (MOTD) post&lt;/a&gt;, I mentioned the importance of sharing &lt;a href=&quot;http://en.wikipedia.org/wiki/Tribal_knowledge&quot;&gt;tribal knowledge&lt;/a&gt; across teams on fixing infrastructure issues. When any of our monitoring alarms kick off, any team member should be equipped to take action on the alarm, but we operate with so many different technologies that no one person could possibly be an expert in all of them. Most operations teams create &lt;a href=&quot;http://en.wikipedia.org/wiki/Runbook&quot;&gt;runbooks&lt;/a&gt; for common tasks, but we took it one step further and created runbooks for every alarm in our system. They don&amp;#39;t exactly cover every possible reason for an alarm triggering, but will always help to provide context for someone that doesn&amp;#39;t regularly deal with that subsystem.&lt;/p&gt;
+   <content type="html">
+&lt;p&gt;In the &lt;a href=&quot;/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html&quot;&gt;Server Message Of The Day (MOTD) post&lt;/a&gt;, I mentioned the importance of sharing &lt;a href=&quot;http://en.wikipedia.org/wiki/Tribal_knowledge&quot;&gt;tribal knowledge&lt;/a&gt; across teams on fixing infrastructure issues. When any of our monitoring alarms kick off, any team member should be equipped to take action on the alarm, but we operate with so many different technologies that no one person could possibly be an expert in all of them. Most operations teams create &lt;a href=&quot;http://en.wikipedia.org/wiki/Runbook&quot;&gt;runbooks&lt;/a&gt; for common tasks, but we took it one step further and created runbooks for every alarm in our system. They don’t exactly cover every possible reason for an alarm triggering, but will always help to provide context for someone that doesn’t regularly deal with that subsystem.&lt;/p&gt;
 
-&lt;p&gt;Our runbooks are composed of the node&amp;#39;s title and definition, its role in the system, and important config files. After that block is a section for all the system&amp;#39;s monitoring alerts and what actions you can take to investigate or fix them. This is one of the runbooks for Cassandra:&lt;/p&gt;
+&lt;p&gt;Our runbooks are composed of the node’s title and definition, its role in the system, and important config files. After that block is a section for all the system’s monitoring alerts and what actions you can take to investigate or fix them. This is one of the runbooks for Cassandra:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/node_description.png&quot; alt=&quot;A description of the nodes role and configuration files&quot;&gt;
-&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/context_and_actions.png&quot; alt=&quot;The actions we expect someone to take when initially debugging an issue when that alarm triggers&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/node_description.png&quot; alt=&quot;A description of the nodes role and configuration files&quot; /&gt;
+&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/context_and_actions.png&quot; alt=&quot;The actions we expect someone to take when initially debugging an issue when that alarm triggers&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Triggered alarms link the runbook&lt;/h2&gt;
+&lt;h2 id=&quot;triggered-alarms-link-the-runbook&quot;&gt;Triggered alarms link the runbook&lt;/h2&gt;
 
-&lt;p&gt;We use IRC for team communication since we&amp;#39;re all distributed. The alerts will stream into the channel via bot with direct links to the runbooks and every triggered alarm. While we do have a proper escalation path through &lt;a href=&quot;https://www.pagerduty.com/&quot;&gt;PagerDuty&lt;/a&gt;, this keeps the whole team aware of issues and gives anyone an easy path for investigation and action.&lt;/p&gt;
+&lt;p&gt;We use IRC for team communication since we’re all distributed. The alerts will stream into the channel via bot with direct links to the runbooks and every triggered alarm. While we do have a proper escalation path through &lt;a href=&quot;https://www.pagerduty.com/&quot;&gt;PagerDuty&lt;/a&gt;, this keeps the whole team aware of issues and gives anyone an easy path for investigation and action.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/irc_example.png&quot; alt=&quot;One of the ways people get notified of issues and a link to the runbook for what to do&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/irc_example.png&quot; alt=&quot;One of the ways people get notified of issues and a link to the runbook for what to do&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  
@@ -531,22 +564,24 @@ Merging code runs the same tasks as the branch builder and more. The additional 
    <link href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html"/>
    <updated>2014-03-25T04:24:15-06:00</updated>
    <id>/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana</id>
-   <content type="html">&lt;h2&gt;Background&lt;/h2&gt;
+   <content type="html">
+&lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
 
-&lt;p&gt;On my team right now we are using rsyslog with &lt;a href=&quot;http://graylog2.org/&quot;&gt;Graylog2&lt;/a&gt; and &lt;a href=&quot;http://www.elasticsearch.org/&quot;&gt;ElasticSearch&lt;/a&gt; to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it&amp;#39;s own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region&amp;#39;s Graylog2 instance. The original reason for this setup was that we had our logging infrastructure setup before multi-region was in place and we had to make a decision about how much time we wanted to spend setting it up. We chose for the quickest option as we had other product work that needed to get done before improving our logging infrastructure. This has proved to be a costly choice for us. Our current system has degraded to the point where we barely use our Graylog2 interface anymore. There are several reasons for this. One is that it is frustrating to switch between the multiple region interfaces and setup the same filters for each one. Another is that the version of Graylog2 + ElasticSearch we are working with are struggling to keep up with the amount of logs we have. It has gotten to the point where even simple queries executed on Graylog2 cause alerts to fire on our ElasticSearch cluster requiring action from us to help restore it.&lt;/p&gt;
+&lt;p&gt;On my team right now we are using rsyslog with &lt;a href=&quot;http://graylog2.org/&quot;&gt;Graylog2&lt;/a&gt; and &lt;a href=&quot;http://www.elasticsearch.org/&quot;&gt;ElasticSearch&lt;/a&gt; to handle our logging infrastucture. The current setup is not ideal as we are distributed multi-region for our application in 3 datacenters (ORD, DFW, SYD) and each one has it’s own cluster setup to use Graylog2 and ElasticSearch. This means if someone wanted to search through logs you would have to pick that specific region’s Graylog2 instance. The original reason for this setup was that we had our logging infrastructure setup before multi-region was in place and we had to make a decision about how much time we wanted to spend setting it up. We chose for the quickest option as we had other product work that needed to get done before improving our logging infrastructure. This has proved to be a costly choice for us. Our current system has degraded to the point where we barely use our Graylog2 interface anymore. There are several reasons for this. One is that it is frustrating to switch between the multiple region interfaces and setup the same filters for each one. Another is that the version of Graylog2 + ElasticSearch we are working with are struggling to keep up with the amount of logs we have. It has gotten to the point where even simple queries executed on Graylog2 cause alerts to fire on our ElasticSearch cluster requiring action from us to help restore it.&lt;/p&gt;
 
 &lt;p&gt;Our backlog has some stories in place to remedy this situation, but are not on our radar for another few months. We recently had a hackweek and decided to experiment with some ideas and technology on what we want to use. Most of these ideas come from another team at Rackspace working on &lt;a href=&quot;http://www.rackspace.com/cloud/auto-scale/&quot;&gt;Autoscale&lt;/a&gt;. Our idea is slightly modified, but the same general concept. None of this is currently implemented in a production like environment and most of it was setup in a test environment to play around with during our hackweek. The technologies in play here are &lt;a href=&quot;http://logstash.net/&quot;&gt;Logstash&lt;/a&gt;, &lt;a href=&quot;http://www.elasticsearch.org/overview/kibana/&quot;&gt;Kibana&lt;/a&gt;, and ElasticSearch.&lt;/p&gt;
 
-&lt;p&gt;I have to explain our current architecture a little bit first to setup why we would use the solution proposed first. The Cloud Control Panel at Rackspace is hosted in three different datacenters, ORD (US and Europe), DFW (backup), and SYD (Oceanic). All of our US and European traffic goes to ORD, while our Oceanic traffic goes to SYD. DFW is left as a warm backup that is ready in case any issue happens in the other two DC&amp;#39;s. What we didn&amp;#39;t want to do was make the same mistake as before with our logging and have multiple regional interfaces to access our logs. This meant collecting all of our logs and putting it into one datacenter for searching and querying. What that required was having each datacenter ship their logs to the collector which then puts these logs into ElasticSearch. There exists a node in each datacenter, called the broker, which then ships to the collector the logs for that datacenter. So let&amp;#39;s go over this one more time. There is one collector node, one broker node per region shipping to the collector, and all nodes in the same datacenter ship nodes to their specified broker. We can then browse logs through our collector which will be running Kibana.&lt;/p&gt;
+&lt;p&gt;I have to explain our current architecture a little bit first to setup why we would use the solution proposed first. The Cloud Control Panel at Rackspace is hosted in three different datacenters, ORD (US and Europe), DFW (backup), and SYD (Oceanic). All of our US and European traffic goes to ORD, while our Oceanic traffic goes to SYD. DFW is left as a warm backup that is ready in case any issue happens in the other two DC’s. What we didn’t want to do was make the same mistake as before with our logging and have multiple regional interfaces to access our logs. This meant collecting all of our logs and putting it into one datacenter for searching and querying. What that required was having each datacenter ship their logs to the collector which then puts these logs into ElasticSearch. There exists a node in each datacenter, called the broker, which then ships to the collector the logs for that datacenter. So let’s go over this one more time. There is one collector node, one broker node per region shipping to the collector, and all nodes in the same datacenter ship nodes to their specified broker. We can then browse logs through our collector which will be running Kibana.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/multi-region%20logging%20architecture.png&quot; alt=&quot;Full picture of proposed multi-region logging infrastructure&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/multi-region logging architecture.png&quot; alt=&quot;Full picture of proposed multi-region logging infrastructure&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Hackweek&lt;/h2&gt;
+&lt;h2 id=&quot;hackweek&quot;&gt;Hackweek&lt;/h2&gt;
 
 &lt;p&gt;For the hackweek we broke up different portions of the infrastructure to different team members. I tackled setting up the broker node for a region and the collector. Having all nodes in the specified datacenter ship logs to the broker over a private network, which then in turn sent its logs to the collector on a public network over an encrypted channel. Our team already uses logstash for all of our nodes to send metrics to statsd, so most of the initial boostrapping of getting the logstash agent installed and running was already handled. We use Chef and Berkshelf to manage our infrastructure, which means we are using the &lt;a href=&quot;https://github.com/lusis/chef-logstash&quot;&gt;logstash cookbook&lt;/a&gt; at version 0.7.6 at the time of this writing. Earlier versions of the cookbook had all the configuration rules for logstash written as node attributes which we put at the role level. As this method of creating rules was deprecated I moved them into configuration files that sit in the logstash conf.d directory. Logstash reads these config files in order, I found &lt;a href=&quot;https://groups.google.com/forum/#!topic/logstash-users/eNYmpFueHtM&quot;&gt;a convention I liked here&lt;/a&gt; about numbering each config file which I decided to follow.&lt;/p&gt;
 
 &lt;p&gt;To get all nodes in a specific datacenter to send their logs to the broker I decided to use tags to handle forwarding the logs I wanted. An example of what this would look like via config files would be the following&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-erb&quot; data-lang=&quot;erb&quot;&gt;00_input_base.conf
+
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;00_input_base.conf
 
 input {
   file {
@@ -554,7 +589,9 @@ input {
     &#39;type&#39; =&amp;gt; &#39;rackspace-monitoring-agent&#39;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-erb&quot; data-lang=&quot;erb&quot;&gt;01_input_apache.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;01_input_apache.conf
 
 input {
   file {
@@ -568,7 +605,9 @@ input {
     &#39;tags&#39; =&amp;gt; [&#39;broker&#39;]
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-erb&quot; data-lang=&quot;erb&quot;&gt;90_forward_to_broker.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;90_forward_to_broker.conf
 
 output {
   if &#39;broker&#39; in [tags] {
@@ -579,13 +618,16 @@ output {
     }
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/multi-region%20logging%20-%20web%20to%20broker.png&quot; alt=&quot;Specific datacenter logging from application nodes to broker&quot;&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
-&lt;p&gt;Basically what logstash would do is take all new events from the apache error and access logs, tag them with &amp;#39;broker&amp;#39;, and when logstash checks its outputs any events tagged with &amp;#39;broker&amp;#39; would get sent to our broker node. This is useful for us since we use logstash for processing and forwarding metrics to statsd from our logs as well. At this point we now have nodes in our environment forwarding to their local broker node in their datacenter.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/multi-region logging - web to broker.png&quot; alt=&quot;Specific datacenter logging from application nodes to broker&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Basically what logstash would do is take all new events from the apache error and access logs, tag them with ‘broker’, and when logstash checks its outputs any events tagged with ‘broker’ would get sent to our broker node. This is useful for us since we use logstash for processing and forwarding metrics to statsd from our logs as well. At this point we now have nodes in our environment forwarding to their local broker node in their datacenter.&lt;/p&gt;
 
 &lt;p&gt;The next step is to forward our logs to the collector. To do this we create a different set of conf.d files for our logstash agent to run on the broker node. For this portion we were originally going to use stunnel to create an encrypted channel for the logs to be sent over to the collector, however, as I was reading about the different inputs and outputs supported by logstash I stumbled on &lt;a href=&quot;https://github.com/elasticsearch/logstash-forwarder&quot;&gt;lumberjack&lt;/a&gt;. Now, I actually had quite a few issues with understanding how lumberjack should be used in the context of logstash. What I see now is that it can either &lt;strong&gt;REPLACE&lt;/strong&gt; the logstash agent as a log handler and forwarder or logstash can &lt;strong&gt;CREATE&lt;/strong&gt; a lumberjack instance on the fly to send events as output or read events forwarded by lumberjack. In the first case, you would actually have to compile and build the lumberjack project and run the agent as a service. In the second case the logstash agent handles all of that and one should just use the inputs and outputs as normal.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-erb&quot; data-lang=&quot;erb&quot;&gt;91_forward_to_collector.conf
+
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;91_forward_to_collector.conf
 
 input {
   redis {
@@ -602,7 +644,9 @@ output {
     &#39;ssl_certificate&#39; =&amp;gt; &#39;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_cert&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&#39;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-erb&quot; data-lang=&quot;erb&quot;&gt;92_lumberjack_collector.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;92_lumberjack_collector.conf
 
 input {
   lumberjack {
@@ -620,7 +664,9 @@ output {
     &#39;key&#39; =&amp;gt; &#39;logstash&#39;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
 &lt;p&gt;Unfortunately I ran out of time during our hackweek due to other issues I had to look at outside of this project to get the implementation down 100% but this is the rough idea for how it would look. I hope to make a follow up post when we have fully implemented the desired architecture. For now, this documents some of the learnings I gained while working on this project for a few days.&lt;/p&gt;
 </content>
  </entry>
@@ -630,38 +676,35 @@ output {
    <link href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html"/>
    <updated>2014-03-16T09:54:14-06:00</updated>
    <id>/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team</id>
-   <content type="html">&lt;h2&gt;The problem&lt;/h2&gt;
-
+   <content type="html">
+&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
 &lt;p&gt;Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with Django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data. All of these nodes are managed and provisioned using &lt;a href=&quot;https://github.com/tobami/littlechef&quot;&gt;littlechef&lt;/a&gt; (chef-solo) combined with &lt;a href=&quot;https://github.com/tildedave/littlechef-rackspace&quot;&gt;littlechef-rackspace&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;When I first started working on this team we had almost no documentation about how the different types of servers in our environment were setup. When you would SSH onto a node to debug an issue or alert it would take a little extra digging to get started. While we do use chef for configuration of our servers it would take awhile to trace all of the different recipes, where they install services, what scripts you can run, and other useful information about that node. Another issue is making sure that developers at all levels have access to the same information. We want to make sure all, from junior to senior, developers are able to tackle issues that arise.&lt;/p&gt;
 
-&lt;p&gt;To that end &lt;a href=&quot;https://github.com/AMeng&quot;&gt;Alex Meng&lt;/a&gt; one of the developers on the team took it upon himself during a hackday to improve the process. He did this by generating MOTD&amp;#39;s for our servers via chef. Below is a Cassandra node in our test environment. The MOTD is great for immediately being able to start diagnosing issues without having to look at chef for where everything on this node is located.
+&lt;p&gt;To that end &lt;a href=&quot;https://github.com/AMeng&quot;&gt;Alex Meng&lt;/a&gt; one of the developers on the team took it upon himself during a hackday to improve the process. He did this by generating MOTD’s for our servers via chef. Below is a Cassandra node in our test environment. The MOTD is great for immediately being able to start diagnosing issues without having to look at chef for where everything on this node is located.
 &lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd.png&quot; alt=&quot;Example of a Cassandra node MOTD in our test environment. Full picture.&quot; /&gt;&lt;/p&gt;
 
-&lt;h2&gt;Load and network information&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd_1.png&quot; alt=&quot;Top of MOTD describing load and network interfaces. Cropped.&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;load-and-network-information&quot;&gt;Load and network information&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd_1.png&quot; alt=&quot;Top of MOTD describing load and network interfaces. Cropped.&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;When you first ssh into a node the very top shows some basic &lt;strong&gt;load information&lt;/strong&gt; about the node and what &lt;strong&gt;network interfaces&lt;/strong&gt; it has available. The network interfaces has proven useful if you have services running on different interfaces and need quick access to that information. For example, on this cassandra node we would access the cassandra cli (cqlsh) from the private network interface.&lt;/p&gt;
 
-&lt;h2&gt;Node description&lt;/h2&gt;
-
+&lt;h2 id=&quot;node-description&quot;&gt;Node description&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd_2.png&quot; alt=&quot;Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The next piece of information we add is our &lt;strong&gt;project name&lt;/strong&gt; along with the &lt;strong&gt;node name&lt;/strong&gt; (cassandra, load balancer, proxy, web), &lt;strong&gt;region&lt;/strong&gt; (dfw, ord, syd), &lt;strong&gt;environment&lt;/strong&gt; (test, staging, preprod, production) and &lt;strong&gt;hostname&lt;/strong&gt; which is blurred out. This helps a person ensure they know they are on the right node. The environment text is large so people are more careful if they are jumping on several boxes, some of which could be production.&lt;/p&gt;
 
-&lt;h2&gt;Services and location of important information&lt;/h2&gt;
-
+&lt;h2 id=&quot;services-and-location-of-important-information&quot;&gt;Services and location of important information&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/reach_cass_motd_3.png&quot; alt=&quot;Middle of MOTD describing project name, node name, environment, hostname, and region. Cropped.&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The next section describes the &lt;strong&gt;services running&lt;/strong&gt; on the box. This one only happens to be running Cassandra, but some nodes might be running multiple services (in general, our nodes are assigned a single function, but some applications require multiple services on a box). It will also describe where &lt;strong&gt;logs&lt;/strong&gt; and &lt;strong&gt;important configuration&lt;/strong&gt; files are located on the node. Other things we include sometimes on here are location of &lt;strong&gt;script files&lt;/strong&gt; or &lt;strong&gt;cron jobs&lt;/strong&gt; that are running on the system. At the end of our MOTD is a link to the &lt;strong&gt;documentation&lt;/strong&gt; which describes in detail the role of this node in our architecture.&lt;/p&gt;
 
-&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Our implementation of MOTD’s is done via a chef recipe. All of our nodes have a “short_name” attribute which we use to identify which MOTD to use. We store these MOTD’s as cookbook files and every node has a MOTD recipe which dumps the correct MOTD onto that node.&lt;/p&gt;
 
-&lt;p&gt;Our implementation of MOTD&amp;#39;s is done via a chef recipe. All of our nodes have a &amp;quot;short_name&amp;quot; attribute which we use to identify which MOTD to use. We store these MOTD&amp;#39;s as cookbook files and every node has a MOTD recipe which dumps the correct MOTD onto that node.&lt;/p&gt;
+&lt;p&gt;In the past year that we have had MOTD’s on all of our nodes I realize how important and helpful it is to disperse information about our architecture and make it easier to enable other developers to operate on it. The MOTD provides one key piece for organizing this information immediately when acting on a single node.&lt;/p&gt;
 
-&lt;p&gt;In the past year that we have had MOTD&amp;#39;s on all of our nodes I realize how important and helpful it is to disperse information about our architecture and make it easier to enable other developers to operate on it. The MOTD provides one key piece for organizing this information immediately when acting on a single node.&lt;/p&gt;
 </content>
  </entry>
  

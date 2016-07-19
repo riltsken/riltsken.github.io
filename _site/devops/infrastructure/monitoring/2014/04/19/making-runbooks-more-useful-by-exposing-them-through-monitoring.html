@@ -73,18 +73,19 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
   <h1 class="post-title">Making runbooks more useful by exposing them through monitoring</h1>
   <span class="post-date">19 Apr 2014</span>
   <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
-  <p>In the <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">Server Message Of The Day (MOTD) post</a>, I mentioned the importance of sharing <a href="http://en.wikipedia.org/wiki/Tribal_knowledge">tribal knowledge</a> across teams on fixing infrastructure issues. When any of our monitoring alarms kick off, any team member should be equipped to take action on the alarm, but we operate with so many different technologies that no one person could possibly be an expert in all of them. Most operations teams create <a href="http://en.wikipedia.org/wiki/Runbook">runbooks</a> for common tasks, but we took it one step further and created runbooks for every alarm in our system. They don&#39;t exactly cover every possible reason for an alarm triggering, but will always help to provide context for someone that doesn&#39;t regularly deal with that subsystem.</p>
+  
+<p>In the <a href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html">Server Message Of The Day (MOTD) post</a>, I mentioned the importance of sharing <a href="http://en.wikipedia.org/wiki/Tribal_knowledge">tribal knowledge</a> across teams on fixing infrastructure issues. When any of our monitoring alarms kick off, any team member should be equipped to take action on the alarm, but we operate with so many different technologies that no one person could possibly be an expert in all of them. Most operations teams create <a href="http://en.wikipedia.org/wiki/Runbook">runbooks</a> for common tasks, but we took it one step further and created runbooks for every alarm in our system. They don’t exactly cover every possible reason for an alarm triggering, but will always help to provide context for someone that doesn’t regularly deal with that subsystem.</p>
 
-<p>Our runbooks are composed of the node&#39;s title and definition, its role in the system, and important config files. After that block is a section for all the system&#39;s monitoring alerts and what actions you can take to investigate or fix them. This is one of the runbooks for Cassandra:</p>
+<p>Our runbooks are composed of the node’s title and definition, its role in the system, and important config files. After that block is a section for all the system’s monitoring alerts and what actions you can take to investigate or fix them. This is one of the runbooks for Cassandra:</p>
 
-<p><img src="http://d1dj72mlaoziwu.cloudfront.net/node_description.png" alt="A description of the nodes role and configuration files">
-<img src="http://d1dj72mlaoziwu.cloudfront.net/context_and_actions.png" alt="The actions we expect someone to take when initially debugging an issue when that alarm triggers"></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/node_description.png" alt="A description of the nodes role and configuration files" />
+<img src="http://d1dj72mlaoziwu.cloudfront.net/context_and_actions.png" alt="The actions we expect someone to take when initially debugging an issue when that alarm triggers" /></p>
 
-<h2>Triggered alarms link the runbook</h2>
+<h2 id="triggered-alarms-link-the-runbook">Triggered alarms link the runbook</h2>
 
-<p>We use IRC for team communication since we&#39;re all distributed. The alerts will stream into the channel via bot with direct links to the runbooks and every triggered alarm. While we do have a proper escalation path through <a href="https://www.pagerduty.com/">PagerDuty</a>, this keeps the whole team aware of issues and gives anyone an easy path for investigation and action.</p>
+<p>We use IRC for team communication since we’re all distributed. The alerts will stream into the channel via bot with direct links to the runbooks and every triggered alarm. While we do have a proper escalation path through <a href="https://www.pagerduty.com/">PagerDuty</a>, this keeps the whole team aware of issues and gives anyone an easy path for investigation and action.</p>
 
-<p><img src="http://d1dj72mlaoziwu.cloudfront.net/irc_example.png" alt="One of the ways people get notified of issues and a link to the runbook for what to do"></p>
+<p><img src="http://d1dj72mlaoziwu.cloudfront.net/irc_example.png" alt="One of the ways people get notified of issues and a link to the runbook for what to do" /></p>
 
 </div>
 
