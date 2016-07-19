@@ -102,44 +102,44 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 <p>We use the <code>InstallSpinnaker.sh</code> script provided by the Spinnaker team here <a href="https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh">https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh</a></p>
 
 <p>Spinnaker itself is broken into several microservices. Looking at <code>/opt</code> you should see all the different service folders here.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ ls /opt
+<div class="highlight"><pre><code class="language-" data-lang="">$ ls /opt
 clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdriver  userdata
 </code></pre></div>
 <p>Looking at the <code>/opt/spinnaker/config</code> directory we&#39;ll find all the configurations from the different services. We can override any configuration value with an <code>appname-local.yml</code> file. The ones we are going to change are <code>gate-local.yml</code> and <code>settings.js</code>. When making changes to these files you&#39;ll have to restart their respective service and/or regenerate their configuration file. <code>service gate restart</code> and <code>/opt/spinnaker/bin/reconfigure_spinnaker.sh</code>.</p>
 
 <h2>Gate configuration</h2>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">gate-local.yml</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">gate-local.yml</span>
 
-<span class="l-Scalar-Plain">saml</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
-  <span class="l-Scalar-Plain">requireAuthentication</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
-  <span class="l-Scalar-Plain">url</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">okta_idp_url_for_application</span><span class="p-Indicator">}</span>
-  <span class="l-Scalar-Plain">certificate</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">base64_encoded_certificate</span><span class="p-Indicator">}</span>
-  <span class="l-Scalar-Plain">issuerId</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://www.okta.com/{anyid}</span>
-  <span class="l-Scalar-Plain">keyStore</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">spinnaker.jks</span>
-  <span class="l-Scalar-Plain">keyStoreType</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">JKS</span>
-  <span class="l-Scalar-Plain">keyStorePassword</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">somepassword</span><span class="p-Indicator">}</span>
-  <span class="l-Scalar-Plain">keyStoreAliasName</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">okta</span>
+<span class="s">saml</span><span class="pi">:</span>
+  <span class="s">enabled</span><span class="pi">:</span> <span class="s">true</span>
+  <span class="s">requireAuthentication</span><span class="pi">:</span> <span class="s">true</span>
+  <span class="s">url</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">okta_idp_url_for_application</span><span class="pi">}</span>
+  <span class="s">certificate</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">base64_encoded_certificate</span><span class="pi">}</span>
+  <span class="s">issuerId</span><span class="pi">:</span> <span class="s">http://www.okta.com/{anyid}</span>
+  <span class="s">keyStore</span><span class="pi">:</span> <span class="s">spinnaker.jks</span>
+  <span class="s">keyStoreType</span><span class="pi">:</span> <span class="s">JKS</span>
+  <span class="s">keyStorePassword</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">somepassword</span><span class="pi">}</span>
+  <span class="s">keyStoreAliasName</span><span class="pi">:</span> <span class="s">okta</span>
 </code></pre></div>
 <p>The above properties <code>url</code> and <code>certificate</code> will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.</p>
 
 <p>The <code>issuerId</code> is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id</p>
 
 <p>The <code>keyStore</code> is generated using the java keytool utility. Specifically this command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &quot;okta&quot;
+<div class="highlight"><pre><code class="language-" data-lang="">keytool -importcert -file okta.cert -keystore spinnaker.jks -alias "okta"
 </code></pre></div>
 <p>where <code>okta.cert</code> is the previously described certificate not base64 encoded. It produces a file called <code>spinnaker.jks</code> and shares the alias with <code>keyStoreAliasName</code> in the <code>gate-local.yml</code> config. The keytool will prompt for a password which will be shared in the <code>gate-local.yml</code> config. The <code>spinnaker.jks</code> file should be placed with your local config or otherwise specified with a correct path in the config to it&#39;s location.</p>
 
 <p>Now restart gate <code>service gate restart</code></p>
 
 <h2>Webapp configuration</h2>
-<div class="highlight"><pre><code class="language-text" data-lang="text">settings.js
+<div class="highlight"><pre><code class="language-" data-lang="">settings.js
 
 window.spinnakerSettings = {
   gateUrl: `${gateUrl}`,
   bakeryDetailUrl: `${bakeryBaseUrl}/api/v1/global/logs/?html=true`,
   pollSchedule: 30000,
-  defaultTimeZone: &#39;America/Denver&#39;, // see http://momentjs.com/timezone/docs/#/data-utilities/
+  defaultTimeZone: 'America/Denver', // see http://momentjs.com/timezone/docs/#/data-utilities/
   providers: {
     gce: {
       defaults: {
@@ -156,16 +156,16 @@ window.spinnakerSettings = {
         region: `${awsDefaultRegion}`
       },
       primaryAccounts: [`${awsPrimaryAccount}`],
-      primaryRegions: [&#39;eu-west-1&#39;, &#39;us-east-1&#39;, &#39;us-west-1&#39;, &#39;us-west-2&#39;],
+      primaryRegions: ['eu-west-1', 'us-east-1', 'us-west-1', 'us-west-2'],
       challengeDestructiveActions: [`${awsPrimaryAccount}`],
       preferredZonesByAccount: {}
     }
   },
   whatsNew: {
-    gistId: &#39;32526cd608db3d811b38&#39;,
-    fileName: &#39;news.md&#39;,
+    gistId: '32526cd608db3d811b38',
+    fileName: 'news.md',
   },
-  authEndpoint: &#39;https://YOUR_GATE_HOST/auth/info&#39;,
+  authEndpoint: 'https://YOUR_GATE_HOST/auth/info',
   authEnabled: true,
   feature: {
     pipelines: true,
@@ -178,14 +178,14 @@ window.spinnakerSettings = {
 };
 
 window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAccount}`] = {
-  &#39;us-east-1&#39;: [&#39;us-east-1a&#39;, &#39;us-east-1b&#39;, &#39;us-east-1d&#39;, &#39;us-east-1e&#39;],
-  &#39;us-west-1&#39;: [&#39;us-west-1a&#39;, &#39;us-west-1b&#39;, &#39;us-west-1c&#39;],
-  &#39;us-west-2&#39;: [&#39;us-west-2a&#39;, &#39;us-west-2b&#39;, &#39;us-west-2c&#39;],
-  &#39;eu-west-1&#39;: [&#39;eu-west-1a&#39;, &#39;eu-west-1b&#39;, &#39;eu-west-1c&#39;],
-  &#39;ap-northeast-1&#39;: [&#39;ap-northeast-1a&#39;, &#39;ap-northeast-1b&#39;, &#39;ap-northeast-1c&#39;],
-  &#39;ap-southeast-1&#39;: [&#39;ap-southeast-1a&#39;, &#39;ap-southeast-1b&#39;],
-  &#39;ap-southeast-2&#39;: [&#39;ap-southeast-2a&#39;, &#39;ap-southeast-2b&#39;],
-  &#39;sa-east-1&#39;: [&#39;sa-east-1a&#39;, &#39;sa-east-1b&#39;]
+  'us-east-1': ['us-east-1a', 'us-east-1b', 'us-east-1d', 'us-east-1e'],
+  'us-west-1': ['us-west-1a', 'us-west-1b', 'us-west-1c'],
+  'us-west-2': ['us-west-2a', 'us-west-2b', 'us-west-2c'],
+  'eu-west-1': ['eu-west-1a', 'eu-west-1b', 'eu-west-1c'],
+  'ap-northeast-1': ['ap-northeast-1a', 'ap-northeast-1b', 'ap-northeast-1c'],
+  'ap-southeast-1': ['ap-southeast-1a', 'ap-southeast-1b'],
+  'ap-southeast-2': ['ap-southeast-2a', 'ap-southeast-2b'],
+  'sa-east-1': ['sa-east-1a', 'sa-east-1b']
 };
 </code></pre></div>
 <p>This is actually the normal settings.js but we had to add a few extra configuration options which were:</p>

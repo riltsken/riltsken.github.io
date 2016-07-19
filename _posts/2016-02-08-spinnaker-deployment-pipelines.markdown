@@ -69,7 +69,7 @@ For our own organization we actually have a fairly active rotating AMI id as we 
 
 To accomplish this for so many microservices we decided to create a github repo which spits out the configuration for bootstrap in the form of User Data (this is catered towards AWS):
 
-```
+``` shell
 root
  \__applications
    \__service1
@@ -86,7 +86,7 @@ root
 
 This is what [configuration_script.py][configuration_script] looks like. It takes in an application configuration as shown below.
 
-```
+``` yaml
 ami_name: java_ami_hvm
 environment: staging
 tags:
@@ -102,22 +102,22 @@ userdata: |
 
 The resulting transformation after going through our script would be a yaml file like the following to be used as variables in our pipeline.
 
-```
-application_name: service1
-environment: staging
+``` shell
+application_name: 'service1'
+environment: 'staging'
 base64_userdata: 'ZXhwb3J0IFJFVklTSU9OPXMzOi8vJHtidWNrZXR9L3NlcnZpY2UxLyR7Y29tbWl0aGFzaH0vJHt0aW1lc3RhbXB9CmV4cG9ydCBUQUdTPSd7InJvbGUiOiAid2ViYXBwbGljYXRpb24iLCAidGVhbSI6ICJvcHMiLCAiZW52aXJvbm1lbnQiOiAic3RhZ2luZyIsICJuYW1lIjogInNlcnZpY2UxIicKZXhwb3J0IEFQUExJQ0FUSU9OX05BTUU9c2VydmljZTEKZXhwb3J0IENPTkZJRz0nc3RhZ2luZy55YW1sJwpleHBvcnQgSkFWQV9PUFRTPSctWG14MjUwMG0gLXNlcnZlciAtWFg6K1VzZUNvbXByZXNzZWRPb3BzIC1YWDorVXNlUGFyTmV3R0MgLURmaWxlLmVuY29kaW5nPVVURi04CmV4cG9ydCBKQVZBX0hPTUU9Jy9vcHQvamF2YTgnCmV4cG9ydCBKQVZBX1JVTl9DT01NQU5EPSdhcHAuamFyJwo='
 ```
 
 where the transformed `base64_userdata` in plaintext is
 
-```
+``` shell
 export REVISION=s3://${bucket}/service1/${commithash}/${timestamp}
 export TAGS='{"role": "webapplication", "team": "ops", "environment": "staging", "name": "service1"'
 export APPLICATION_NAME=service1
-export CONFIG='staging.yaml'
-export JAVA_OPTS='-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8
-export JAVA_HOME='/opt/java8'
-export JAVA_RUN_COMMAND='app.jar'
+export CONFIG=staging.yaml
+export JAVA_OPTS='-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8'
+export JAVA_HOME=/opt/java8
+export JAVA_RUN_COMMAND=app.jar
 ```
 
 Now what does this look like on the spinnaker side?
@@ -132,7 +132,7 @@ Now our AMI has all the information it needs upon booting up in its autoscaling 
 
 If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the `Deploy Stage` adds information about the deploy to the `deployedServerGroups` array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.
 
-```
+``` shell
 {account=staging,capacity={desired=1, max=1, min=1},
 parentStage=23452655­c6de­4aac­b529­55e1357dfee7, region=us­east1,
 ami=ami­999af013, storeType=ebs, vmType=pv, serverGroup=service1-049}

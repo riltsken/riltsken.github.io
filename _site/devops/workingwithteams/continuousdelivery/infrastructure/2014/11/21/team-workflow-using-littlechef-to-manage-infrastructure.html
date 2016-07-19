@@ -117,40 +117,40 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
     --region &lt;region&gt; <span class="se">\</span>
     --image &lt;image_id&gt; <span class="se">\</span>
     --flavor &lt;flavor_id&gt; <span class="se">\</span>
-    --name <span class="s2">&quot;web-n01.preprod.dfw&quot;</span> <span class="se">\</span>
+    --name <span class="s2">"web-n01.preprod.dfw"</span> <span class="se">\</span>
     --public-key &lt;public_key_file&gt; <span class="se">\</span>
     --private-key &lt;private_key_file&gt; <span class="se">\</span>
-    --runlist <span class="s2">&quot;role[base],role[reach_base],role[reach_dfw_preprod],role[web]&quot;</span> <span class="se">\</span>
-    --plugins <span class="s2">&quot;omnibus_install_11, bootstrap&quot;</span> <span class="se">\</span>
-    --post-plugins <span class="s2">&quot;add_role&quot;</span>
+    --runlist <span class="s2">"role[base],role[reach_base],role[reach_dfw_preprod],role[web]"</span> <span class="se">\</span>
+    --plugins <span class="s2">"omnibus_install_11, bootstrap"</span> <span class="se">\</span>
+    --post-plugins <span class="s2">"add_role"</span>
 </code></pre></div>
 <p>All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins are <a href="https://gist.github.com/riltsken/c9996cf9af2c6b9ecade">here</a> and our post plugins after the runlist has been ran are <a href="https://gist.github.com/riltsken/44103d0e495827758fbe">here</a></p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">imageid-placeholder</span><span class="p-Indicator">}</span>
-<span class="l-Scalar-Plain">flavor</span><span class="p-Indicator">:</span> <span class="p-Indicator">{</span><span class="nv">flavorid-placeholder</span><span class="p-Indicator">}</span>
-<span class="l-Scalar-Plain">plugins</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">omnibus_install_11</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">bootstrap</span>
-<span class="l-Scalar-Plain">post-plugins</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add_role</span>
-<span class="l-Scalar-Plain">use_opscode_chef</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
-<span class="l-Scalar-Plain">templates</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">base</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">runlist</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="s">&quot;role[base]&quot;</span>
-    <span class="p-Indicator">-</span> <span class="s">&quot;role[reach_base]&quot;</span>
-    <span class="l-Scalar-Plain">networks</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">00000000-0000-0000-0000-000000000000</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">11111111-1111-1111-1111-111111111111</span>
-  <span class="l-Scalar-Plain">preprod-dfw</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">region</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dfw</span>
-    <span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">reach_dfw_preprod</span>
-    <span class="l-Scalar-Plain">runlist</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="s">&quot;role[reach_dfw_preprod]&quot;</span>
-    <span class="l-Scalar-Plain">networks</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">0f4c20c1-4c91-8a69-900d-44ff1fdd6fbd</span>
-    <span class="l-Scalar-Plain">secrets-file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">secrets-reachpreprod.cfg</span>
-  <span class="l-Scalar-Plain">web</span><span class="p-Indicator">:</span>
-    <span class="l-Scalar-Plain">runlist</span><span class="p-Indicator">:</span>
-    <span class="p-Indicator">-</span> <span class="s">&quot;role[reach_web]&quot;</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">image</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">imageid-placeholder</span><span class="pi">}</span>
+<span class="s">flavor</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">flavorid-placeholder</span><span class="pi">}</span>
+<span class="s">plugins</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">omnibus_install_11</span>
+    <span class="pi">-</span> <span class="s">bootstrap</span>
+<span class="s">post-plugins</span><span class="pi">:</span> <span class="s">add_role</span>
+<span class="s">use_opscode_chef</span><span class="pi">:</span> <span class="s">false</span>
+<span class="s">templates</span><span class="pi">:</span>
+  <span class="s">base</span><span class="pi">:</span>
+    <span class="s">runlist</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">role[base]"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">role[reach_base]"</span>
+    <span class="s">networks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">00000000-0000-0000-0000-000000000000</span>
+    <span class="pi">-</span> <span class="s">11111111-1111-1111-1111-111111111111</span>
+  <span class="s">preprod-dfw</span><span class="pi">:</span>
+    <span class="s">region</span><span class="pi">:</span> <span class="s">dfw</span>
+    <span class="s">environment</span><span class="pi">:</span> <span class="s">reach_dfw_preprod</span>
+    <span class="s">runlist</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">role[reach_dfw_preprod]"</span>
+    <span class="s">networks</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">0f4c20c1-4c91-8a69-900d-44ff1fdd6fbd</span>
+    <span class="s">secrets-file</span><span class="pi">:</span> <span class="s">secrets-reachpreprod.cfg</span>
+  <span class="s">web</span><span class="pi">:</span>
+    <span class="s">runlist</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">role[reach_web]"</span>
 </code></pre></div>
 <p>And the new resulting command to spin up a web node in the dfw region for our preprod environment</p>
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
