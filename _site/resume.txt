@@ -1,0 +1,128 @@
+786-444-2085                   Samuel Toriel                  riltsken.github.io
+Denver, CO                 samueltoriel@gmail.com            github.com/riltsken
+
+Mission     I am a software developer looking for an environment that emphasizes
+            product development, non-siloed workflows, pull request based code
+            reviews, and developers owning devops / qa. I have an avid
+            appreciation for automation and testing.
+
+Languages   Fluent in Python, JavaScript, HTML, CSS
+            Familiar with Ruby, Java, Bash, SQL, CQL
+
+Experience
+==========
+
++------------------------------------------------------------------------------+
++-FullContact - DevOps Engineer                        April 2015 to July 2016-+
++------------------------------------------------------------------------------+
+
+Fun Facts
+---------
+
+* Team Size was 3.
+* Worked with remote team in Latvia, Riga.
+* Walked to work.
+* Went snowboarding for my interview.
+* Learned how to operate and scale microservices.
+
+Projects
+--------
+
+Crosshair       Internal dashboard we created to aggregate aws infrastructure
+                across multiple accounts. Helped plan out reservations and
+                report on infrastructure. Written as a single page application
+                powered by backend API’s.
+                Technology - Python, Django, MySQL, Browserify, Knockout.js
+
+Spinnaker       Integrated Spinnaker into environment to handle deploys of
+                microservices on AWS. Contributed open source pull requests that
+                added AWS UserData, SAML SSO fix, and UI component for logged in
+                user. Created tooling around Spinnaker API to create PaaS like
+                heroku system for developers to deploy with.
+                Technology - Groovy, Gradle, Spring, AngularJS, Ansible, Python,
+                             Jenkins
+
+Scribe          Microservice our team developed managing user subscriptions
+                across SaaS vendors. Had periodically syncing jobs, used kafka
+                to handle user changes, and api endpoints for other services.
+                Technology - Java, Gradle, Dropwizard
+
+Infrastructure  Manage AWS portfolio of 600+ nodes / 50+ microservices.
+                Automated auxiliary infrastructure of Kafka, Cassandra, Storm,
+                ELK Stack, Graphite, Spinnaker, and Microservice Architecture
+                for JVM.
+                Technology - Ansible, Packer, Ubuntu, Bash
+
++------------------------------------------------------------------------------+
++-Rackspace - Software Developer                        Feb 2012 to March 2015-+
++------------------------------------------------------------------------------+
+
+Fun Facts
+---------
+
+* Team size was 25ish.
+* Worked with remote teams in San Francisco and Brazil.
+* Drove 7 minutes to work.
+* Learned what it was like working on a large team. Different scale of team
+problems and dynamics.
+* Experienced working in a monorepo.
+* Constantly rotating interns. Teaching them how to get up to speed. Push code
+on their first day.
+
+Projects
+--------
+
+MyCloud          The web portal for Rackspace public cloud
+                 (mycloud.rackspace.com). Contributed to all aspects including
+                 (100k+ line JavaScript, Google Closure Library, Knockout.js),
+                 backend (Python/Django), custom reverse proxy (Python/Twisted),
+                 infrastructure (200+ nodes, Chef) and qa (Ruby/Selenium).
+
+SSO              Implemented custom SSO solution using SAML where MyCloud acted
+                 as the Identity Provider for other control panels at Rackspace.
+                 Allowed customers the ability to login only once and access
+                 multiple services.
+                 Technology - Python, Django
+
+Pilot            Shared Header API used by multiple control panels and teams.
+                 Created unified look and feel to all control panels at
+                 Rackspace. Above SSO work was essential to create this
+                 experience.
+                 Technology - Python, Twisted, Flask, Gevent
+
+Closure Tracker  Overlay chrome plugin created w/coworker which displayed
+                 information related to Google Closure Event Framework. Allowed
+                 for performance debugging and finding memory leaks from event
+                 handlers.
+
+Awards
+------
+
+Impact of the Month in September 2012 for organizing Startup Weekend Blacksburg
+Impact of the Month in March 2014 for migrating MySQL to Cassandra
+
++------------------------------------------------------------------------------+
++-Center for Independent Living - Programmer              Apr 2008 to Nov 2011-+
++------------------------------------------------------------------------------+
+
+Fun Facts
+---------
+
+* Team size was 3
+* Drove 40 minutes to work
+* First job starting out as an intern
+* Felt impact first hand working directly with people using my code in office
+next to me.
+
+Projects
+--------
+
+COMS  Developed web based data management and reporting suite to help win grants
+      and operate the non-profit. SaaS system sold to several other non-profits
+      across US. Additionally provided phone support and training.
+      Technology - Python, Django, jQuery, MySQL, Ubuntu
+
+Education
+=========
+University of Central Florida, December 2011,
+  Bachelor of Science Information Technology
