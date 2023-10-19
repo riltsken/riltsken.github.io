@@ -1,4 +1,5 @@
 name: Samuel Toriel
+title: Samuel Toriel's Blog
 description: A blog about Software and Operations
 
 markdown: kramdown
@@ -8,5 +9,8 @@ extensions: [fenced_code_blocks]
 
 paginate: 5
 
-gems:
+plugins:
   - jekyll-paginate
+
+exclude:
+  - docker-compose.yml

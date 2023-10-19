@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title></title>
- <link href="/atom.xml" rel="self"/>
- <link href="/"/>
- <updated>2016-11-23T10:11:57-07:00</updated>
- <id></id>
+ <link href="http://0.0.0.0:4000/atom.xml" rel="self"/>
+ <link href="http://0.0.0.0:4000/"/>
+ <updated>2023-10-19T08:28:48-05:00</updated>
+ <id>http://0.0.0.0:4000</id>
  <author>
    <name></name>
    <email></email>
@@ -14,61 +14,60 @@
  
  <entry>
    <title>Spinnaker deployment pipelines</title>
-   <link href="/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines.html"/>
-   <updated>2016-02-08T00:00:00-07:00</updated>
-   <id>/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines</id>
+   <link href="http://0.0.0.0:4000/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines.html"/>
+   <updated>2016-02-08T00:00:00-06:00</updated>
+   <id>http://0.0.0.0:4000/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines</id>
    <content type="html">
 &lt;p&gt;I’d like to especially thank &lt;a href=&quot;https://twitter.com/tomaslin&quot;&gt;Tomás Lin&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/cfieber&quot;&gt;Cameron Fieber&lt;/a&gt; for which the below would not be possible without their endless involvement in the &lt;a href=&quot;https://spinnakerteam.slack.com&quot;&gt;#spinnakerteam&lt;/a&gt; slack channel.&lt;/p&gt;
 
 &lt;p&gt;One of the questions I see come up quite often in slack are how to model deployment pipelines which do not follow&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;trigger&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;bake image with *nix package artifact&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy image&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;trigger&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bake image with *nix package artifact&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;deploy image&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Different organizations have their own restrictions or legacy systems which require alternative deployment methods to the above. Because Jenkins jobs are a first class citizen in Spinnaker this gives it the ability to execute complex tasks and pass on any information required from a previous step. I will outline out how to take advantage of this.&lt;/p&gt;
 
 &lt;p&gt;One very important concept in pipelines is understanding where and how the Spring Expression Language (SpEL) can be used. A few of these rules are outlined below:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Spinnaker uses uses the delimiter &lt;code class=&quot;highlighter-rouge&quot;&gt;${}&lt;/code&gt; for SpEL.&lt;/li&gt;
+  &lt;li&gt;Spinnaker uses uses the delimiter &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${}&lt;/code&gt; for SpEL.&lt;/li&gt;
   &lt;li&gt;Variables can be defined in several ways:
     &lt;ol&gt;
-      &lt;li&gt;The first stage of a pipeline allows defining parameters which can be accessed via &lt;code class=&quot;highlighter-rouge&quot;&gt;${ parameters.key }&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;The first stage of a pipeline allows parameters to be read from a trigger and accessed via &lt;code class=&quot;highlighter-rouge&quot;&gt;${ trigger.properties.key }&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via &lt;code class=&quot;highlighter-rouge&quot;&gt;${ key }&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;The first stage of a pipeline allows defining parameters which can be accessed via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ parameters.key }&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;The first stage of a pipeline allows parameters to be read from a trigger and accessed via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ trigger.properties.key }&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ key }&lt;/code&gt;&lt;/li&gt;
     &lt;/ol&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; will create an array called &lt;code class=&quot;highlighter-rouge&quot;&gt;${ deployedServerGroups }&lt;/code&gt; which gives enough information to access the deployed cluster.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; will create an array called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ deployedServerGroups }&lt;/code&gt; which gives enough information to access the deployed cluster.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;As of this writing (2016-02-08) the &lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; in Spinnaker “requires” a &lt;code class=&quot;highlighter-rouge&quot;&gt;Bake Stage&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Find Image Stage&lt;/code&gt;. When I say “requires” I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.&lt;/p&gt;
+&lt;p&gt;As of this writing (2016-02-08) the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; in Spinnaker “requires” a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bake Stage&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Find Image Stage&lt;/code&gt;. When I say “requires” I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/bake_or_find_error.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;To get around using the &lt;code class=&quot;highlighter-rouge&quot;&gt;Bake Stage&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;Find Image Stage&lt;/code&gt; we’ll have to edit the pipeline json for the &lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; using the key &lt;code class=&quot;highlighter-rouge&quot;&gt;amiName&lt;/code&gt; to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.&lt;/p&gt;
+&lt;p&gt;To get around using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bake Stage&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Find Image Stage&lt;/code&gt; we’ll have to edit the pipeline json for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; using the key &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;amiName&lt;/code&gt; to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/spinnaker_edit_json.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;requisiteStageRefIds&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;refId&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;deploy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Deploy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;clusters&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;application&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;some application name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;strategy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;redblack&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;provider&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;aws&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;cloudProvider&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;aws&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;amiName&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;${image_id}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;===&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;Inject&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;your&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;own&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+  &quot;requisiteStageRefIds&quot;: [
+    &quot;1&quot;
+  ],
+  &quot;refId&quot;: &quot;2&quot;,
+  &quot;type&quot;: &quot;deploy&quot;,
+  &quot;name&quot;: &quot;Deploy&quot;,
+  &quot;clusters&quot;: [
+    {
+      &quot;application&quot;: &quot;some application name&quot;,
+      &quot;strategy&quot;: &quot;redblack&quot;,
+      &quot;provider&quot;: &quot;aws&quot;,
+      &quot;cloudProvider&quot;: &quot;aws&quot;,
+      ...
+      &quot;amiName&quot;: &quot;${image_id}&quot;, &amp;lt;=== Inject your own image id
+      ...
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;For our own organization we actually have a fairly active rotating AMI id as we make changes to the base AMI used for our applications so it updates often. To keep this rotating AMI id fresh for our 35+ microservices we put this information into a github repo, along with other context for each application to help it deploy properly. Upon bootup we have our applications bootstrap themselves in the simplest way possible.&lt;/p&gt;
 
@@ -80,7 +79,7 @@
 
 &lt;p&gt;To accomplish this for so many microservices we decided to create a github repo which spits out the configuration for bootstrap in the form of User Data (this is catered towards AWS):&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root
  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_applications
    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_service1
      &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_production.yaml
@@ -92,64 +91,59 @@
  &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_scripts
    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_configuration_script.py  
    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_ami_table.yaml
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;This is what &lt;a href=&quot;https://gist.github.com/riltsken/84004a3b6964823e3ae6&quot;&gt;configuration_script.py&lt;/a&gt; looks like. It takes in an application configuration as shown below.&lt;/p&gt;
 
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;ami_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;java_ami_hvm&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;staging&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;webapplication&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;team&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ops&lt;/span&gt;
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;ami_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;java_ami_hvm&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;staging&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;webapplication&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;team&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ops&lt;/span&gt;
 
-&lt;span class=&quot;s&quot;&gt;userdata&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;export CONFIG=&#39;staging.yaml&#39;&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;export JAVA_OPTS=&#39;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;export JAVA_HOME=&#39;/opt/java8&#39;&lt;/span&gt;
-  &lt;span class=&quot;no&quot;&gt;export JAVA_RUN_COMMAND=&#39;app.jar&#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;span class=&quot;na&quot;&gt;userdata&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;export CONFIG=&apos;staging.yaml&apos;&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;export JAVA_OPTS=&apos;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;export JAVA_HOME=&apos;/opt/java8&apos;&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;export JAVA_RUN_COMMAND=&apos;app.jar&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The resulting transformation after going through our script would be a yaml file like the following to be used as variables in our pipeline.&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;application_name: &lt;span class=&quot;s1&quot;&gt;&#39;service1&#39;&lt;/span&gt;
-environment: &lt;span class=&quot;s1&quot;&gt;&#39;staging&#39;&lt;/span&gt;
-base64_userdata: &lt;span class=&quot;s1&quot;&gt;&#39;ZXhwb3J0IFJFVklTSU9OPXMzOi8vJHtidWNrZXR9L3NlcnZpY2UxLyR7Y29tbWl0aGFzaH0vJHt0aW1lc3RhbXB9CmV4cG9ydCBUQUdTPSd7InJvbGUiOiAid2ViYXBwbGljYXRpb24iLCAidGVhbSI6ICJvcHMiLCAiZW52aXJvbm1lbnQiOiAic3RhZ2luZyIsICJuYW1lIjogInNlcnZpY2UxIicKZXhwb3J0IEFQUExJQ0FUSU9OX05BTUU9c2VydmljZTEKZXhwb3J0IENPTkZJRz0nc3RhZ2luZy55YW1sJwpleHBvcnQgSkFWQV9PUFRTPSctWG14MjUwMG0gLXNlcnZlciAtWFg6K1VzZUNvbXByZXNzZWRPb3BzIC1YWDorVXNlUGFyTmV3R0MgLURmaWxlLmVuY29kaW5nPVVURi04CmV4cG9ydCBKQVZBX0hPTUU9Jy9vcHQvamF2YTgnCmV4cG9ydCBKQVZBX1JVTl9DT01NQU5EPSdhcHAuamFyJwo=&#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;application_name: &lt;span class=&quot;s1&quot;&gt;&apos;service1&apos;&lt;/span&gt;
+environment: &lt;span class=&quot;s1&quot;&gt;&apos;staging&apos;&lt;/span&gt;
+base64_userdata: &lt;span class=&quot;s1&quot;&gt;&apos;ZXhwb3J0IFJFVklTSU9OPXMzOi8vJHtidWNrZXR9L3NlcnZpY2UxLyR7Y29tbWl0aGFzaH0vJHt0aW1lc3RhbXB9CmV4cG9ydCBUQUdTPSd7InJvbGUiOiAid2ViYXBwbGljYXRpb24iLCAidGVhbSI6ICJvcHMiLCAiZW52aXJvbm1lbnQiOiAic3RhZ2luZyIsICJuYW1lIjogInNlcnZpY2UxIicKZXhwb3J0IEFQUExJQ0FUSU9OX05BTUU9c2VydmljZTEKZXhwb3J0IENPTkZJRz0nc3RhZ2luZy55YW1sJwpleHBvcnQgSkFWQV9PUFRTPSctWG14MjUwMG0gLXNlcnZlciAtWFg6K1VzZUNvbXByZXNzZWRPb3BzIC1YWDorVXNlUGFyTmV3R0MgLURmaWxlLmVuY29kaW5nPVVURi04CmV4cG9ydCBKQVZBX0hPTUU9Jy9vcHQvamF2YTgnCmV4cG9ydCBKQVZBX1JVTl9DT01NQU5EPSdhcHAuamFyJwo=&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;where the transformed &lt;code class=&quot;highlighter-rouge&quot;&gt;base64_userdata&lt;/code&gt; in plaintext is&lt;/p&gt;
+&lt;p&gt;where the transformed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;base64_userdata&lt;/code&gt; in plaintext is&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;REVISION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;s3://&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bucket&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/service1/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;commithash&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;timestamp&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TAGS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;{&quot;role&quot;: &quot;webapplication&quot;, &quot;team&quot;: &quot;ops&quot;, &quot;environment&quot;: &quot;staging&quot;, &quot;name&quot;: &quot;service1&quot;&#39;&lt;/span&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;REVISION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;s3://&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bucket&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/service1/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;commithash&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;timestamp&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TAGS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;{&quot;role&quot;: &quot;webapplication&quot;, &quot;team&quot;: &quot;ops&quot;, &quot;environment&quot;: &quot;staging&quot;, &quot;name&quot;: &quot;service1&quot;&apos;&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;APPLICATION_NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;service1
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;staging.yaml
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_OPTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_OPTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&apos;&lt;/span&gt;
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/java8
 &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_RUN_COMMAND&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;app.jar
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Now what does this look like on the spinnaker side?&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot;&gt;Link to big&lt;/a&gt;
 &lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;And in the &lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; the &lt;code class=&quot;highlighter-rouge&quot;&gt;Advanced Settings&lt;/code&gt; of our &lt;code class=&quot;highlighter-rouge&quot;&gt;Server Group&lt;/code&gt;
+&lt;p&gt;And in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Advanced Settings&lt;/code&gt; of our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Server Group&lt;/code&gt;
 &lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipelines2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now our AMI has all the information it needs upon booting up in its autoscaling group to correctly tag itself, download its jar file, add additional motd information, and setup configuration for the application to boot.&lt;/p&gt;
 
-&lt;p&gt;If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the &lt;code class=&quot;highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; adds information about the deploy to the &lt;code class=&quot;highlighter-rouge&quot;&gt;deployedServerGroups&lt;/code&gt; array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.&lt;/p&gt;
+&lt;p&gt;If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; adds information about the deploy to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;deployedServerGroups&lt;/code&gt; array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;account&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;staging,capacity&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;desired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;account&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;staging,capacity&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;desired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
 &lt;span class=&quot;nv&quot;&gt;parentStage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;23452655­c6de­4aac­b529­55e1357dfee7, &lt;span class=&quot;nv&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;us­east1,
 &lt;span class=&quot;nv&quot;&gt;ami&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ami­999af013, &lt;span class=&quot;nv&quot;&gt;storeType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ebs, &lt;span class=&quot;nv&quot;&gt;vmType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;pv, &lt;span class=&quot;nv&quot;&gt;serverGroup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;service1-049&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Specifically, I created a jenkins job which accepted &lt;code class=&quot;highlighter-rouge&quot;&gt;${ deployedServerGroups[0].serverGroup }&lt;/code&gt; and then accessed the cluster by looking up the tag via aws cli.&lt;/p&gt;
+&lt;p&gt;Specifically, I created a jenkins job which accepted &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ deployedServerGroups[0].serverGroup }&lt;/code&gt; and then accessed the cluster by looking up the tag via aws cli.&lt;/p&gt;
 
 &lt;p&gt;Hopefully these are useful tidbits for getting started. Good luck on your pipeline creation!&lt;/p&gt;
 </content>
@@ -157,11 +151,11 @@ base64_userdata: &lt;span class=&quot;s1&quot;&gt;&#39;ZXhwb3J0IFJFVklTSU9OPXMzO
  
  <entry>
    <title>Setting up Spinnaker authentication with Okta and SAML</title>
-   <link href="/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker.html"/>
-   <updated>2015-12-08T00:00:00-07:00</updated>
-   <id>/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker</id>
+   <link href="http://0.0.0.0:4000/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker.html"/>
+   <updated>2015-12-08T00:00:00-06:00</updated>
+   <id>http://0.0.0.0:4000/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker</id>
    <content type="html">
-&lt;h2 id=&quot;as-of-release-2540-gate-has-changed-the-way-the-saml-authentication-mechanism-is-configured-please-follow-the-migration-guidemigration-if-you-stumbled-on-this-guide-looking-for-how-to-configure-saml-follow-the-securing-spinnaker-guidesecuring-spinnaker-instead&quot;&gt;As of release &lt;em&gt;2.54.0&lt;/em&gt;, Gate has changed the way the SAML authentication mechanism is configured. Please follow the &lt;a href=&quot;http://www.spinnaker.io/docs/gate-saml-config&quot;&gt;migration guide&lt;/a&gt;. If you stumbled on this guide looking for how to configure SAML follow the &lt;a href=&quot;http://www.spinnaker.io/docs/securing-spinnaker#section-saml-2-0&quot;&gt;securing spinnaker guide&lt;/a&gt; instead&lt;/h2&gt;
+&lt;h2 id=&quot;as-of-release-2540-gate-has-changed-the-way-the-saml-authentication-mechanism-is-configured-please-follow-the-migration-guide-if-you-stumbled-on-this-guide-looking-for-how-to-configure-saml-follow-the-securing-spinnaker-guide-instead&quot;&gt;As of release &lt;em&gt;2.54.0&lt;/em&gt;, Gate has changed the way the SAML authentication mechanism is configured. Please follow the &lt;a href=&quot;http://www.spinnaker.io/docs/gate-saml-config&quot;&gt;migration guide&lt;/a&gt;. If you stumbled on this guide looking for how to configure SAML follow the &lt;a href=&quot;http://www.spinnaker.io/docs/securing-spinnaker#section-saml-2-0&quot;&gt;securing spinnaker guide&lt;/a&gt; instead&lt;/h2&gt;
 
 &lt;p&gt;Recently Netflix in collaboration with Google, Amazon, Microsoft, and CloudFoundry have released a new OSS deployment application called Spinnaker (Asgard 2.0). Our team has been going through and setting up this tool to be production ready for our environments as we had been planning to move to a new deployment tool anyway. This post in particular will go into the details of setting up SAML authentication through Okta with Spinnaker. Although this is specific to Okta the concepts could be adapted to any other SAML Identity Provider.&lt;/p&gt;
 
@@ -183,57 +177,54 @@ base64_userdata: &lt;span class=&quot;s1&quot;&gt;&#39;ZXhwb3J0IFJFVklTSU9OPXMzO
 
 &lt;h1 id=&quot;setting-up-spinnaker&quot;&gt;Setting up Spinnaker&lt;/h1&gt;
 
-&lt;p&gt;We use the &lt;code class=&quot;highlighter-rouge&quot;&gt;InstallSpinnaker.sh&lt;/code&gt; script provided by the Spinnaker team here &lt;a href=&quot;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&quot;&gt;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;We use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;InstallSpinnaker.sh&lt;/code&gt; script provided by the Spinnaker team here &lt;a href=&quot;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&quot;&gt;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Spinnaker itself is broken into several microservices. Looking at &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt&lt;/code&gt; you should see all the different service folders here.&lt;/p&gt;
+&lt;p&gt;Spinnaker itself is broken into several microservices. Looking at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt&lt;/code&gt; you should see all the different service folders here.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls /opt
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls /opt
 clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdriver  userdata
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Looking at the &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/spinnaker/config&lt;/code&gt; directory we’ll find all the configurations from the different services. We can override any configuration value with an &lt;code class=&quot;highlighter-rouge&quot;&gt;appname-local.yml&lt;/code&gt; file. The ones we are going to change are &lt;code class=&quot;highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;settings.js&lt;/code&gt;. When making changes to these files you’ll have to restart their respective service and/or regenerate their configuration file. &lt;code class=&quot;highlighter-rouge&quot;&gt;service gate restart&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Looking at the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/spinnaker/config&lt;/code&gt; directory we’ll find all the configurations from the different services. We can override any configuration value with an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;appname-local.yml&lt;/code&gt; file. The ones we are going to change are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;settings.js&lt;/code&gt;. When making changes to these files you’ll have to restart their respective service and/or regenerate their configuration file. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;service gate restart&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;gate-configuration&quot;&gt;Gate configuration&lt;/h2&gt;
 
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;gate-local.yml&lt;/span&gt;
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;gate-local.yml&lt;/span&gt;
 
-&lt;span class=&quot;s&quot;&gt;saml&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;requireAuthentication&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;okta_idp_url_for_application&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;certificate&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;base64_encoded_certificate&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;issuerId&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://www.okta.com/{anyid}&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;keyStore&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;spinnaker.jks&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;keyStoreType&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;JKS&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;keyStorePassword&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;somepassword&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;keyStoreAliasName&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;okta&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;span class=&quot;na&quot;&gt;saml&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;requireAuthentication&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;okta_idp_url_for_application&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;certificate&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;base64_encoded_certificate&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;issuerId&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://www.okta.com/{anyid}&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;keyStore&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;spinnaker.jks&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;keyStoreType&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;JKS&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;keyStorePassword&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;somepassword&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;keyStoreAliasName&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;okta&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;The above properties &lt;code class=&quot;highlighter-rouge&quot;&gt;url&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;certificate&lt;/code&gt; will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.&lt;/p&gt;
+&lt;p&gt;The above properties &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;url&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;certificate&lt;/code&gt; will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;issuerId&lt;/code&gt; is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;issuerId&lt;/code&gt; is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;keyStore&lt;/code&gt; is generated using the java keytool utility. Specifically this command:&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keyStore&lt;/code&gt; is generated using the java keytool utility. Specifically this command:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &quot;okta&quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &quot;okta&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;where &lt;code class=&quot;highlighter-rouge&quot;&gt;okta.cert&lt;/code&gt; is the previously described certificate not base64 encoded. It produces a file called &lt;code class=&quot;highlighter-rouge&quot;&gt;spinnaker.jks&lt;/code&gt; and shares the alias with &lt;code class=&quot;highlighter-rouge&quot;&gt;keyStoreAliasName&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; config. The keytool will prompt for a password which will be shared in the &lt;code class=&quot;highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; config. The &lt;code class=&quot;highlighter-rouge&quot;&gt;spinnaker.jks&lt;/code&gt; file should be placed with your local config or otherwise specified with a correct path in the config to it’s location.&lt;/p&gt;
+&lt;p&gt;where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;okta.cert&lt;/code&gt; is the previously described certificate not base64 encoded. It produces a file called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spinnaker.jks&lt;/code&gt; and shares the alias with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keyStoreAliasName&lt;/code&gt; in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; config. The keytool will prompt for a password which will be shared in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; config. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spinnaker.jks&lt;/code&gt; file should be placed with your local config or otherwise specified with a correct path in the config to it’s location.&lt;/p&gt;
 
-&lt;p&gt;Now restart gate &lt;code class=&quot;highlighter-rouge&quot;&gt;service gate restart&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Now restart gate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;service gate restart&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;webapp-configuration&quot;&gt;Webapp configuration&lt;/h2&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;settings.js
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;settings.js
 
 window.spinnakerSettings = {
   gateUrl: `${gateUrl}`,
   bakeryDetailUrl: `${bakeryBaseUrl}/api/v1/global/logs/?html=true`,
   pollSchedule: 30000,
-  defaultTimeZone: &#39;America/Denver&#39;, // see http://momentjs.com/timezone/docs/#/data-utilities/
+  defaultTimeZone: &apos;America/Denver&apos;, // see http://momentjs.com/timezone/docs/#/data-utilities/
   providers: {
     gce: {
       defaults: {
@@ -250,16 +241,16 @@ window.spinnakerSettings = {
         region: `${awsDefaultRegion}`
       },
       primaryAccounts: [`${awsPrimaryAccount}`],
-      primaryRegions: [&#39;eu-west-1&#39;, &#39;us-east-1&#39;, &#39;us-west-1&#39;, &#39;us-west-2&#39;],
+      primaryRegions: [&apos;eu-west-1&apos;, &apos;us-east-1&apos;, &apos;us-west-1&apos;, &apos;us-west-2&apos;],
       challengeDestructiveActions: [`${awsPrimaryAccount}`],
       preferredZonesByAccount: {}
     }
   },
   whatsNew: {
-    gistId: &#39;32526cd608db3d811b38&#39;,
-    fileName: &#39;news.md&#39;,
+    gistId: &apos;32526cd608db3d811b38&apos;,
+    fileName: &apos;news.md&apos;,
   },
-  authEndpoint: &#39;https://YOUR_GATE_HOST/auth/info&#39;,
+  authEndpoint: &apos;https://YOUR_GATE_HOST/auth/info&apos;,
   authEnabled: true,
   feature: {
     pipelines: true,
@@ -272,26 +263,25 @@ window.spinnakerSettings = {
 };
 
 window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAccount}`] = {
-  &#39;us-east-1&#39;: [&#39;us-east-1a&#39;, &#39;us-east-1b&#39;, &#39;us-east-1d&#39;, &#39;us-east-1e&#39;],
-  &#39;us-west-1&#39;: [&#39;us-west-1a&#39;, &#39;us-west-1b&#39;, &#39;us-west-1c&#39;],
-  &#39;us-west-2&#39;: [&#39;us-west-2a&#39;, &#39;us-west-2b&#39;, &#39;us-west-2c&#39;],
-  &#39;eu-west-1&#39;: [&#39;eu-west-1a&#39;, &#39;eu-west-1b&#39;, &#39;eu-west-1c&#39;],
-  &#39;ap-northeast-1&#39;: [&#39;ap-northeast-1a&#39;, &#39;ap-northeast-1b&#39;, &#39;ap-northeast-1c&#39;],
-  &#39;ap-southeast-1&#39;: [&#39;ap-southeast-1a&#39;, &#39;ap-southeast-1b&#39;],
-  &#39;ap-southeast-2&#39;: [&#39;ap-southeast-2a&#39;, &#39;ap-southeast-2b&#39;],
-  &#39;sa-east-1&#39;: [&#39;sa-east-1a&#39;, &#39;sa-east-1b&#39;]
+  &apos;us-east-1&apos;: [&apos;us-east-1a&apos;, &apos;us-east-1b&apos;, &apos;us-east-1d&apos;, &apos;us-east-1e&apos;],
+  &apos;us-west-1&apos;: [&apos;us-west-1a&apos;, &apos;us-west-1b&apos;, &apos;us-west-1c&apos;],
+  &apos;us-west-2&apos;: [&apos;us-west-2a&apos;, &apos;us-west-2b&apos;, &apos;us-west-2c&apos;],
+  &apos;eu-west-1&apos;: [&apos;eu-west-1a&apos;, &apos;eu-west-1b&apos;, &apos;eu-west-1c&apos;],
+  &apos;ap-northeast-1&apos;: [&apos;ap-northeast-1a&apos;, &apos;ap-northeast-1b&apos;, &apos;ap-northeast-1c&apos;],
+  &apos;ap-southeast-1&apos;: [&apos;ap-southeast-1a&apos;, &apos;ap-southeast-1b&apos;],
+  &apos;ap-southeast-2&apos;: [&apos;ap-southeast-2a&apos;, &apos;ap-southeast-2b&apos;],
+  &apos;sa-east-1&apos;: [&apos;sa-east-1a&apos;, &apos;sa-east-1b&apos;]
 };
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;This is actually the normal settings.js but we had to add a few extra configuration options which were:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;authEndpoint&lt;/code&gt; this should be &lt;code class=&quot;highlighter-rouge&quot;&gt;https://YOUR_GATE_HOST/auth/info&lt;/code&gt;. Normally this is running on localhost:8084&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;authEnabled&lt;/code&gt; should be set to &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;authEndpoint&lt;/code&gt; this should be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://YOUR_GATE_HOST/auth/info&lt;/code&gt;. Normally this is running on localhost:8084&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;authEnabled&lt;/code&gt; should be set to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Now run &lt;code class=&quot;highlighter-rouge&quot;&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt; for the settings to regenerate.&lt;/p&gt;
+&lt;p&gt;Now run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt; for the settings to regenerate.&lt;/p&gt;
 
 &lt;h1 id=&quot;how-this-works&quot;&gt;How this works&lt;/h1&gt;
 
@@ -307,9 +297,9 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
  
  <entry>
    <title>Team workflow using littlechef to manage infrastructure</title>
-   <link href="/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html"/>
-   <updated>2014-11-21T00:00:00-07:00</updated>
-   <id>/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure</id>
+   <link href="http://0.0.0.0:4000/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html"/>
+   <updated>2014-11-21T00:00:00-06:00</updated>
+   <id>http://0.0.0.0:4000/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure</id>
    <content type="html">
 &lt;p&gt;&lt;a href=&quot;https://github.com/tobami/littlechef&quot;&gt;Littlechef&lt;/a&gt; is a library allowing one to use chef without a centralized server orchestrating configuration management. It simplifies the testing and deployment model for managing servers by removing a layer from the stack. What this does is let you provision servers using your cli or programmatically in a similar fashion to ansible.&lt;/p&gt;
 
@@ -323,7 +313,7 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
 
 &lt;ul&gt;
   &lt;li&gt;Write unit test with chefspec expecting this change.&lt;/li&gt;
-  &lt;li&gt;Run &lt;code class=&quot;highlighter-rouge&quot;&gt;fix&lt;/code&gt; against a specific web node in our &lt;em&gt;test&lt;/em&gt; environment. Ensure that the run did not error. This probably looks like &lt;code class=&quot;highlighter-rouge&quot;&gt;fix node:web-n01.test.mydns.com&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix&lt;/code&gt; against a specific web node in our &lt;em&gt;test&lt;/em&gt; environment. Ensure that the run did not error. This probably looks like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix node:web-n01.test.mydns.com&lt;/code&gt;&lt;/li&gt;
   &lt;li&gt;SSH on to that specific web node and make sure our expected change occurred&lt;/li&gt;
   &lt;li&gt;Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.&lt;/li&gt;
 &lt;/ul&gt;
@@ -332,11 +322,11 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
 
 &lt;p&gt;If this change is required on a group of nodes this is still possible and again would still take place in the &lt;em&gt;test&lt;/em&gt; environment.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;fix --env=test_dfw nodes_with_role:cassandra&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix --env=test_dfw nodes_with_role:cassandra&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our &lt;code class=&quot;highlighter-rouge&quot;&gt;fix&lt;/code&gt; commands with the specific region environment. If you want to deploy to all environments you could just run several &lt;code class=&quot;highlighter-rouge&quot;&gt;fix&lt;/code&gt; commands in-tandem or one after the other.&lt;/p&gt;
+&lt;p&gt;Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix&lt;/code&gt; commands with the specific region environment. If you want to deploy to all environments you could just run several &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix&lt;/code&gt; commands in-tandem or one after the other.&lt;/p&gt;
 
-&lt;p&gt;It is important to use the environment attribute when using &lt;code class=&quot;highlighter-rouge&quot;&gt;nodes_with_role&lt;/code&gt; so if they are not specific enough an accidental provision of other environments does not happen.&lt;/p&gt;
+&lt;p&gt;It is important to use the environment attribute when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nodes_with_role&lt;/code&gt; so if they are not specific enough an accidental provision of other environments does not happen.&lt;/p&gt;
 
 &lt;p&gt;Going back to that pull request where we had a green checkmark. Merging that branch into master doesn’t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.&lt;/p&gt;
 
@@ -350,65 +340,62 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
 
 &lt;p&gt;To provision or create new nodes with littlechef a previous coworker &lt;a href=&quot;http://davehking.com/&quot;&gt;Dave H King&lt;/a&gt; made a library (&lt;a href=&quot;https://github.com/tildedave/littlechef-rackspace&quot;&gt;Littlechef-Rackspace&lt;/a&gt;) to make this really easy on Rackspace. It allows us to run a single command which brings up a node in our environment and runs plugins after it is created. The plugins we currently run install chef via omnibus and creates the node json file with extra information specific to how we setup our environment (private ips, labeling, environment). After the node is active and plugins have been ran it can take a runlist to configure the node as needed and add it to the node.json file.&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fix-rackspace create &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --username &amp;lt;username&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --key &amp;lt;api_key&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --region &amp;lt;region&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --image &amp;lt;image_id&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --flavor &amp;lt;flavor_id&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --name &lt;span class=&quot;s2&quot;&gt;&quot;web-n01.preprod.dfw&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --public-key &amp;lt;public_key_file&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --private-key &amp;lt;private_key_file&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --runlist &lt;span class=&quot;s2&quot;&gt;&quot;role[base],role[reach_base],role[reach_dfw_preprod],role[web]&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --plugins &lt;span class=&quot;s2&quot;&gt;&quot;omnibus_install_11, bootstrap&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --post-plugins &lt;span class=&quot;s2&quot;&gt;&quot;add_role&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fix-rackspace create &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--username&lt;/span&gt; &amp;lt;username&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt; &amp;lt;api_key&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--region&lt;/span&gt; &amp;lt;region&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--image&lt;/span&gt; &amp;lt;image_id&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--flavor&lt;/span&gt; &amp;lt;flavor_id&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;web-n01.preprod.dfw&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--public-key&lt;/span&gt; &amp;lt;public_key_file&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--private-key&lt;/span&gt; &amp;lt;private_key_file&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--runlist&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;role[base],role[reach_base],role[reach_dfw_preprod],role[web]&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--plugins&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;omnibus_install_11, bootstrap&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--post-plugins&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;add_role&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins are &lt;a href=&quot;https://gist.github.com/riltsken/c9996cf9af2c6b9ecade&quot;&gt;here&lt;/a&gt; and our post plugins after the runlist has been ran are &lt;a href=&quot;https://gist.github.com/riltsken/44103d0e495827758fbe&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;imageid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;flavor&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;flavorid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;imageid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;flavor&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;flavorid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;omnibus_install_11&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bootstrap&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;post-plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;add_role&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;use_opscode_chef&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;false&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;templates&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;post-plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;add_role&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;use_opscode_chef&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;templates&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[base]&quot;&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[reach_base]&quot;&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;00000000-0000-0000-0000-000000000000&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;11111111-1111-1111-1111-111111111111&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;preprod-dfw&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;dfw&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;reach_dfw_preprod&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;preprod-dfw&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;dfw&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;reach_dfw_preprod&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[reach_dfw_preprod]&quot;&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0f4c20c1-4c91-8a69-900d-44ff1fdd6fbd&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;secrets-file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;secrets-reachpreprod.cfg&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;secrets-file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;secrets-reachpreprod.cfg&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[reach_web]&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;And the new resulting command to spin up a web node in the dfw region for our preprod environment&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fix-rackspace create &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; web-n01.preprod.dfw base preprod-dfw web
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </content>
  </entry>
  
  <entry>
    <title>Development Pipeline for the Rackspace Cloud Control Panel</title>
-   <link href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html"/>
-   <updated>2014-09-21T00:00:00-06:00</updated>
-   <id>/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel</id>
+   <link href="http://0.0.0.0:4000/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html"/>
+   <updated>2014-09-21T00:00:00-05:00</updated>
+   <id>http://0.0.0.0:4000/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel</id>
    <content type="html">
 &lt;h2 id=&quot;foreword&quot;&gt;Foreword&lt;/h2&gt;
 &lt;p&gt;The Cloud Control Panel at Rackspace has ~30 developers split into 8 subteams. All of them are expected to have the ability to modify any part of the system, however, each subteam has some type of specialized knowledge of the product or infrastructure. Our team has a CI/CD pipeline in which we deploy up to 10 times a day (every hour during business hours). This evolved from a pipeline where every merge triggered a deploy.&lt;/p&gt;
@@ -464,9 +451,9 @@ Merging code runs the same tasks as the branch builder and more. The additional 
  
  <entry>
    <title>Why developers need to attend conferences like Gluecon</title>
-   <link href="/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html"/>
-   <updated>2014-05-25T00:00:00-06:00</updated>
-   <id>/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon</id>
+   <link href="http://0.0.0.0:4000/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html"/>
+   <updated>2014-05-25T00:00:00-05:00</updated>
+   <id>http://0.0.0.0:4000/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon</id>
    <content type="html">
 &lt;p&gt;Last week I attended &lt;a href=&quot;http://www.gluecon.com/2014/&quot;&gt;Gluecon&lt;/a&gt;, a developer-centric Cloud+DevOps event in Broomfield, Colorado. Whenever I join one of these conferences (about once or twice a year), I build out goals to maximize my time at the event and the return on investment for my role on the team. In addition, I spoke with many developers from all levels of experience to determine what value these conferences add. The results, while all over the spectrum, speak one clear message: team managers need to send their developers to more conferences. It is one of the best ways to help them grow (and make you as a manager look better). While going to a conference as a speaker holds completely different benefits I will be focusing on what an attendee gets out of it.&lt;/p&gt;
 
@@ -518,9 +505,9 @@ Merging code runs the same tasks as the branch builder and more. The additional 
  
  <entry>
    <title>VTHacks and why hackathons are essential for everyone</title>
-   <link href="/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone.html"/>
-   <updated>2014-04-22T00:00:00-06:00</updated>
-   <id>/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone</id>
+   <link href="http://0.0.0.0:4000/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone.html"/>
+   <updated>2014-04-22T00:00:00-05:00</updated>
+   <id>http://0.0.0.0:4000/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone</id>
    <content type="html">
 &lt;p&gt;Last weekend I had the pleasure of participating in &lt;a href=&quot;http://vthacks.com/&quot;&gt;VTHacks&lt;/a&gt; as a sponsor and judge representing Rackspace. This was not &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;https://www.facebook.com/media/set/?set=a.10150347775910404.349700.500210403&amp;amp;type=1&amp;amp;l=5fcdd086bf&quot;&gt;my&lt;/a&gt;&lt;/span&gt; &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;http://www.centralfloridafuture.com/mobile/students-startup-winning-business-1.2605980&quot;&gt;first&lt;/a&gt;&lt;/span&gt; &lt;span class=&quot;underline&quot;&gt;&lt;a href=&quot;http://blogs.technet.com/b/bizspark_group_blog/archive/2012/09/19/highlights-from-startupweekend-blacksburg.aspx&quot;&gt;hackathon&lt;/a&gt;&lt;/span&gt;, but it was definitely one of the largest I have attended. The event boasted an RSVP count of ~600 and had sponsors from several big companies which can be found on their event page. The venue was &lt;a href=&quot;http://en.wikipedia.org/wiki/Cassell_Coliseum&quot;&gt;Cassel Coliseum&lt;/a&gt; located at Virginia Tech in Blacksburg, VA.&lt;/p&gt;
 
@@ -540,9 +527,9 @@ Merging code runs the same tasks as the branch builder and more. The additional 
  
  <entry>
    <title>Making runbooks more useful by exposing them through monitoring</title>
-   <link href="/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html"/>
-   <updated>2014-04-19T00:00:00-06:00</updated>
-   <id>/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring</id>
+   <link href="http://0.0.0.0:4000/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html"/>
+   <updated>2014-04-19T00:00:00-05:00</updated>
+   <id>http://0.0.0.0:4000/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring</id>
    <content type="html">
 &lt;p&gt;In the &lt;a href=&quot;/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html&quot;&gt;Server Message Of The Day (MOTD) post&lt;/a&gt;, I mentioned the importance of sharing &lt;a href=&quot;http://en.wikipedia.org/wiki/Tribal_knowledge&quot;&gt;tribal knowledge&lt;/a&gt; across teams on fixing infrastructure issues. When any of our monitoring alarms kick off, any team member should be equipped to take action on the alarm, but we operate with so many different technologies that no one person could possibly be an expert in all of them. Most operations teams create &lt;a href=&quot;http://en.wikipedia.org/wiki/Runbook&quot;&gt;runbooks&lt;/a&gt; for common tasks, but we took it one step further and created runbooks for every alarm in our system. They don’t exactly cover every possible reason for an alarm triggering, but will always help to provide context for someone that doesn’t regularly deal with that subsystem.&lt;/p&gt;
 
@@ -561,9 +548,9 @@ Merging code runs the same tasks as the branch builder and more. The additional 
  
  <entry>
    <title>Multi-region logging architecture with Logstash, Kibana, and ElasticSearch</title>
-   <link href="/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html"/>
-   <updated>2014-03-25T04:24:15-06:00</updated>
-   <id>/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana</id>
+   <link href="http://0.0.0.0:4000/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html"/>
+   <updated>2014-03-25T05:24:15-05:00</updated>
+   <id>http://0.0.0.0:4000/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana</id>
    <content type="html">
 &lt;h2 id=&quot;background&quot;&gt;Background&lt;/h2&gt;
 
@@ -581,45 +568,42 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;To get all nodes in a specific datacenter to send their logs to the broker I decided to use tags to handle forwarding the logs I wanted. An example of what this would look like via config files would be the following&lt;/p&gt;
 
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;00_input_base.conf
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;00_input_base.conf
 
 input {
   file {
-    &#39;path&#39; =&amp;gt; &#39;/var/log/rackspace-monitoring-agent.log&#39;,
-    &#39;type&#39; =&amp;gt; &#39;rackspace-monitoring-agent&#39;
+    &apos;path&apos; =&amp;gt; &apos;/var/log/rackspace-monitoring-agent.log&apos;,
+    &apos;type&apos; =&amp;gt; &apos;rackspace-monitoring-agent&apos;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;01_input_apache.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;01_input_apache.conf
 
 input {
   file {
-    &#39;path&#39; =&amp;gt; &#39;/var/log/apache2/error.log&#39;
-    &#39;type&#39; =&amp;gt; &#39;apache-error&#39;
-    &#39;tags&#39; =&amp;gt; [&#39;broker&#39;]
+    &apos;path&apos; =&amp;gt; &apos;/var/log/apache2/error.log&apos;
+    &apos;type&apos; =&amp;gt; &apos;apache-error&apos;
+    &apos;tags&apos; =&amp;gt; [&apos;broker&apos;]
   }
   file {
-    &#39;path&#39; =&amp;gt; &#39;/var/log/apache2/access.log&#39;
-    &#39;type&#39; =&amp;gt; &#39;apache-access&#39;
-    &#39;tags&#39; =&amp;gt; [&#39;broker&#39;]
+    &apos;path&apos; =&amp;gt; &apos;/var/log/apache2/access.log&apos;
+    &apos;type&apos; =&amp;gt; &apos;apache-access&apos;
+    &apos;tags&apos; =&amp;gt; [&apos;broker&apos;]
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;90_forward_to_broker.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;90_forward_to_broker.conf
 
 output {
-  if &#39;broker&#39; in [tags] {
+  if &apos;broker&apos; in [tags] {
     redis {
-      &#39;host&#39; =&amp;gt; &#39;192.168.9.1&#39;
-      &#39;data_type&#39; =&amp;gt; &#39;list&#39;
-      &#39;key&#39; =&amp;gt; &#39;logstash&#39;
+      &apos;host&apos; =&amp;gt; &apos;192.168.9.1&apos;
+      &apos;data_type&apos; =&amp;gt; &apos;list&apos;
+      &apos;key&apos; =&amp;gt; &apos;logstash&apos;
     }
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/multi-region logging - web to broker.png&quot; alt=&quot;Specific datacenter logging from application nodes to broker&quot; /&gt;&lt;/p&gt;
 
@@ -627,45 +611,43 @@ output {
 
 &lt;p&gt;The next step is to forward our logs to the collector. To do this we create a different set of conf.d files for our logstash agent to run on the broker node. For this portion we were originally going to use stunnel to create an encrypted channel for the logs to be sent over to the collector, however, as I was reading about the different inputs and outputs supported by logstash I stumbled on &lt;a href=&quot;https://github.com/elasticsearch/logstash-forwarder&quot;&gt;lumberjack&lt;/a&gt;. Now, I actually had quite a few issues with understanding how lumberjack should be used in the context of logstash. What I see now is that it can either &lt;strong&gt;REPLACE&lt;/strong&gt; the logstash agent as a log handler and forwarder or logstash can &lt;strong&gt;CREATE&lt;/strong&gt; a lumberjack instance on the fly to send events as output or read events forwarded by lumberjack. In the first case, you would actually have to compile and build the lumberjack project and run the agent as a service. In the second case the logstash agent handles all of that and one should just use the inputs and outputs as normal.&lt;/p&gt;
 
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;91_forward_to_collector.conf
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;91_forward_to_collector.conf
 
 input {
   redis {
-    &#39;host&#39; =&amp;gt; &#39;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;broker_ip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&#39;
-    &#39;data_type&#39; =&amp;gt; &#39;list&#39;
-    &#39;key&#39; =&amp;gt; &#39;logstash&#39;
+    &apos;host&apos; =&amp;gt; &apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;broker_ip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;
+    &apos;data_type&apos; =&amp;gt; &apos;list&apos;
+    &apos;key&apos; =&amp;gt; &apos;logstash&apos;
   }
 }
 
 output {
   lumberjack {
-    &#39;hosts&#39; =&amp;gt; [&#39;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;collector_ip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&#39;]
-    &#39;port&#39; =&amp;gt; &lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;forwarder&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
-    &#39;ssl_certificate&#39; =&amp;gt; &#39;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_cert&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&#39;
+    &apos;hosts&apos; =&amp;gt; [&apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;collector_ip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;]
+    &apos;port&apos; =&amp;gt; &lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;forwarder&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+    &apos;ssl_certificate&apos; =&amp;gt; &apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_cert&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;92_lumberjack_collector.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;92_lumberjack_collector.conf
 
 input {
   lumberjack {
-    &#39;host&#39; =&amp;gt; &#39;127.0.0.1&#39;
-    &#39;port&#39; =&amp;gt; &lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;forwarder&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
-    &#39;ssl_certificate&#39; =&amp;gt; &#39;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_cert&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&#39;
-    &#39;ssl_key&#39; =&amp;gt; &#39;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&#39;
+    &apos;host&apos; =&amp;gt; &apos;127.0.0.1&apos;
+    &apos;port&apos; =&amp;gt; &lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;forwarder&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+    &apos;ssl_certificate&apos; =&amp;gt; &apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_cert&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;
+    &apos;ssl_key&apos; =&amp;gt; &apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;
   }
 }
 
 output {
   redis {
-    &#39;host&#39; =&amp;gt; &#39;127.0.0.1&#39;
-    &#39;data_type&#39; =&amp;gt; &#39;list&#39;
-    &#39;key&#39; =&amp;gt; &#39;logstash&#39;
+    &apos;host&apos; =&amp;gt; &apos;127.0.0.1&apos;
+    &apos;data_type&apos; =&amp;gt; &apos;list&apos;
+    &apos;key&apos; =&amp;gt; &apos;logstash&apos;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Unfortunately I ran out of time during our hackweek due to other issues I had to look at outside of this project to get the implementation down 100% but this is the rough idea for how it would look. I hope to make a follow up post when we have fully implemented the desired architecture. For now, this documents some of the learnings I gained while working on this project for a few days.&lt;/p&gt;
 </content>
@@ -673,9 +655,9 @@ output {
  
  <entry>
    <title>How a server MOTD improved our DevOps team</title>
-   <link href="/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html"/>
-   <updated>2014-03-16T09:54:14-06:00</updated>
-   <id>/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team</id>
+   <link href="http://0.0.0.0:4000/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html"/>
+   <updated>2014-03-16T10:54:14-05:00</updated>
+   <id>http://0.0.0.0:4000/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team</id>
    <content type="html">
 &lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
 &lt;p&gt;Our Infrastructure team for the Cloud Control Panel at Rackspace has around ~200 public cloud servers across production, preproduction, staging, and test environments. At a high level our general layout for hosting the Cloud Control Panel includes nodes of several different types. We have load balancers running apache. Web nodes which serve the base content with Django. Javascript served from a cdn (content delivery network). Twisted servers which proxy requests for making calls to Rackspace apis from the frontend. A cluster of Cassandra nodes for managing sessions, preferences, and api cache data. All of these nodes are managed and provisioned using &lt;a href=&quot;https://github.com/tobami/littlechef&quot;&gt;littlechef&lt;/a&gt; (chef-solo) combined with &lt;a href=&quot;https://github.com/tildedave/littlechef-rackspace&quot;&gt;littlechef-rackspace&lt;/a&gt;.&lt;/p&gt;

@@ -1,16 +1,227 @@
-786-444-2085                   Samuel Toriel                  riltsken.github.io
-Denver, CO                 samueltoriel@gmail.com            github.com/riltsken
+riltsken.github.io                                                 Samuel Toriel
+github.com/riltsken                                       samueltoriel@gmail.com
+                                                                    Richmond, VA
 
-Mission     I am a software developer looking for an environment that emphasizes
-            product development, non-siloed workflows, pull request based code
-            reviews, and developers owning devops / qa. I have an avid
-            appreciation for automation and testing.
+Mission     I am an engineering leader who fosters positive 
+            environments which focus on building quality products 
+            that are maintainable and scalable.
 
-Languages   Fluent in Python, JavaScript, HTML, CSS
-            Familiar with Ruby, Java, Bash, SQL, CQL
+Languages   Fluent in TypeScript, Python, SQL, HTML, CSS
+            Familiar with Java, Ruby, Bash + More
 
 Experience
 ==========
++------------------------------------------------------------------------------+
++-Beech Valley Solutions - Software Engineer                 April 2021 to Now-+
++------------------------------------------------------------------------------+
+
+Fun Facts
+---------
+
+* Third engineer
+* Mostly greenfield work
+* Wore a lot of hats (startup :))
+
+Description
+-----------
+
+Beech Valley itself is a "gig economy" staffing firm for the accounting 
+industry. We leverage technology as our differentiator to other staffing firms
+in that we can handle 10-100x recruiting load with less interal staff to
+manage things. We have a web application that helps supercharge our team to 
+recruit and manage consultants while also managing all the projects they 
+are working on. Clients also used the app to create and staff their projects.
+
+I was recruited by the CTO to Beech Valley who was a former colleague at
+Rackspace. I have touched practically all aspects of the codebase,
+infrastructure and processes here because we are a small team and I was an early
+engineer. It's a little hard to describe _everything_ I have done but below are 
+just a few of the larger efforts.
+
+Most of our internal technology stack is in a monorepo using NX and Typescript.
+Our infrastructure lives mostly in AWS on Fargate tasks in ECS.
+
+Projects
+--------
+
+Nudge                  This was the first project I lead and implemented.
+                       It was named nudge because we wanted to "nudge" the 
+                       account managers when they needed to take action on a 
+                       project to reduce lead times. I handled the product 
+                       requirements and information gathering amongst the team 
+                       to whittle down to the features we wanted to implement
+                       and then... executed! We had three phases which we built:
+                       
+                       1. Layered alerting on Projects in the app
+                       2. Client digest emails to prod them to take action
+                       3. Overdue actions (emails) that consultants needed to
+                       respond to.
+
+Candidate Pipeline     Second project I lead. We needed to streamline our
+                       process for recruiting consultants. The previous one
+                       required managing changes between multiple systems and 
+                       everyone was handling it differently. I suggested
+                       combining the systems and using one interface in our app
+                       to manage the whole process. When this project completed
+                       lead times for recruiting consultants went from
+                       an inconsistent 25+ days to a consistent 12 days.  
+                       Additionally we had large queues of candidates but with
+                       the new system we were able to make sure every candidate 
+                       was responded to. I dubbed this system "Inbox Zero".
+
+Continuous Deployment  I was able to convince the team to practice continuous
+                       deployment through automated daily deploys. Previously 
+                       the team was deploying ad-hoc.
+
+Heroku To AWS          When Heroku declared it's security incident In April 2022
+                       the CTO and I decided we needed to accelerate our plan
+                       to migrate to AWS (which we had done no work for yet). 
+                       By the end of July 2022 we completed our migration to 
+                       AWS. We had a multi-account architecture and used AWS
+                       Fargate + ECS to manage our app. We migrated our 
+                       API + Worker + RDS + Elasticsearch over along with all 
+                       our monitoring using Datadog. This migration was done by 
+                       just myself and the CTO.
+
+Monitoring + Security  I took charge of managing almost all of our monitoring
+                       using Datadog. I setup all the dashboards for making sure
+                       we had data around application + datastore load and 
+                       performance. Because we were using GraphQL it was 
+                       incredibly important for us to use APM tracing 
+                       allowing us to pinpoint any api bottlenecks.
+
+                       In addition, we used the security offerings from Datadog
+                       in which I setup all the Cloud SIEM and AWS CloudTrail 
+                       logging to message slack when any security signals 
+                       occured. We had custom signals for things like
+                       S3 usage and SSH access.
+
++------------------------------------------------------------------------------+
++-Ibotta - Staff Engineer                          February 2020 to April 2021-+
++------------------------------------------------------------------------------+
+
+Fun Facts
+---------
+
+* Joined a team with lots of legacy code and few if any original owners
+* First time working with GraphQL
+* No manager for the first 6 months because they were let go and had to find 
+a new one.
+
+Description
+-----------
+
+Primarily worked in the domain of serving Content for Ibotta consumers. 
+As a backend team we focused on storing internal data, applying personalization 
+from customer interactions and serving it through a GraphQL API for Ibotta's 
+external facing applications (Mobile & Web). Much of my day to day consisted
+of reviewing code from external teams wanting to add new api endpoints and
+ensuring performance, accuracy, and errors were in our allowed internal SLA's
+
+* Maintained and scaled a B2C facing GraphQL API which operated at
+~2000 requests/s. During peak busy seasons we manually scaled up the data and 
+compute planes to properly handle large traffic spikes.
+
+* After a mandate from the company that we needed to reduce spend I lead 
+and organized team infrastructure costs in a shared spreadsheet month to month
+which allowed us to identify and reduce costs YoY in the low six figure range 
+(mostly overprovisioned datastores) for our specific team.
+
+* When joining the team they deployed sparingly because they had an issue with 
+response times spiking. Apparently this had been going on for 9 months+. I was
+able to research, identify, and remediate this bug which required me working
+with the infrastructure team (we were an app team) to prove that the nginx
+loadbalancer we were using in kubernetes was the cause. The fix was to upgrade
+the nginx version + use a different loadbalancing algorithm because it 
+had a bug (:
+
+* Introduced Typescript into Ibotta's 2nd largest codebase and provided a 
+migration guide on how to move js parts to ts. The goal of Typescript was to
+help reduce bugs due to unknown and poorly understood data shapes from 
+developers who were no longer at the company.
+
++------------------------------------------------------------------------------+
++-Percolate - Engineering Manager in Infrastructure  May 2019 to February 2020-+
++------------------------------------------------------------------------------+
+
+Fun Facts
+---------
+
+* Percolate was acquired by Seismic Softare.
+* First time dealing with SOC 2 Compliance.
+* Learned kubernetes as an operator.
+* Learned CFEngine which I have purged from my brain since then.
+
+Description
+-----------
+
+While my tenure at Percolate was shorter than most my impact was still
+fairly strong. I took over the "team" that managed the legacy infrastructure
+which was managed by CFEngine (only one person in the company understood how
+it worked). They had 1000+ legacy nodes that were not using autoscaling groups
+which required a lot of hands on TLC. My role was in support of another team
+trying to migrate to Kubernetes as fast as possible while myself and the other
+individual pretty much kept the infrastructure running.
+
+During this period I uncovered a particularly annoying networking bug in 
+Kubernetes causing lots of conntrack failures for apps connecting to datastores.
+There are many layers here but in concise terms we can say the SNAT 
+implementation was the culprit which we were able to change.
+
+The "team" itself evolved and eventually after migrating to Kubernetes I started
+helping manage the datastores, security and helping with SOC 2 auditing. The 
+team changed and I had 2 data engineers under me where we managed to automate a
+25 RDS migration to the new Kubernetes VPC with 0 issues and minimal downtime.
+
++------------------------------------------------------------------------------+
++-Apto - Senior Engineer + Engineering Manager     November 2016 to March 2019-+
++------------------------------------------------------------------------------+
+
+Fun Facts
+---------
+
+* First time managing a team.
+* First time building a mobile app deployed to both Apple + Android.
+* Started up their AWS Cloud infrastructure from scratch using Terraform.
+
+Description
+-----------
+
+During my time at Apto I started as a software engineer and eventually lead a 
+product team consisting of 4 software engineers and 1 qa engineer. During my 
+time managing I still helped with architecture, tricky technical bits, 
+and infrastructure. As manager I was involved in 1:1s, engineer growth,
+hiring and dealing with everything that comes with that in a messy startup 
+environment.
+
+
+Projects
+--------
+
+Apto Mobile           A mobile application linked to Salesforce API's to enable 
+                      brokers to manage their CRM portfolio. Built with a team 
+                      of four developers. I had zero mobile development 
+                      knowledge prior to this application. Deployed to both 
+                      Google Play Store and Apple iTunes. We practiced
+                      continuous deployment by taking advantage of Ionic Cloud 
+                      to deploy to devices when updates are available without 
+                      having to push binaries to the App Store.
+                      Technology - Ionic 2, Angular 2, TypeScript, Node.js Proxy
+                                   Salesforce API's
+
+Prospect and Nurture  A web application for brokers to help streamline their 
+                      CRM workflow. Skinned on top of the Salesforce API and 
+                      our managed Salesforce package. Built with a team of 
+                      six developers.
+                      Technology - Ionic 2, Angular 2, TypeScript, Node.js proxy
+                                   Salesforce API's
+
+Mapping               A full mapping experience for the Prospect and Nurture 
+                      platform. Create call lists from your property database 
+                      using dozens of filters including polygons and radius. 
+                      Built as a team of two developers
+                      Technology - AWS Lambda/SQS, Terraform, TypeScript Node 
+                                   API, Angular 2 pluggable frontend library
 
 +------------------------------------------------------------------------------+
 +-FullContact - DevOps Engineer                        April 2015 to July 2016-+
@@ -21,7 +232,6 @@ Fun Facts
 
 * Team Size was 3.
 * Worked with remote team in Latvia, Riga.
-* Walked to work.
 * Went snowboarding for my interview.
 * Learned how to operate and scale microservices.
 
@@ -62,12 +272,9 @@ Fun Facts
 
 * Team size was 25ish.
 * Worked with remote teams in San Francisco and Brazil.
-* Drove 7 minutes to work.
-* Learned what it was like working on a large team. Different scale of team
-problems and dynamics.
+* Learned what it was like working on a large team.
 * Experienced working in a monorepo.
-* Constantly rotating interns. Teaching them how to get up to speed. Push code
-on their first day.
+* Teaching interns how to get up to speed and push code on their first day.
 
 Projects
 --------
@@ -109,10 +316,8 @@ Fun Facts
 ---------
 
 * Team size was 3
-* Drove 40 minutes to work
 * First job starting out as an intern
-* Felt impact first hand working directly with people using my code in office
-next to me.
+* Felt impact by directly with people using my code in office next to me.
 
 Projects
 --------

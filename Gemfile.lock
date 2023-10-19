@@ -1,0 +1,25 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ffi (1.15.5)
+    jekyll-paginate (1.1.0)
+    jekyll-watch (2.2.1)
+      listen (~> 3.0)
+    listen (3.7.1)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
+    rb-fsevent (0.11.2)
+    rb-inotify (0.10.1)
+      ffi (~> 1.0)
+    webrick (1.8.1)
+
+PLATFORMS
+  x86_64-linux-musl
+
+DEPENDENCIES
+  jekyll-paginate
+  jekyll-watch
+  webrick
+
+BUNDLED WITH
+   2.3.25

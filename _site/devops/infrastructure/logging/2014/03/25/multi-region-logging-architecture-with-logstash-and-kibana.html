@@ -92,7 +92,7 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <p>To get all nodes in a specific datacenter to send their logs to the broker I decided to use tags to handle forwarding the logs I wanted. An example of what this would look like via config files would be the following</p>
 
-<div class="language-erb highlighter-rouge"><pre class="highlight"><code>00_input_base.conf
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code>00_input_base.conf
 
 input {
   file {
@@ -100,9 +100,8 @@ input {
     'type' =&gt; 'rackspace-monitoring-agent'
   }
 }
-</code></pre>
-</div>
-<div class="language-erb highlighter-rouge"><pre class="highlight"><code>01_input_apache.conf
+</code></pre></div></div>
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code>01_input_apache.conf
 
 input {
   file {
@@ -116,9 +115,8 @@ input {
     'tags' =&gt; ['broker']
   }
 }
-</code></pre>
-</div>
-<div class="language-erb highlighter-rouge"><pre class="highlight"><code>90_forward_to_broker.conf
+</code></pre></div></div>
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code>90_forward_to_broker.conf
 
 output {
   if 'broker' in [tags] {
@@ -129,8 +127,7 @@ output {
     }
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><img src="http://d1dj72mlaoziwu.cloudfront.net/multi-region logging - web to broker.png" alt="Specific datacenter logging from application nodes to broker" /></p>
 
@@ -138,7 +135,7 @@ output {
 
 <p>The next step is to forward our logs to the collector. To do this we create a different set of conf.d files for our logstash agent to run on the broker node. For this portion we were originally going to use stunnel to create an encrypted channel for the logs to be sent over to the collector, however, as I was reading about the different inputs and outputs supported by logstash I stumbled on <a href="https://github.com/elasticsearch/logstash-forwarder">lumberjack</a>. Now, I actually had quite a few issues with understanding how lumberjack should be used in the context of logstash. What I see now is that it can either <strong>REPLACE</strong> the logstash agent as a log handler and forwarder or logstash can <strong>CREATE</strong> a lumberjack instance on the fly to send events as output or read events forwarded by lumberjack. In the first case, you would actually have to compile and build the lumberjack project and run the agent as a service. In the second case the logstash agent handles all of that and one should just use the inputs and outputs as normal.</p>
 
-<div class="language-erb highlighter-rouge"><pre class="highlight"><code>91_forward_to_collector.conf
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code>91_forward_to_collector.conf
 
 input {
   redis {
@@ -155,9 +152,8 @@ output {
     'ssl_certificate' =&gt; '<span class="cp">&lt;%=</span> <span class="n">node</span><span class="p">[</span><span class="s2">"selfsigned_ssl"</span><span class="p">][</span><span class="s2">"directory"</span><span class="p">]</span> <span class="cp">%&gt;&lt;%=</span> <span class="n">node</span><span class="p">[</span><span class="s2">"selfsigned_ssl"</span><span class="p">][</span><span class="s2">"ssl_cert"</span><span class="p">]</span> <span class="cp">%&gt;</span>'
   }
 }
-</code></pre>
-</div>
-<div class="language-erb highlighter-rouge"><pre class="highlight"><code>92_lumberjack_collector.conf
+</code></pre></div></div>
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code>92_lumberjack_collector.conf
 
 input {
   lumberjack {
@@ -175,8 +171,7 @@ output {
     'key' =&gt; 'logstash'
   }
 }
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Unfortunately I ran out of time during our hackweek due to other issues I had to look at outside of this project to get the implementation down 100% but this is the rough idea for how it would look. I hope to make a follow up post when we have fully implemented the desired architecture. For now, this documents some of the learnings I gained while working on this project for a few days.</p>
 
