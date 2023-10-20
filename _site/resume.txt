@@ -44,7 +44,7 @@ Project Nudge       I lead this project which I wrote an informal blog post here
 Candidate Pipeline  Another project I lead. We needed to streamline our process 
                     for recruiting consultants. I helped simplify the entire 
                     process by figuring out how we could combine multiple 
-                    systems into one to manage the whole process.
+                    systems into one.
                     
                     When this project completed lead times for recruiting 
                     consultants went from an inconsistent 25+ days to a 
