@@ -25,76 +25,48 @@ Fun Facts
 Description
 -----------
 
-Beech Valley itself is a "gig economy" staffing firm for the accounting 
-industry. We leverage technology as our differentiator to other staffing firms
-in that we can handle 10-100x recruiting load with less interal staff to
-manage things. We have a web application that helps supercharge our team to 
-recruit and manage consultants while also managing all the projects they 
-are working on. Clients also used the app to create and staff their projects.
+Beech Valley is a "gig economy" staffing firm for the accounting industry. We 
+leverage technology allowing us to handle 10-100x more staffing tasks than other
+ firms could with less.
 
-I was recruited by the CTO to Beech Valley who was a former colleague at
-Rackspace. I have touched practically all aspects of the codebase,
-infrastructure and processes here because we are a small team and I was an early
-engineer. It's a little hard to describe _everything_ I have done but below are 
-just a few of the larger efforts.
+Hired on as the third engineer I touched all aspects of the codebase, 
+infrastructure and processes. The internal technology stack is a monorepo using 
+NX and Typescript. The infrastructure is AWS on Fargate ECS.
 
-Most of our internal technology stack is in a monorepo using NX and Typescript.
-Our infrastructure lives mostly in AWS on Fargate tasks in ECS.
+I worked on lots of projects but a few are described below.
 
 Projects
 --------
 
-Nudge                  This was the first project I lead and implemented.
-                       It was named nudge because we wanted to "nudge" the 
-                       account managers when they needed to take action on a 
-                       project to reduce lead times. I handled the product 
-                       requirements and information gathering amongst the team 
-                       to whittle down to the features we wanted to implement
-                       and then... executed! We had three phases which we built:
-                       
-                       1. Layered alerting on Projects in the app
-                       2. Client digest emails to prod them to take action
-                       3. Overdue actions (emails) that consultants needed to
-                       respond to.
+Project Nudge       I lead this project which I wrote an informal blog post here
+                    https://docs.google.com/document/d/1h0TATnqmlvr5C6KGURitb65ir0MewhB14RGgcMUOlGg/edit?usp=sharing
 
-Candidate Pipeline     Second project I lead. We needed to streamline our
-                       process for recruiting consultants. The previous one
-                       required managing changes between multiple systems and 
-                       everyone was handling it differently. I suggested
-                       combining the systems and using one interface in our app
-                       to manage the whole process. When this project completed
-                       lead times for recruiting consultants went from
-                       an inconsistent 25+ days to a consistent 12 days.  
-                       Additionally we had large queues of candidates but with
-                       the new system we were able to make sure every candidate 
-                       was responded to. I dubbed this system "Inbox Zero".
+Candidate Pipeline  Another project I lead. We needed to streamline our process 
+                    for recruiting consultants. I helped simplify the entire 
+                    process by figuring out how we could combine multiple 
+                    systems into one to manage the whole process.
+                    
+                    When this project completed lead times for recruiting 
+                    consultants went from an inconsistent 25+ days to a 
+                    consistent 12 days. With the new system we were able to 
+                    make sure every candidate was responded to.
 
-Continuous Deployment  I was able to convince the team to practice continuous
-                       deployment through automated daily deploys. Previously 
-                       the team was deploying ad-hoc.
+Infrastructure      As the primary engineer responsible for the infrastructure 
+                    (along with collaboration with the CTO) I helped ensure we 
+                    had a structured environment that was easy to make changes 
+                    in. We use Terraform Cloud to facilitate infrastructure 
+                    changes and DataDog to monitor everything. I pushed for 
+                    daily deploys allowing us to continuously deliver value 
+                    versus large ad-hoc deploys. I faciliated learnings for the 
+                    team on how to use tools in this realm.
 
-Heroku To AWS          When Heroku declared it's security incident In April 2022
-                       the CTO and I decided we needed to accelerate our plan
-                       to migrate to AWS (which we had done no work for yet). 
-                       By the end of July 2022 we completed our migration to 
-                       AWS. We had a multi-account architecture and used AWS
-                       Fargate + ECS to manage our app. We migrated our 
-                       API + Worker + RDS + Elasticsearch over along with all 
-                       our monitoring using Datadog. This migration was done by 
-                       just myself and the CTO.
-
-Monitoring + Security  I took charge of managing almost all of our monitoring
-                       using Datadog. I setup all the dashboards for making sure
-                       we had data around application + datastore load and 
-                       performance. Because we were using GraphQL it was 
-                       incredibly important for us to use APM tracing 
-                       allowing us to pinpoint any api bottlenecks.
-
-                       In addition, we used the security offerings from Datadog
-                       in which I setup all the Cloud SIEM and AWS CloudTrail 
-                       logging to message slack when any security signals 
-                       occured. We had custom signals for things like
-                       S3 usage and SSH access.
+                    When Heroku declared it's security incident In April 2022 we
+                    decided to migrate to AWS. In just 4 months the CTO and
+                    myself were able to hammer out a multi-account architecture 
+                    using AWS Fargate + ECS to manage our app. I implemented 
+                    security tooling via DataDog to read from AWS CloudTrail and
+                    send alarms to Slack for any type of environment change 
+                    (secret modification, anomalous s3 usage, ssh access, etc).
 
 +------------------------------------------------------------------------------+
 +-Ibotta - Staff Engineer                          February 2020 to April 2021-+

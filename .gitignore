@@ -3,3 +3,4 @@ _site/env
 .ruby-version
 .jekyll-cache
 .jekyll-metadata
+_site/docker-compose.yml
