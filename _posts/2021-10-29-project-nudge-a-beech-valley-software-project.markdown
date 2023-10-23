@@ -56,4 +56,4 @@ Here are the key results from our project.
 <br />
 🎉 Phase 2 took 12 stories and increased our response rates from consultants by 15%
 <br />
-🎉 Phase 3 took 9 stories and while still in progress of rolling out the feature we noticed an uptick in responses within thirty minutes after hitting a clients inbox.
+🎉 Phase 3 took 9 stories and we noticed an uptick in response rate within thirty minutes after hitting a clients inbox.
