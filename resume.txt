@@ -38,10 +38,10 @@ I worked on lots of projects but a few are described below.
 Projects
 --------
 
-Project Nudge       I lead this project which I wrote an informal blog post here
+Project Nudge       Project lead. I wrote an informal blog post about the project
                     https://docs.google.com/document/d/1h0TATnqmlvr5C6KGURitb65ir0MewhB14RGgcMUOlGg/edit?usp=sharing
 
-Candidate Pipeline  Another project I lead. We needed to streamline our process 
+Candidate Pipeline  Project lead. We needed to streamline our process 
                     for recruiting consultants. I helped simplify the entire 
                     process by figuring out how we could combine multiple 
                     systems into one.

@@ -98,48 +98,48 @@ window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.ge
 
 <h1 id="setting-up-spinnaker">Setting up Spinnaker</h1>
 
-<p>We use the <code class="language-plaintext highlighter-rouge">InstallSpinnaker.sh</code> script provided by the Spinnaker team here <a href="https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh">https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh</a></p>
+<p>We use the <code>InstallSpinnaker.sh</code> script provided by the Spinnaker team here <a href="https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh">https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh</a></p>
 
-<p>Spinnaker itself is broken into several microservices. Looking at <code class="language-plaintext highlighter-rouge">/opt</code> you should see all the different service folders here.</p>
+<p>Spinnaker itself is broken into several microservices. Looking at <code>/opt</code> you should see all the different service folders here.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls /opt
+<pre><code>$ ls /opt
 clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdriver  userdata
-</code></pre></div></div>
+</code></pre>
 
-<p>Looking at the <code class="language-plaintext highlighter-rouge">/opt/spinnaker/config</code> directory we’ll find all the configurations from the different services. We can override any configuration value with an <code class="language-plaintext highlighter-rouge">appname-local.yml</code> file. The ones we are going to change are <code class="language-plaintext highlighter-rouge">gate-local.yml</code> and <code class="language-plaintext highlighter-rouge">settings.js</code>. When making changes to these files you’ll have to restart their respective service and/or regenerate their configuration file. <code class="language-plaintext highlighter-rouge">service gate restart</code> and <code class="language-plaintext highlighter-rouge">/opt/spinnaker/bin/reconfigure_spinnaker.sh</code>.</p>
+<p>Looking at the <code>/opt/spinnaker/config</code> directory we’ll find all the configurations from the different services. We can override any configuration value with an <code>appname-local.yml</code> file. The ones we are going to change are <code>gate-local.yml</code> and <code>settings.js</code>. When making changes to these files you’ll have to restart their respective service and/or regenerate their configuration file. <code>service gate restart</code> and <code>/opt/spinnaker/bin/reconfigure_spinnaker.sh</code>.</p>
 
 <h2 id="gate-configuration">Gate configuration</h2>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">gate-local.yml</span>
+<pre><code class="language-yaml">gate-local.yml
 
-<span class="na">saml</span><span class="pi">:</span>
-  <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
-  <span class="na">requireAuthentication</span><span class="pi">:</span> <span class="no">true</span>
-  <span class="na">url</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">okta_idp_url_for_application</span><span class="pi">}</span>
-  <span class="na">certificate</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">base64_encoded_certificate</span><span class="pi">}</span>
-  <span class="na">issuerId</span><span class="pi">:</span> <span class="s">http://www.okta.com/{anyid}</span>
-  <span class="na">keyStore</span><span class="pi">:</span> <span class="s">spinnaker.jks</span>
-  <span class="na">keyStoreType</span><span class="pi">:</span> <span class="s">JKS</span>
-  <span class="na">keyStorePassword</span><span class="pi">:</span> <span class="pi">{</span><span class="nv">somepassword</span><span class="pi">}</span>
-  <span class="na">keyStoreAliasName</span><span class="pi">:</span> <span class="s">okta</span>
-</code></pre></div></div>
+saml:
+  enabled: true
+  requireAuthentication: true
+  url: {okta_idp_url_for_application}
+  certificate: {base64_encoded_certificate}
+  issuerId: http://www.okta.com/{anyid}
+  keyStore: spinnaker.jks
+  keyStoreType: JKS
+  keyStorePassword: {somepassword}
+  keyStoreAliasName: okta
+</code></pre>
 
-<p>The above properties <code class="language-plaintext highlighter-rouge">url</code> and <code class="language-plaintext highlighter-rouge">certificate</code> will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.</p>
+<p>The above properties <code>url</code> and <code>certificate</code> will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.</p>
 
-<p>The <code class="language-plaintext highlighter-rouge">issuerId</code> is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id</p>
+<p>The <code>issuerId</code> is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id</p>
 
-<p>The <code class="language-plaintext highlighter-rouge">keyStore</code> is generated using the java keytool utility. Specifically this command:</p>
+<p>The <code>keyStore</code> is generated using the java keytool utility. Specifically this command:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keytool -importcert -file okta.cert -keystore spinnaker.jks -alias "okta"
-</code></pre></div></div>
+<pre><code>keytool -importcert -file okta.cert -keystore spinnaker.jks -alias "okta"
+</code></pre>
 
-<p>where <code class="language-plaintext highlighter-rouge">okta.cert</code> is the previously described certificate not base64 encoded. It produces a file called <code class="language-plaintext highlighter-rouge">spinnaker.jks</code> and shares the alias with <code class="language-plaintext highlighter-rouge">keyStoreAliasName</code> in the <code class="language-plaintext highlighter-rouge">gate-local.yml</code> config. The keytool will prompt for a password which will be shared in the <code class="language-plaintext highlighter-rouge">gate-local.yml</code> config. The <code class="language-plaintext highlighter-rouge">spinnaker.jks</code> file should be placed with your local config or otherwise specified with a correct path in the config to it’s location.</p>
+<p>where <code>okta.cert</code> is the previously described certificate not base64 encoded. It produces a file called <code>spinnaker.jks</code> and shares the alias with <code>keyStoreAliasName</code> in the <code>gate-local.yml</code> config. The keytool will prompt for a password which will be shared in the <code>gate-local.yml</code> config. The <code>spinnaker.jks</code> file should be placed with your local config or otherwise specified with a correct path in the config to it’s location.</p>
 
-<p>Now restart gate <code class="language-plaintext highlighter-rouge">service gate restart</code></p>
+<p>Now restart gate <code>service gate restart</code></p>
 
 <h2 id="webapp-configuration">Webapp configuration</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>settings.js
+<pre><code>settings.js
 
 window.spinnakerSettings = {
   gateUrl: `${gateUrl}`,
@@ -193,16 +193,16 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
   'ap-southeast-2': ['ap-southeast-2a', 'ap-southeast-2b'],
   'sa-east-1': ['sa-east-1a', 'sa-east-1b']
 };
-</code></pre></div></div>
+</code></pre>
 
 <p>This is actually the normal settings.js but we had to add a few extra configuration options which were:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">authEndpoint</code> this should be <code class="language-plaintext highlighter-rouge">https://YOUR_GATE_HOST/auth/info</code>. Normally this is running on localhost:8084</li>
-  <li><code class="language-plaintext highlighter-rouge">authEnabled</code> should be set to <code class="language-plaintext highlighter-rouge">true</code></li>
+  <li><code>authEndpoint</code> this should be <code>https://YOUR_GATE_HOST/auth/info</code>. Normally this is running on localhost:8084</li>
+  <li><code>authEnabled</code> should be set to <code>true</code></li>
 </ul>
 
-<p>Now run <code class="language-plaintext highlighter-rouge">/opt/spinnaker/bin/reconfigure_spinnaker.sh</code> for the settings to regenerate.</p>
+<p>Now run <code>/opt/spinnaker/bin/reconfigure_spinnaker.sh</code> for the settings to regenerate.</p>
 
 <h1 id="how-this-works">How this works</h1>
 
@@ -226,6 +226,15 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
     
       <li>
         <h3>
+          <a href="/productdevelopment/staffing/recruiting/leading/2021/10/29/project-nudge-a-beech-valley-software-project.html">
+            Project Nudge: A Beech Valley Software Project
+            <small>29 Oct 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
           <a href="/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines.html">
             Spinnaker deployment pipelines
             <small>08 Feb 2016</small>
@@ -238,15 +247,6 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
           <a href="/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html">
             Team workflow using littlechef to manage infrastructure
             <small>21 Nov 2014</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html">
-            Development Pipeline for the Rackspace Cloud Control Panel
-            <small>21 Sep 2014</small>
           </a>
         </h3>
       </li>

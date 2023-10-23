@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Project Nudge: A Beech Valley Software Project
+    
+  </title>
+
+  <script type="application/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+
+  <!-- syntax highlighting CSS -->
+  <link rel="stylesheet" href="/css/syntax.css">
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/hyde.css">
+  <link rel="stylesheet" href="/css/custom.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-49052230-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+  <body class="theme-base-09">
+    <div class="container content">
+      <div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1 class="sidebar-myname">Samuel Toriel</h1>
+      <p class="lead">A blog about Software and Operations</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <br />
+      <li class="sidebar-nav-item">
+        <a href="/">Home</a>
+      </li>
+      <li class="sidebar-nav-item"><a href="/all_posts.html">All posts</a></li>
+      <li class="sidebar-nav-item"><a href="/about.html">About</a></li>
+      <li class="sidebar-nav-item"><a href="/resume.txt">Resume</a></li>
+      <li class="sidebar-nav-item"><a class="rs-nav-link" href="https://twitter.com/rilt" target="_new">@rilt</a></li>
+      <li class="sidebar-nav-item" target="_new"><a href="https://github.com/riltsken">riltsken on github</a></li>
+      <li class="sidebar-nav-item"><a href="/atom.xml">Atom Feed</a></li>
+    </ul>
+  </div>
+</div>
+
+
+      <!-- Main Content -->
+      <script type="text/javascript">
+window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
+</script>
+
+<div class="post">
+  <h1 class="post-title">Project Nudge: A Beech Valley Software Project</h1>
+  <span class="post-date">29 Oct 2021</span>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
+  <p>Beech Valley can be thought of as the gig economy for the accounting industry. We operate as a fairly lean team so how we approach executing work comes with that in mind.</p>
+
+<p>Here’s how we ideated, planned, and executed one of our latest successful projects here at Beech Valley.</p>
+
+<p>An important aspect of the work described here requires background on how our product works. Beech Valley has projects with clients and within each project is a hiring pipeline. Within each pipeline are a number of stages a candidate has to go through to get to the end goal: Hired or Disqualified. Something we noticed is that candidates often sit longer than expected in a certain stage of the pipeline. The goal of the project is to move people along the pipeline quicker so they are never stuck for too long (and that they reach an end state!).</p>
+
+<h2 id="-ideation">💡 Ideation</h2>
+
+<p>The first step in our project lifecycle was determining the root issue. Why were people getting stuck in specific states? To identify the problem, we interviewed a handful of people on our internal team to help give us some clues.</p>
+
+<p>We did three different 30-minute sessions where we had a product designer, an engineering lead (me) and an internal employee of our app sit down together for a chat. Our goal was to learn from the internal employee’s workflow. The conversation would usually start with the engineer or product designer setting the initial context by asking something along the lines of “Walk us through a typical pipeline” and then asking questions along the way to tease out what’s happening, why it’s happening, and which steps we can take to fix the issue.</p>
+
+<p>After the 30-minute session, the product development team would debrief and share some notes together until all sessions were completed. This gave us a much better idea of what was going on and at this point we could have a longer session on what we want to do to solve it.</p>
+
+<p>In this case our engineering lead (me) took the reigns for this project and started a product design document outlining the scenarios we wanted to solve given the information we had learned. We scheduled some time as a team to talk through the design document and brainstormed how to solve the different scenarios. What was initially a smattering of individual solutions started taking shape into something more.</p>
+
+<h2 id="-planning">📄 Planning</h2>
+
+<p>At this stage, we now had clear goals for our project. We wanted to reduce time spent in each pipeline state. What we found out through ideation is that each pipeline state has an input and an output. The input and output can be owned by different people and requires action on their part in order to hand it off to the next person. Specifically, the people involved in our pipeline include the client (person who wants to hire someone), the consultant (person who wants to be hired), and an internal Beech Valley representative.</p>
+
+<p>The primary pain point we uncovered from the interviews is that people simply needed a reminder that it was their turn to take action in a certain stage of the pipeline.</p>
+
+<p>Knowing this, we created three phases to our project in the order of value we thought it would bring to the business. In addition if we got interrupted in our workflow we could shelve a phase until we could get back to it.</p>
+
+<p><strong>Phase One</strong>: We enable our internal team to know exactly when a stage was overdue so they could take action in the form of a reminder. No more rustling through notes, emails, or self created reminders.</p>
+
+<p><strong>Phase Two</strong>: We remind consultants when we have potential projects available for them through automated interest checks and reminders.</p>
+
+<p><strong>Phase Three</strong>: We give our clients a daily rundown of where their projects are at and if they need attention through an automated email digest.</p>
+
+<h2 id="-execution">💻 Execution</h2>
+
+<p>We immediately planned out and started Phase One. We had our product designer come up with some ideas about what the features we wanted could look like and agreed on a plan of action. The engineering lead (me) took the first pass at writing out a few tickets and then we held a planning discussion with the rest of the engineering team to make sure it was the approach we wanted to take.</p>
+
+<p>An interesting point in our execution phase is that we didn’t write out any tickets or designs for Phase Two or Three initially. We just had a general idea of how we wanted to approach them from our product design document. What this allowed our team to do was interweave some other projects in before we started Phase Two and Three.</p>
+
+<p>In terms of tech used during execution, most of the code consisted of a bit of React magic, sprinkles of GraphQL API schema changes, a smattering of new Postgres queries using Objection.js, and a handful of background pg-boss jobs to calculate or send emails outside the request-response lifecycle. All of which were wrapped with a set of tests in jest to make sure it all worked. A neat thing about this project is that most of it is written in one monorepo where the frontend, api, and background jobs all live together using nx to manage both projects and shared libraries.</p>
+
+<h2 id="closing">Closing</h2>
+
+<p>One improvement we could have made in execution is in the first phase, we should have picked a few metrics to help us identify that we were accomplishing our goal and measuring it. This is something we did when we started on phase two and three and immediately put those up front to help us know if our changes were successful.</p>
+
+<p>Here are the key results from our project.</p>
+
+<p>🎉 Phase 1 took 31 stories and a lot of kudos from our internal team for making their lives easier.
+<br />
+🎉 Phase 2 took 12 stories and increased our response rates from consultants by 15%
+<br />
+🎉 Phase 3 took 9 stories and while still in progress of rolling out the feature we noticed an uptick in responses within thirty minutes after hitting a clients inbox.</p>
+
+</div>
+
+<div>
+  <a class="twitter-share-button" href="https://twitter.com/share?size=large">Tweet</a>
+</div>
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines.html">
+            Spinnaker deployment pipelines
+            <small>08 Feb 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker.html">
+            Setting up Spinnaker authentication with Okta and SAML
+            <small>08 Dec 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html">
+            Team workflow using littlechef to manage infrastructure
+            <small>21 Nov 2014</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      <!-- Footer -->
+      <div class="footer">
+      </div>
+
+    </div>
+  </body>
+</html>

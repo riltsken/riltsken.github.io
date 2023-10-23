@@ -1,16 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
- <title></title>
+ <title>Samuel Toriel's Blog</title>
  <link href="http://0.0.0.0:4000/atom.xml" rel="self"/>
  <link href="http://0.0.0.0:4000/"/>
- <updated>2023-10-19T08:28:48-05:00</updated>
+ <updated>2023-10-23T17:06:32-05:00</updated>
  <id>http://0.0.0.0:4000</id>
  <author>
    <name></name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Project Nudge: A Beech Valley Software Project</title>
+   <link href="http://0.0.0.0:4000/productdevelopment/staffing/recruiting/leading/2021/10/29/project-nudge-a-beech-valley-software-project.html"/>
+   <updated>2021-10-29T00:00:00-05:00</updated>
+   <id>http://0.0.0.0:4000/productdevelopment/staffing/recruiting/leading/2021/10/29/project-nudge-a-beech-valley-software-project</id>
+   <content type="html">&lt;h1 id=&quot;idea-to-production-a-beech-valley-project&quot;&gt;Idea to Production: A Beech Valley Project&lt;/h1&gt;
+
+&lt;p&gt;Beech Valley can be thought of as the gig economy for the accounting industry. We operate as a fairly lean team so how we approach executing work comes with that in mind.&lt;/p&gt;
+
+&lt;p&gt;Here’s how we ideated, planned, and executed one of our latest successful projects here at Beech Valley.&lt;/p&gt;
+
+&lt;p&gt;An important aspect of the work described here requires background on how our product works. Beech Valley has projects with clients and within each project is a hiring pipeline. Within each pipeline are a number of stages a candidate has to go through to get to the end goal: Hired or Disqualified. Something we noticed is that candidates often sit longer than expected in a certain stage of the pipeline. The goal of the project is to move people along the pipeline quicker so they are never stuck for too long (and that they reach an end state!).&lt;/p&gt;
+
+&lt;h2 id=&quot;ideation&quot;&gt;💡Ideation&lt;/h2&gt;
+
+&lt;p&gt;The first step in our project lifecycle was determining the root issue. Why were people getting stuck in specific states? To identify the problem, we interviewed a handful of people on our internal team to help give us some clues.&lt;/p&gt;
+
+&lt;p&gt;We did three different 30-minute sessions where we had a product designer, an engineering lead (me) and an internal employee of our app sit down together for a chat. Our goal was to learn from the internal employee’s workflow. The conversation would usually start with the engineer or product designer setting the initial context by asking something along the lines of “Walk us through a typical pipeline” and then asking questions along the way to tease out what’s happening, why it’s happening, and which steps we can take to fix the issue.&lt;/p&gt;
+
+&lt;p&gt;After the 30-minute session, the product development team would debrief and share some notes together until all sessions were completed. This gave us a much better idea of what was going on and at this point we could have a longer session on what we want to do to solve it.&lt;/p&gt;
+
+&lt;p&gt;In this case our engineering lead (me) took the reigns for this project and started a product design document outlining the scenarios we wanted to solve given the information we had learned. We scheduled some time as a team to talk through the design document and brainstormed how to solve the different scenarios. What was initially a smattering of individual solutions started taking shape into something more.&lt;/p&gt;
+
+&lt;h2 id=&quot;planning&quot;&gt;📄Planning&lt;/h2&gt;
+
+&lt;p&gt;At this stage, we now had clear goals for our project. We wanted to reduce time spent in each pipeline state. What we found out through ideation is that each pipeline state has an input and an output. The input and output can be owned by different people and requires action on their part in order to hand it off to the next person. Specifically, the people involved in our pipeline include the client (person who wants to hire someone), the consultant (person who wants to be hired), and an internal Beech Valley representative.&lt;/p&gt;
+
+&lt;p&gt;The primary pain point we uncovered from the interviews is that people simply needed a reminder that it was their turn to take action in a certain stage of the pipeline.&lt;/p&gt;
+
+&lt;p&gt;Knowing this, we created three phases to our project in the order of value we thought it would bring to the business. In addition if we got interrupted in our workflow we could shelve a phase until we could get back to it.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Phase One&lt;/strong&gt;: We enable our internal team to know exactly when a stage was overdue so they could take action in the form of a reminder. No more rustling through notes, emails, or self created reminders.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Phase Two&lt;/strong&gt;: We remind consultants when we have potential projects available for them through automated interest checks and reminders.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Phase Three&lt;/strong&gt;: We give our clients a daily rundown of where their projects are at and if they need attention through an automated email digest.&lt;/p&gt;
+
+&lt;h2 id=&quot;execution&quot;&gt;💻Execution&lt;/h2&gt;
+
+&lt;p&gt;We immediately planned out and started Phase One. We had our product designer come up with some ideas about what the features we wanted could look like and agreed on a plan of action. The engineering lead (me) took the first pass at writing out a few tickets and then we held a planning discussion with the rest of the engineering team to make sure it was the approach we wanted to take.&lt;/p&gt;
+
+&lt;p&gt;An interesting point in our execution phase is that we didn’t write out any tickets or designs for Phase Two or Three initially. We just had a general idea of how we wanted to approach them from our product design document. What this allowed our team to do was interweave some other projects in before we started Phase Two and Three.&lt;/p&gt;
+
+&lt;p&gt;In terms of tech used during execution, most of the code consisted of a bit of React magic, sprinkles of GraphQL API schema changes, a smattering of new Postgres queries using Objection.js, and a handful of background pg-boss jobs to calculate or send emails outside the request-response lifecycle. All of which were wrapped with a set of tests in jest to make sure it all worked. A neat thing about this project is that most of it is written in one monorepo where the frontend, api, and background jobs all live together using nx to manage both projects and shared libraries.&lt;/p&gt;
+
+&lt;h2 id=&quot;closing&quot;&gt;Closing&lt;/h2&gt;
+
+&lt;p&gt;One improvement we could have made in execution is in the first phase, we should have picked a few metrics to help us identify that we were accomplishing our goal and measuring it. This is something we did when we started on phase two and three and immediately put those up front to help us know if our changes were successful.&lt;/p&gt;
+
+&lt;p&gt;Here are the key results from our project.&lt;/p&gt;
+
+&lt;p&gt;🎉 Phase 1 took 31 stories and a lot of kudos from our internal team for making their lives easier.
+&lt;br /&gt;
+🎉 Phase 2 took 12 stories and increased our response rates from consultants by 15%
+&lt;br /&gt;
+🎉 Phase 3 took 9 stories and while still in progress of rolling out the feature we noticed an uptick in responses within thirty minutes after hitting a clients inbox.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Spinnaker deployment pipelines</title>
@@ -22,33 +81,33 @@
 
 &lt;p&gt;One of the questions I see come up quite often in slack are how to model deployment pipelines which do not follow&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;trigger&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bake image with *nix package artifact&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;deploy image&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;trigger&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code&gt;bake image with *nix package artifact&lt;/code&gt; &lt;span style=&quot;font-weight:bold; font-size: 26px;&quot;&gt;⇨&lt;/span&gt; &lt;code&gt;deploy image&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Different organizations have their own restrictions or legacy systems which require alternative deployment methods to the above. Because Jenkins jobs are a first class citizen in Spinnaker this gives it the ability to execute complex tasks and pass on any information required from a previous step. I will outline out how to take advantage of this.&lt;/p&gt;
 
 &lt;p&gt;One very important concept in pipelines is understanding where and how the Spring Expression Language (SpEL) can be used. A few of these rules are outlined below:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Spinnaker uses uses the delimiter &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${}&lt;/code&gt; for SpEL.&lt;/li&gt;
+  &lt;li&gt;Spinnaker uses uses the delimiter &lt;code&gt;${}&lt;/code&gt; for SpEL.&lt;/li&gt;
   &lt;li&gt;Variables can be defined in several ways:
     &lt;ol&gt;
-      &lt;li&gt;The first stage of a pipeline allows defining parameters which can be accessed via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ parameters.key }&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;The first stage of a pipeline allows parameters to be read from a trigger and accessed via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ trigger.properties.key }&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ key }&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;The first stage of a pipeline allows defining parameters which can be accessed via &lt;code&gt;${ parameters.key }&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;The first stage of a pipeline allows parameters to be read from a trigger and accessed via &lt;code&gt;${ trigger.properties.key }&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;Read from a Jenkins job artifact that is yaml, json, or Java properties file and accessed via &lt;code&gt;${ key }&lt;/code&gt;&lt;/li&gt;
     &lt;/ol&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; will create an array called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ deployedServerGroups }&lt;/code&gt; which gives enough information to access the deployed cluster.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;Deploy Stage&lt;/code&gt; will create an array called &lt;code&gt;${ deployedServerGroups }&lt;/code&gt; which gives enough information to access the deployed cluster.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;As of this writing (2016-02-08) the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; in Spinnaker “requires” a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bake Stage&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Find Image Stage&lt;/code&gt;. When I say “requires” I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.&lt;/p&gt;
+&lt;p&gt;As of this writing (2016-02-08) the &lt;code&gt;Deploy Stage&lt;/code&gt; in Spinnaker “requires” a &lt;code&gt;Bake Stage&lt;/code&gt; or &lt;code&gt;Find Image Stage&lt;/code&gt;. When I say “requires” I mean that it will display a warning message which can be ignored as it does not prevent the pipeline from executing.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/bake_or_find_error.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;To get around using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bake Stage&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Find Image Stage&lt;/code&gt; we’ll have to edit the pipeline json for the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; using the key &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;amiName&lt;/code&gt; to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.&lt;/p&gt;
+&lt;p&gt;To get around using the &lt;code&gt;Bake Stage&lt;/code&gt; or &lt;code&gt;Find Image Stage&lt;/code&gt; we’ll have to edit the pipeline json for the &lt;code&gt;Deploy Stage&lt;/code&gt; using the key &lt;code&gt;amiName&lt;/code&gt; to inject the image id we want to use. While a specific image id might be a show stopper we can dynamically pick the image id through the use of use of the aforementioned SpEL rules and variable access.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/spinnaker_edit_json.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+&lt;pre&gt;&lt;code&gt;{
   &quot;requisiteStageRefIds&quot;: [
     &quot;1&quot;
   ],
@@ -67,7 +126,7 @@
     }
   ]
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;For our own organization we actually have a fairly active rotating AMI id as we make changes to the base AMI used for our applications so it updates often. To keep this rotating AMI id fresh for our 35+ microservices we put this information into a github repo, along with other context for each application to help it deploy properly. Upon bootup we have our applications bootstrap themselves in the simplest way possible.&lt;/p&gt;
 
@@ -79,71 +138,71 @@
 
 &lt;p&gt;To accomplish this for so many microservices we decided to create a github repo which spits out the configuration for bootstrap in the form of User Data (this is catered towards AWS):&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root
- &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_applications
-   &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_service1
-     &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_production.yaml
-     &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_staging.yaml
-    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_service2
-      &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_production.yaml
-      &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_staging.yaml
-      &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_beta.yaml
- &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_scripts
-   &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_configuration_script.py  
-   &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;_ami_table.yaml
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;root
+ \__applications
+   \__service1
+     \__production.yaml
+     \__staging.yaml
+    \__service2
+      \__production.yaml
+      \__staging.yaml
+      \__beta.yaml
+ \__scripts
+   \__configuration_script.py  
+   \__ami_table.yaml
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This is what &lt;a href=&quot;https://gist.github.com/riltsken/84004a3b6964823e3ae6&quot;&gt;configuration_script.py&lt;/a&gt; looks like. It takes in an application configuration as shown below.&lt;/p&gt;
 
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;ami_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;java_ami_hvm&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;staging&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;webapplication&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;team&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ops&lt;/span&gt;
+&lt;pre&gt;&lt;code class=&quot;language-yaml&quot;&gt;ami_name: java_ami_hvm
+environment: staging
+tags:
+  role: webapplication
+  team: ops
 
-&lt;span class=&quot;na&quot;&gt;userdata&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;export CONFIG=&apos;staging.yaml&apos;&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;export JAVA_OPTS=&apos;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;export JAVA_HOME=&apos;/opt/java8&apos;&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;export JAVA_RUN_COMMAND=&apos;app.jar&apos;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+userdata: |
+  export CONFIG=&apos;staging.yaml&apos;
+  export JAVA_OPTS=&apos;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8
+  export JAVA_HOME=&apos;/opt/java8&apos;
+  export JAVA_RUN_COMMAND=&apos;app.jar&apos;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;The resulting transformation after going through our script would be a yaml file like the following to be used as variables in our pipeline.&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;application_name: &lt;span class=&quot;s1&quot;&gt;&apos;service1&apos;&lt;/span&gt;
-environment: &lt;span class=&quot;s1&quot;&gt;&apos;staging&apos;&lt;/span&gt;
-base64_userdata: &lt;span class=&quot;s1&quot;&gt;&apos;ZXhwb3J0IFJFVklTSU9OPXMzOi8vJHtidWNrZXR9L3NlcnZpY2UxLyR7Y29tbWl0aGFzaH0vJHt0aW1lc3RhbXB9CmV4cG9ydCBUQUdTPSd7InJvbGUiOiAid2ViYXBwbGljYXRpb24iLCAidGVhbSI6ICJvcHMiLCAiZW52aXJvbm1lbnQiOiAic3RhZ2luZyIsICJuYW1lIjogInNlcnZpY2UxIicKZXhwb3J0IEFQUExJQ0FUSU9OX05BTUU9c2VydmljZTEKZXhwb3J0IENPTkZJRz0nc3RhZ2luZy55YW1sJwpleHBvcnQgSkFWQV9PUFRTPSctWG14MjUwMG0gLXNlcnZlciAtWFg6K1VzZUNvbXByZXNzZWRPb3BzIC1YWDorVXNlUGFyTmV3R0MgLURmaWxlLmVuY29kaW5nPVVURi04CmV4cG9ydCBKQVZBX0hPTUU9Jy9vcHQvamF2YTgnCmV4cG9ydCBKQVZBX1JVTl9DT01NQU5EPSdhcHAuamFyJwo=&apos;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;application_name: &apos;service1&apos;
+environment: &apos;staging&apos;
+base64_userdata: &apos;ZXhwb3J0IFJFVklTSU9OPXMzOi8vJHtidWNrZXR9L3NlcnZpY2UxLyR7Y29tbWl0aGFzaH0vJHt0aW1lc3RhbXB9CmV4cG9ydCBUQUdTPSd7InJvbGUiOiAid2ViYXBwbGljYXRpb24iLCAidGVhbSI6ICJvcHMiLCAiZW52aXJvbm1lbnQiOiAic3RhZ2luZyIsICJuYW1lIjogInNlcnZpY2UxIicKZXhwb3J0IEFQUExJQ0FUSU9OX05BTUU9c2VydmljZTEKZXhwb3J0IENPTkZJRz0nc3RhZ2luZy55YW1sJwpleHBvcnQgSkFWQV9PUFRTPSctWG14MjUwMG0gLXNlcnZlciAtWFg6K1VzZUNvbXByZXNzZWRPb3BzIC1YWDorVXNlUGFyTmV3R0MgLURmaWxlLmVuY29kaW5nPVVURi04CmV4cG9ydCBKQVZBX0hPTUU9Jy9vcHQvamF2YTgnCmV4cG9ydCBKQVZBX1JVTl9DT01NQU5EPSdhcHAuamFyJwo=&apos;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;where the transformed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;base64_userdata&lt;/code&gt; in plaintext is&lt;/p&gt;
+&lt;p&gt;where the transformed &lt;code&gt;base64_userdata&lt;/code&gt; in plaintext is&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;REVISION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;s3://&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bucket&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/service1/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;commithash&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;timestamp&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TAGS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;{&quot;role&quot;: &quot;webapplication&quot;, &quot;team&quot;: &quot;ops&quot;, &quot;environment&quot;: &quot;staging&quot;, &quot;name&quot;: &quot;service1&quot;&apos;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;APPLICATION_NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;service1
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;CONFIG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;staging.yaml
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_OPTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&apos;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/java8
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_RUN_COMMAND&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;app.jar
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;export REVISION=s3://${bucket}/service1/${commithash}/${timestamp}
+export TAGS=&apos;{&quot;role&quot;: &quot;webapplication&quot;, &quot;team&quot;: &quot;ops&quot;, &quot;environment&quot;: &quot;staging&quot;, &quot;name&quot;: &quot;service1&quot;&apos;
+export APPLICATION_NAME=service1
+export CONFIG=staging.yaml
+export JAVA_OPTS=&apos;-Xmx2500m -server -XX:+UseCompressedOops -XX:+UseParNewGC -Dfile.encoding=UTF-8&apos;
+export JAVA_HOME=/opt/java8
+export JAVA_RUN_COMMAND=app.jar
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now what does this look like on the spinnaker side?&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot;&gt;Link to big&lt;/a&gt;
 &lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipeline.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;And in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Advanced Settings&lt;/code&gt; of our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Server Group&lt;/code&gt;
+&lt;p&gt;And in the &lt;code&gt;Deploy Stage&lt;/code&gt; the &lt;code&gt;Advanced Settings&lt;/code&gt; of our &lt;code&gt;Server Group&lt;/code&gt;
 &lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/spinnaker-pipelines/pipelines2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Now our AMI has all the information it needs upon booting up in its autoscaling group to correctly tag itself, download its jar file, add additional motd information, and setup configuration for the application to boot.&lt;/p&gt;
 
-&lt;p&gt;If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Deploy Stage&lt;/code&gt; adds information about the deploy to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;deployedServerGroups&lt;/code&gt; array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.&lt;/p&gt;
+&lt;p&gt;If one wanted to execute something on the server group AFTER it has been deployed we can do that as well. A common thing would be integration tests or ansible for most people before enabling the instances in their LoadBalancer. As I mentioned before the &lt;code&gt;Deploy Stage&lt;/code&gt; adds information about the deploy to the &lt;code&gt;deployedServerGroups&lt;/code&gt; array. If one wanted to attempt to run something against that server group you could access from the following information provided by a deployed server group.&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;account&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;staging,capacity&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;desired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1, &lt;span class=&quot;nv&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
-&lt;span class=&quot;nv&quot;&gt;parentStage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;23452655­c6de­4aac­b529­55e1357dfee7, &lt;span class=&quot;nv&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;us­east1,
-&lt;span class=&quot;nv&quot;&gt;ami&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ami­999af013, &lt;span class=&quot;nv&quot;&gt;storeType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ebs, &lt;span class=&quot;nv&quot;&gt;vmType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;pv, &lt;span class=&quot;nv&quot;&gt;serverGroup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;service1-049&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-shell&quot;&gt;{account=staging,capacity={desired=1, max=1, min=1},
+parentStage=23452655­c6de­4aac­b529­55e1357dfee7, region=us­east1,
+ami=ami­999af013, storeType=ebs, vmType=pv, serverGroup=service1-049}
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Specifically, I created a jenkins job which accepted &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${ deployedServerGroups[0].serverGroup }&lt;/code&gt; and then accessed the cluster by looking up the tag via aws cli.&lt;/p&gt;
+&lt;p&gt;Specifically, I created a jenkins job which accepted &lt;code&gt;${ deployedServerGroups[0].serverGroup }&lt;/code&gt; and then accessed the cluster by looking up the tag via aws cli.&lt;/p&gt;
 
 &lt;p&gt;Hopefully these are useful tidbits for getting started. Good luck on your pipeline creation!&lt;/p&gt;
 </content>
@@ -177,48 +236,48 @@ base64_userdata: &lt;span class=&quot;s1&quot;&gt;&apos;ZXhwb3J0IFJFVklTSU9OPXMz
 
 &lt;h1 id=&quot;setting-up-spinnaker&quot;&gt;Setting up Spinnaker&lt;/h1&gt;
 
-&lt;p&gt;We use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;InstallSpinnaker.sh&lt;/code&gt; script provided by the Spinnaker team here &lt;a href=&quot;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&quot;&gt;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;We use the &lt;code&gt;InstallSpinnaker.sh&lt;/code&gt; script provided by the Spinnaker team here &lt;a href=&quot;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&quot;&gt;https://github.com/spinnaker/spinnaker/blob/master/InstallSpinnaker.sh&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Spinnaker itself is broken into several microservices. Looking at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt&lt;/code&gt; you should see all the different service folders here.&lt;/p&gt;
+&lt;p&gt;Spinnaker itself is broken into several microservices. Looking at &lt;code&gt;/opt&lt;/code&gt; you should see all the different service folders here.&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ls /opt
+&lt;pre&gt;&lt;code&gt;$ ls /opt
 clouddriver  echo  front50  gate  igor  orca  rosco  rush  spinnaker  stackdriver  userdata
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Looking at the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/spinnaker/config&lt;/code&gt; directory we’ll find all the configurations from the different services. We can override any configuration value with an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;appname-local.yml&lt;/code&gt; file. The ones we are going to change are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;settings.js&lt;/code&gt;. When making changes to these files you’ll have to restart their respective service and/or regenerate their configuration file. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;service gate restart&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Looking at the &lt;code&gt;/opt/spinnaker/config&lt;/code&gt; directory we’ll find all the configurations from the different services. We can override any configuration value with an &lt;code&gt;appname-local.yml&lt;/code&gt; file. The ones we are going to change are &lt;code&gt;gate-local.yml&lt;/code&gt; and &lt;code&gt;settings.js&lt;/code&gt;. When making changes to these files you’ll have to restart their respective service and/or regenerate their configuration file. &lt;code&gt;service gate restart&lt;/code&gt; and &lt;code&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;gate-configuration&quot;&gt;Gate configuration&lt;/h2&gt;
 
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;gate-local.yml&lt;/span&gt;
+&lt;pre&gt;&lt;code class=&quot;language-yaml&quot;&gt;gate-local.yml
 
-&lt;span class=&quot;na&quot;&gt;saml&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;requireAuthentication&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;okta_idp_url_for_application&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;certificate&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;base64_encoded_certificate&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;issuerId&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://www.okta.com/{anyid}&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;keyStore&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;spinnaker.jks&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;keyStoreType&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;JKS&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;keyStorePassword&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;somepassword&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;keyStoreAliasName&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;okta&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+saml:
+  enabled: true
+  requireAuthentication: true
+  url: {okta_idp_url_for_application}
+  certificate: {base64_encoded_certificate}
+  issuerId: http://www.okta.com/{anyid}
+  keyStore: spinnaker.jks
+  keyStoreType: JKS
+  keyStorePassword: {somepassword}
+  keyStoreAliasName: okta
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The above properties &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;url&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;certificate&lt;/code&gt; will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.&lt;/p&gt;
+&lt;p&gt;The above properties &lt;code&gt;url&lt;/code&gt; and &lt;code&gt;certificate&lt;/code&gt; will come from Okta after setting up the application. The certificate will have to base64 encoded first before placing it in the config directory.&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;issuerId&lt;/code&gt; is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;issuerId&lt;/code&gt; is a shared uri between both Okta and Spinnaker. You can pick anything for this as long as they share the same id&lt;/p&gt;
 
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keyStore&lt;/code&gt; is generated using the java keytool utility. Specifically this command:&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;keyStore&lt;/code&gt; is generated using the java keytool utility. Specifically this command:&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &quot;okta&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code&gt;keytool -importcert -file okta.cert -keystore spinnaker.jks -alias &quot;okta&quot;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;where &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;okta.cert&lt;/code&gt; is the previously described certificate not base64 encoded. It produces a file called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spinnaker.jks&lt;/code&gt; and shares the alias with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;keyStoreAliasName&lt;/code&gt; in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; config. The keytool will prompt for a password which will be shared in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gate-local.yml&lt;/code&gt; config. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;spinnaker.jks&lt;/code&gt; file should be placed with your local config or otherwise specified with a correct path in the config to it’s location.&lt;/p&gt;
+&lt;p&gt;where &lt;code&gt;okta.cert&lt;/code&gt; is the previously described certificate not base64 encoded. It produces a file called &lt;code&gt;spinnaker.jks&lt;/code&gt; and shares the alias with &lt;code&gt;keyStoreAliasName&lt;/code&gt; in the &lt;code&gt;gate-local.yml&lt;/code&gt; config. The keytool will prompt for a password which will be shared in the &lt;code&gt;gate-local.yml&lt;/code&gt; config. The &lt;code&gt;spinnaker.jks&lt;/code&gt; file should be placed with your local config or otherwise specified with a correct path in the config to it’s location.&lt;/p&gt;
 
-&lt;p&gt;Now restart gate &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;service gate restart&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Now restart gate &lt;code&gt;service gate restart&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;webapp-configuration&quot;&gt;Webapp configuration&lt;/h2&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;settings.js
+&lt;pre&gt;&lt;code&gt;settings.js
 
 window.spinnakerSettings = {
   gateUrl: `${gateUrl}`,
@@ -272,16 +331,16 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
   &apos;ap-southeast-2&apos;: [&apos;ap-southeast-2a&apos;, &apos;ap-southeast-2b&apos;],
   &apos;sa-east-1&apos;: [&apos;sa-east-1a&apos;, &apos;sa-east-1b&apos;]
 };
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This is actually the normal settings.js but we had to add a few extra configuration options which were:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;authEndpoint&lt;/code&gt; this should be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://YOUR_GATE_HOST/auth/info&lt;/code&gt;. Normally this is running on localhost:8084&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;authEnabled&lt;/code&gt; should be set to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;authEndpoint&lt;/code&gt; this should be &lt;code&gt;https://YOUR_GATE_HOST/auth/info&lt;/code&gt;. Normally this is running on localhost:8084&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;authEnabled&lt;/code&gt; should be set to &lt;code&gt;true&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Now run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt; for the settings to regenerate.&lt;/p&gt;
+&lt;p&gt;Now run &lt;code&gt;/opt/spinnaker/bin/reconfigure_spinnaker.sh&lt;/code&gt; for the settings to regenerate.&lt;/p&gt;
 
 &lt;h1 id=&quot;how-this-works&quot;&gt;How this works&lt;/h1&gt;
 
@@ -313,7 +372,7 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
 
 &lt;ul&gt;
   &lt;li&gt;Write unit test with chefspec expecting this change.&lt;/li&gt;
-  &lt;li&gt;Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix&lt;/code&gt; against a specific web node in our &lt;em&gt;test&lt;/em&gt; environment. Ensure that the run did not error. This probably looks like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix node:web-n01.test.mydns.com&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Run &lt;code&gt;fix&lt;/code&gt; against a specific web node in our &lt;em&gt;test&lt;/em&gt; environment. Ensure that the run did not error. This probably looks like &lt;code&gt;fix node:web-n01.test.mydns.com&lt;/code&gt;&lt;/li&gt;
   &lt;li&gt;SSH on to that specific web node and make sure our expected change occurred&lt;/li&gt;
   &lt;li&gt;Run a branch build on jenkins which does chefspec, rubocop, and json linting and gives a green checkmark on your github pull request.&lt;/li&gt;
 &lt;/ul&gt;
@@ -322,11 +381,11 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
 
 &lt;p&gt;If this change is required on a group of nodes this is still possible and again would still take place in the &lt;em&gt;test&lt;/em&gt; environment.&lt;/p&gt;
 
-&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix --env=test_dfw nodes_with_role:cassandra&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;fix --env=test_dfw nodes_with_role:cassandra&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix&lt;/code&gt; commands with the specific region environment. If you want to deploy to all environments you could just run several &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fix&lt;/code&gt; commands in-tandem or one after the other.&lt;/p&gt;
+&lt;p&gt;Looking at the above there is actually a region in our environment name. We maintain several different datacenters per environment and we scope all of our &lt;code&gt;fix&lt;/code&gt; commands with the specific region environment. If you want to deploy to all environments you could just run several &lt;code&gt;fix&lt;/code&gt; commands in-tandem or one after the other.&lt;/p&gt;
 
-&lt;p&gt;It is important to use the environment attribute when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nodes_with_role&lt;/code&gt; so if they are not specific enough an accidental provision of other environments does not happen.&lt;/p&gt;
+&lt;p&gt;It is important to use the environment attribute when using &lt;code&gt;nodes_with_role&lt;/code&gt; so if they are not specific enough an accidental provision of other environments does not happen.&lt;/p&gt;
 
 &lt;p&gt;Going back to that pull request where we had a green checkmark. Merging that branch into master doesn’t do anything immediately (although it could). Currently we have it setup so that after you merge into master you run a job on jenkins that deploys to our lower environments (staging, preprod, and preview). The actual deploys are a series of scripts that build up a runlist per environment. We use a tool called Dreadnot to execute the runlist, but it could just as easily be a series of jenkins jobs. Here is an example of a deploy to our preprod sydney environment which runs in parallel with our staging and preview deploys. Each environment typically has three datacenters ORD, SYD, and DFW.&lt;/p&gt;
 
@@ -340,54 +399,54 @@ window.spinnakerSettings.providers.aws.preferredZonesByAccount[`${awsPrimaryAcco
 
 &lt;p&gt;To provision or create new nodes with littlechef a previous coworker &lt;a href=&quot;http://davehking.com/&quot;&gt;Dave H King&lt;/a&gt; made a library (&lt;a href=&quot;https://github.com/tildedave/littlechef-rackspace&quot;&gt;Littlechef-Rackspace&lt;/a&gt;) to make this really easy on Rackspace. It allows us to run a single command which brings up a node in our environment and runs plugins after it is created. The plugins we currently run install chef via omnibus and creates the node json file with extra information specific to how we setup our environment (private ips, labeling, environment). After the node is active and plugins have been ran it can take a runlist to configure the node as needed and add it to the node.json file.&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fix-rackspace create &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--username&lt;/span&gt; &amp;lt;username&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--key&lt;/span&gt; &amp;lt;api_key&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--region&lt;/span&gt; &amp;lt;region&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--image&lt;/span&gt; &amp;lt;image_id&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--flavor&lt;/span&gt; &amp;lt;flavor_id&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;web-n01.preprod.dfw&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--public-key&lt;/span&gt; &amp;lt;public_key_file&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--private-key&lt;/span&gt; &amp;lt;private_key_file&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--runlist&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;role[base],role[reach_base],role[reach_dfw_preprod],role[web]&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--plugins&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;omnibus_install_11, bootstrap&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;--post-plugins&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;add_role&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;fix-rackspace create \
+    --username &amp;lt;username&amp;gt; \
+    --key &amp;lt;api_key&amp;gt; \
+    --region &amp;lt;region&amp;gt; \
+    --image &amp;lt;image_id&amp;gt; \
+    --flavor &amp;lt;flavor_id&amp;gt; \
+    --name &quot;web-n01.preprod.dfw&quot; \
+    --public-key &amp;lt;public_key_file&amp;gt; \
+    --private-key &amp;lt;private_key_file&amp;gt; \
+    --runlist &quot;role[base],role[reach_base],role[reach_dfw_preprod],role[web]&quot; \
+    --plugins &quot;omnibus_install_11, bootstrap&quot; \
+    --post-plugins &quot;add_role&quot;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;All of the above can be run in one command, but it can be difficult to remember all of the configuration values needed to add a new node to our environment. The library has an added bonus of being able to use yaml templates which greatly simplify the process of what plugins to use and what runlists we need to add to configure the node. Our plugins are &lt;a href=&quot;https://gist.github.com/riltsken/c9996cf9af2c6b9ecade&quot;&gt;here&lt;/a&gt; and our post plugins after the runlist has been ran are &lt;a href=&quot;https://gist.github.com/riltsken/44103d0e495827758fbe&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;imageid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;flavor&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;flavorid-placeholder&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;omnibus_install_11&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bootstrap&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;post-plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;add_role&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;use_opscode_chef&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;false&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;templates&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[base]&quot;&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[reach_base]&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;00000000-0000-0000-0000-000000000000&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;11111111-1111-1111-1111-111111111111&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;preprod-dfw&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;region&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;dfw&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;reach_dfw_preprod&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[reach_dfw_preprod]&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0f4c20c1-4c91-8a69-900d-44ff1fdd6fbd&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;secrets-file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;secrets-reachpreprod.cfg&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runlist&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role[reach_web]&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-yaml&quot;&gt;image: {imageid-placeholder}
+flavor: {flavorid-placeholder}
+plugins:
+    - omnibus_install_11
+    - bootstrap
+post-plugins: add_role
+use_opscode_chef: false
+templates:
+  base:
+    runlist:
+    - &quot;role[base]&quot;
+    - &quot;role[reach_base]&quot;
+    networks:
+    - 00000000-0000-0000-0000-000000000000
+    - 11111111-1111-1111-1111-111111111111
+  preprod-dfw:
+    region: dfw
+    environment: reach_dfw_preprod
+    runlist:
+    - &quot;role[reach_dfw_preprod]&quot;
+    networks:
+    - 0f4c20c1-4c91-8a69-900d-44ff1fdd6fbd
+    secrets-file: secrets-reachpreprod.cfg
+  web:
+    runlist:
+    - &quot;role[reach_web]&quot;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;And the new resulting command to spin up a web node in the dfw region for our preprod environment&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;fix-rackspace create &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; web-n01.preprod.dfw base preprod-dfw web
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;fix-rackspace create --name web-n01.preprod.dfw base preprod-dfw web
+&lt;/code&gt;&lt;/pre&gt;
 </content>
  </entry>
  
@@ -568,7 +627,7 @@ Merging code runs the same tasks as the branch builder and more. The additional 
 
 &lt;p&gt;To get all nodes in a specific datacenter to send their logs to the broker I decided to use tags to handle forwarding the logs I wanted. An example of what this would look like via config files would be the following&lt;/p&gt;
 
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;00_input_base.conf
+&lt;pre&gt;&lt;code class=&quot;language-erb&quot;&gt;00_input_base.conf
 
 input {
   file {
@@ -576,8 +635,8 @@ input {
     &apos;type&apos; =&amp;gt; &apos;rackspace-monitoring-agent&apos;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;01_input_apache.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-erb&quot;&gt;01_input_apache.conf
 
 input {
   file {
@@ -591,8 +650,8 @@ input {
     &apos;tags&apos; =&amp;gt; [&apos;broker&apos;]
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;90_forward_to_broker.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-erb&quot;&gt;90_forward_to_broker.conf
 
 output {
   if &apos;broker&apos; in [tags] {
@@ -603,7 +662,7 @@ output {
     }
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://d1dj72mlaoziwu.cloudfront.net/multi-region logging - web to broker.png&quot; alt=&quot;Specific datacenter logging from application nodes to broker&quot; /&gt;&lt;/p&gt;
 
@@ -611,11 +670,11 @@ output {
 
 &lt;p&gt;The next step is to forward our logs to the collector. To do this we create a different set of conf.d files for our logstash agent to run on the broker node. For this portion we were originally going to use stunnel to create an encrypted channel for the logs to be sent over to the collector, however, as I was reading about the different inputs and outputs supported by logstash I stumbled on &lt;a href=&quot;https://github.com/elasticsearch/logstash-forwarder&quot;&gt;lumberjack&lt;/a&gt;. Now, I actually had quite a few issues with understanding how lumberjack should be used in the context of logstash. What I see now is that it can either &lt;strong&gt;REPLACE&lt;/strong&gt; the logstash agent as a log handler and forwarder or logstash can &lt;strong&gt;CREATE&lt;/strong&gt; a lumberjack instance on the fly to send events as output or read events forwarded by lumberjack. In the first case, you would actually have to compile and build the lumberjack project and run the agent as a service. In the second case the logstash agent handles all of that and one should just use the inputs and outputs as normal.&lt;/p&gt;
 
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;91_forward_to_collector.conf
+&lt;pre&gt;&lt;code class=&quot;language-erb&quot;&gt;91_forward_to_collector.conf
 
 input {
   redis {
-    &apos;host&apos; =&amp;gt; &apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;broker_ip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;
+    &apos;host&apos; =&amp;gt; &apos;&amp;lt;%= node[&quot;logstash&quot;][&quot;broker_ip&quot;] %&amp;gt;&apos;
     &apos;data_type&apos; =&amp;gt; &apos;list&apos;
     &apos;key&apos; =&amp;gt; &apos;logstash&apos;
   }
@@ -623,20 +682,20 @@ input {
 
 output {
   lumberjack {
-    &apos;hosts&apos; =&amp;gt; [&apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;collector_ip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;]
-    &apos;port&apos; =&amp;gt; &lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;forwarder&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
-    &apos;ssl_certificate&apos; =&amp;gt; &apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_cert&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;
+    &apos;hosts&apos; =&amp;gt; [&apos;&amp;lt;%= node[&quot;logstash&quot;][&quot;collector_ip&quot;] %&amp;gt;&apos;]
+    &apos;port&apos; =&amp;gt; &amp;lt;%= node[&quot;logstash&quot;][&quot;forwarder&quot;][&quot;port&quot;] %&amp;gt;
+    &apos;ssl_certificate&apos; =&amp;gt; &apos;&amp;lt;%= node[&quot;selfsigned_ssl&quot;][&quot;directory&quot;] %&amp;gt;&amp;lt;%= node[&quot;selfsigned_ssl&quot;][&quot;ssl_cert&quot;] %&amp;gt;&apos;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;92_lumberjack_collector.conf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&quot;language-erb&quot;&gt;92_lumberjack_collector.conf
 
 input {
   lumberjack {
     &apos;host&apos; =&amp;gt; &apos;127.0.0.1&apos;
-    &apos;port&apos; =&amp;gt; &lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logstash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;forwarder&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;port&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
-    &apos;ssl_certificate&apos; =&amp;gt; &apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_cert&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;
-    &apos;ssl_key&apos; =&amp;gt; &apos;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;selfsigned_ssl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ssl_key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&apos;
+    &apos;port&apos; =&amp;gt; &amp;lt;%= node[&quot;logstash&quot;][&quot;forwarder&quot;][&quot;port&quot;] %&amp;gt;
+    &apos;ssl_certificate&apos; =&amp;gt; &apos;&amp;lt;%= node[&quot;selfsigned_ssl&quot;][&quot;directory&quot;] %&amp;gt;&amp;lt;%= node[&quot;selfsigned_ssl&quot;][&quot;ssl_cert&quot;] %&amp;gt;&apos;
+    &apos;ssl_key&apos; =&amp;gt; &apos;&amp;lt;%= node[&quot;selfsigned_ssl&quot;][&quot;directory&quot;] %&amp;gt;&amp;lt;%= node[&quot;selfsigned_ssl&quot;][&quot;ssl_key&quot;] %&amp;gt;&apos;
   }
 }
 
@@ -647,7 +706,7 @@ output {
     &apos;key&apos; =&amp;gt; &apos;logstash&apos;
   }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Unfortunately I ran out of time during our hackweek due to other issues I had to look at outside of this project to get the implementation down 100% but this is the rough idea for how it would look. I hope to make a follow up post when we have fully implemented the desired architecture. For now, this documents some of the learnings I gained while working on this project for a few days.&lt;/p&gt;
 </content>
