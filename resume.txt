@@ -4,9 +4,9 @@ github.com/riltsken                                       samueltoriel@gmail.com
 
 Mission     I am an engineering leader who fosters positive 
             environments which focus on building quality products 
-            that are maintainable and scalable.
+            that are maintainable and scale.
 
-Languages   Fluent in TypeScript, Python, SQL, HTML, CSS
+Languages   Fluent in JavaScript, TypeScript, Python, SQL, HTML, CSS
             Familiar with Java, Ruby, Bash + More
 
 Experience
@@ -26,30 +26,28 @@ Description
 -----------
 
 Beech Valley is a "gig economy" staffing firm for the accounting industry. We 
-leverage technology allowing us to handle 10-100x more staffing tasks than other
- firms could with less.
+leverage technology allowing us to handle 10-100x more staffing tasks than other 
+firms could with less.
 
 Hired on as the third engineer I touched all aspects of the codebase, 
-infrastructure and processes. The internal technology stack is a monorepo using 
-NX and Typescript. The infrastructure is AWS on Fargate ECS.
+infrastructure and processes. The internal technology stack is a monorepo 
+using NX and Typescript. The infrastructure is AWS on Fargate ECS.
 
 I worked on lots of projects but a few are described below.
 
 Projects
 --------
 
-Project Nudge       Project lead. I wrote an informal blog post about the project
-                    https://docs.google.com/document/d/1h0TATnqmlvr5C6KGURitb65ir0MewhB14RGgcMUOlGg/edit?usp=sharing
+Project Nudge       Project Lead. I wrote an informal blog post about the project
+                    https://riltsken.github.io/productdevelopment/staffing/recruiting/leading/2021/10/29/project-nudge-a-beech-valley-software-project.html
 
-Candidate Pipeline  Project lead. We needed to streamline our process 
-                    for recruiting consultants. I helped simplify the entire 
-                    process by figuring out how we could combine multiple 
-                    systems into one.
-                    
-                    When this project completed lead times for recruiting 
-                    consultants went from an inconsistent 25+ days to a 
-                    consistent 12 days. With the new system we were able to 
-                    make sure every candidate was responded to.
+Candidate Pipeline  Project Lead. We needed to streamline our process for 
+                    recruiting consultants. I helped simplify it by figuring out
+                     how we could combine multiple systems into one. When this 
+                     project completed lead times for recruiting consultants 
+                     went from an inconsistent 25+ days to a consistent 12 days. 
+                     With the new system we were able to make sure every 
+                     candidate was responded to.
 
 Infrastructure      As the primary engineer responsible for the infrastructure 
                     (along with collaboration with the CTO) I helped ensure we 
