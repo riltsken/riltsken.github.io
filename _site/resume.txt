@@ -2,9 +2,9 @@ riltsken.github.io                                                 Samuel Toriel
 github.com/riltsken                                       samueltoriel@gmail.com
                                                                     Richmond, VA
 
-Mission     I am an engineering leader who fosters positive 
-            environments which focus on building quality products 
-            that are maintainable and scale.
+Mission     I am an engineering leader who fosters positive environments with 
+            a focus on building quality products that are maintainable and scale.
+
 
 Languages   Fluent in JavaScript, TypeScript, Python, SQL, HTML, CSS
             Familiar with Java, Ruby, Bash + More
@@ -43,11 +43,11 @@ Project Nudge       Project Lead. I wrote an informal blog post about the projec
 
 Candidate Pipeline  Project Lead. We needed to streamline our process for 
                     recruiting consultants. I helped simplify it by figuring out
-                     how we could combine multiple systems into one. When this 
-                     project completed lead times for recruiting consultants 
-                     went from an inconsistent 25+ days to a consistent 12 days. 
-                     With the new system we were able to make sure every 
-                     candidate was responded to.
+                    how we could combine multiple systems into one. When this 
+                    project completed lead times for recruiting consultants 
+                    went from an inconsistent 25+ days to a consistent 12 days. 
+                    With the new system we were able to make sure every 
+                    candidate was responded to.
 
 Infrastructure      As the primary engineer responsible for the infrastructure 
                     (along with collaboration with the CTO) I helped ensure we 
@@ -97,13 +97,12 @@ and organized team infrastructure costs in a shared spreadsheet month to month
 which allowed us to identify and reduce costs YoY in the low six figure range 
 (mostly overprovisioned datastores) for our specific team.
 
-* When joining the team they deployed sparingly because they had an issue with 
-response times spiking. Apparently this had been going on for 9 months+. I was
-able to research, identify, and remediate this bug which required me working
-with the infrastructure team (we were an app team) to prove that the nginx
-loadbalancer we were using in kubernetes was the cause. The fix was to upgrade
-the nginx version + use a different loadbalancing algorithm because it 
-had a bug (:
+* When joining the team they deployed sparingly due to response times spiking. 
+Apparently this had been going on for 9 months+. I was able to research, 
+identify, and remediate this bug which required me working with the 
+infrastructure team (we were an app team) to prove that the nginx loadbalancer 
+we were using in kubernetes was the cause. The fix was to upgrade the nginx 
+version + use a different loadbalancing algorithm because it had a bug (:
 
 * Introduced Typescript into Ibotta's 2nd largest codebase and provided a 
 migration guide on how to move js parts to ts. The goal of Typescript was to
