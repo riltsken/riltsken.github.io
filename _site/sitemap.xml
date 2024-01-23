@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>http://riltsken.github.io/</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/all_posts.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/about.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/resume.txt</loc>
+  <lastmod>2023-10-26T00:55:04+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/productdevelopment/staffing/recruiting/leading/2021/10/29/project-nudge-a-beech-valley-software-project.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/devops/infrastructure/deploymenttools/2016/02/08/spinnaker-deployment-pipelines.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/devops/infrastructure/deploymenttools/2015/12/08/setup-okta-saml-with-spinnaker.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/devops/workingwithteams/continuousdelivery/infrastructure/2014/11/21/team-workflow-using-littlechef-to-manage-infrastructure.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/softwaredevelopment/devops/workingwithteams/continuousdelivery/2014/09/21/development-pipeline-for-the-rackspace-cloud-control-panel.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/page2/</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/softwaredevelopment/conference/devops/2014/05/25/why-developers-need-to-attend-conferences-like-gluecon.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/softwaredevelopment/programming/hackathon/2014/04/22/vthacks-and-why-hackathons-are-essential-for-everyone.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/devops/infrastructure/monitoring/2014/04/19/making-runbooks-more-useful-by-exposing-them-through-monitoring.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/devops/infrastructure/logging/2014/03/25/multi-region-logging-architecture-with-logstash-and-kibana.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://riltsken.github.io/devops/infrastructure/2014/03/16/how-server-message-of-the-day-improved-our-devops-team.html</loc>
+  <lastmod>2023-10-26T00:55:08+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
+</urlset>
