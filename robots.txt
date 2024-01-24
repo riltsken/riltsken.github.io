@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://riltsken.github.io/sitemap.xml
